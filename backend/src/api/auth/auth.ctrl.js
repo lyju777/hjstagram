@@ -2,7 +2,7 @@ import User from '../../models/user';
 import Joi from 'joi';
 
 
-// 회원가입
+// 회원가입.
 export const register = async (ctx) => {
     const schema = Joi.object().keys({
         email:Joi.string().required(),
