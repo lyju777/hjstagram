@@ -4,7 +4,9 @@ import SendEmail from "../components/auth/sendemail";
     function SendEmailPage(){
 
         return (
-        <SendEmail/>   
+
+        <SendEmail/>
+    
         );
     }
 

@@ -1,9 +1,10 @@
 import React, {useState, useEffect} from "react";
 import { Card, ListGroup, ListGroupItem } from 'react-bootstrap';
 import Modal_main_point from "./modal_main_point";
+import Modal_Main_Comments from "./modal_main_comments";
 import axios from "axios";
 import { Carousel } from 'react-bootstrap';
-import { withRouter } from "react-router-dom";
+import { withRouter, useHistory } from "react-router-dom";
 import { Link } from "react-router-dom";
 
 
@@ -13,29 +14,36 @@ function MainCard() {
 
     let [modal , modal_change] = useState(false);
 
-    // 좋아요 이미지변경 state!
+    // 좋아요 이미지변경 state
     let [heart, heart_change] = useState([false]);
 
     // 좋아요 숫자
     let [heartNum, setHeartNum] = useState([]);
 
-    // 팔로우 이미지변경 state
+    //팔로우 이미지변경 state
     let [follow, follow_change] = useState([false]);
+
+    // 찜 모달 말풍선 모달
+    let [zzim, zzim_change] = useState(false);
     
     let [comment , comment_change] = useState(false);
+
+    // 내 댓글만 삭제
+    let [IsMyComment, setIsMyComment] = useState([]);
 
     const [WhoLogin, setWhoLogin] = useState("");
 
     // 서버에 보내고자 하는 값들을 state에서 가지고 있는것
     const[comments, setcomments] = useState("")
 
-    // ID값 담을  state!!
+    // ID값 담을  state
     const [ID, setID] = useState("");
 
     const [NamID, setNamID] = useState("");
 
     const saveID = (id) => {
       setID(id);
+      console.log(ID);
     };
 
     const onCommentsHandler = (event) => {
@@ -46,6 +54,9 @@ function MainCard() {
       modal_change(false);
     }
     
+    const closezzim = () => {
+      zzim_change(!zzim);
+    }
 
     const closecomment = () => {
       comment_change(!comment);
@@ -57,6 +68,9 @@ function MainCard() {
     const [FileImg, setFileImg] = useState([[]])
     const [CommentOjArr, setCommentOjArr] = useState([]);
 
+     
+    
+    
     // 빈 배열 따로 만들어서 response.data[i] 담아줘야 배열에 하나씩 담겨짐
     const post =[]; // contents
     const user = []; // username
@@ -64,13 +78,18 @@ function MainCard() {
     const LikeBy = []; // 좋아요 리스트 
     const HeartNum = []; // 좋아요 숫자
     const likePost = []; // 각 게시물의 좋아요 여부 
+    
     const commentOj = [];
+    const commentWho = [];
+
+
     const writer = [];  // 게시글 쓴사람
     const FollowPost = []; //팔로우 여부
     const eachprofile = [];
     const ismycmt = []; // 각 포스트당 댓글 돌면서 내 댓글인지 확인하고 여부 boolean 값으로 담아주기 
     
     
+
     // ID값 담을 빈 배열
     let id = [];
    
@@ -89,8 +108,11 @@ function MainCard() {
             likePost[i] = false;
             
             commentOj[i] = response.data[i].comment;
-            HeartNum[i] = response.data[i].like;
+            
+            console.log(commentOj);
+            
 
+            HeartNum[i] = response.data[i].like;
             setHeartNum([...HeartNum]);
 
             id[i] = response.data[i]._id;          
@@ -98,25 +120,31 @@ function MainCard() {
             setCommentOjArr([...commentOj]);
             setProfile([...eachprofile]);
             setContents(post);
-            setDataUsername(user);           
+            setDataUsername(user);
+            
             setFileImg([...file]); // file을 setFileImg하면 게시물이 하나만 나옴
-
+            console.log(writer);
 
         // 내가 좋아요 누른 게시물 
         axios.get('api/auth/check') 
         .then(response => {
-
+         console.log(response);
+         
          const name = response.data.username;
-         const following = response.data.followingPeople;
+         console.log(name);
          setWhoLogin(name);
 
+         const following = response.data.followingPeople;
+         console.log(following); //이거 왜 undefind임?
+
           for(let j = 0; j < LikeBy[i].length; j++){
-              if(name === LikeBy[i][j]){ // 로그인한 사람이랑 좋아요 누른사람이 같다면     
+
+              if(name === LikeBy[i][j]){ // 로그인한 사람이랑 좋아요 누른사람이 같다면
+      
                 likePost[i] = true; // true로 변경   
               }
           }
           heart_change([...likePost]);
-
                    
           for(let j =0; j<following.length; j++){
             if(following[j] === writer[i]){
@@ -126,25 +154,36 @@ function MainCard() {
             }
           }
           follow_change([...FollowPost]);
-         
+          console.log(follow);
+
+          
           for(let j=0; j<commentOj.length; j++){
             for(let k=0; k<commentOj[i].length; k++){
               if(name === commentOj[i][k].who){
                 ismycmt[k] = true;
               }else{
                 ismycmt[k] = false;
-              }         
+              }
+              
             }
+            setIsMyComment([...ismycmt]);
           }
-            
+          
+          console.log(ismycmt);
+          
+          
+          
+          
+
         })
       }
   }); 
     }, []);
 
-
      // 좋아요 하기
      const On_Heart = (ID) => {
+
+      console.log("아이디값: " + ID)
 
       axios.patch(`/api/posts/${ID}/likeby`)
       .then(response => {
@@ -152,7 +191,8 @@ function MainCard() {
         axios.patch(`/api/posts/${ID}/addlike`)
         .then(response => {
 
-          window.location.replace('/main');
+          // history.push(`/main`);
+          window.location.reload(); //댓글 새로고침없이 페이지 갱신 
         })
       })
     }
@@ -166,7 +206,8 @@ function MainCard() {
         axios.patch(`/api/posts/${ID}/canclelike`)
         .then(response => {
 
-          window.location.replace('/main');
+          // history.push(`/main`);
+          window.location.reload();   
         })
       })
     }
@@ -189,7 +230,7 @@ function MainCard() {
         axios.patch(`api/auth/following/${ingid}/${werid}`,  body)
         .then(res => {
 
-          window.location.reload(); 
+          window.location.reload(); //댓글 새로고침없이 페이지 갱신 
         })
       })
     }
@@ -213,7 +254,7 @@ function MainCard() {
         axios.patch(`api/auth/unfollowing/${ingid}/${werid}`,  body)
         .then(res => {
 
-          window.location.reload(); 
+          window.location.reload(); //댓글 새로고침없이 페이지 갱신 
         })
       }) 
     }
@@ -225,7 +266,7 @@ function MainCard() {
         axios.patch(`api/posts/${ID}/givecomment`, {content:comments})
         .then(response =>{
 
-          window.location.reload();
+          window.location.reload(); //댓글 새로고침없이 페이지 갱신
         })            
     }
 
@@ -271,41 +312,41 @@ function MainCard() {
 
           <Carousel> 
           {
+
             // [[],[],[]] 으로 뽑으려면 && 연산자 활용
             FileImg[i] && FileImg[i].map((j) => {
-              return(
-                <Carousel.Item>
-                <Card.Img variant="top" src={j} className="edit_img_size_card"/>
-                </Carousel.Item>
-              )
-            })
+                  return(
+                    <Carousel.Item>
+                    <Card.Img variant="top" src={j} className="edit_img_size_card"/>
+                    </Carousel.Item>
+                  )
+                })
           }
           </Carousel>
 
-
           <ListGroup className="list-group-flush">    
             <ListGroupItem>
-            <div>
+              <div>
 
-            {/* 좋아요 클릭 취소 삼항연산자 */}
-            {                  
-            heart[i] === false  
-            ?  <img className="main_herat_off" src="img/main_heart_off.png"
-                onClick={() => On_Heart(a._id)}/>
+              {/* 좋아요 클릭 취소 삼항연산자 */}
+              {                  
+              heart[i] === false  
+              ?  <img className="main_herat_off" src="img/main_heart_off.png"
+                  onClick={() => On_Heart(a._id)}/>
 
-            : <img className="main_herat_off" src="img/main_heart_on.png"
-                onClick={() => Off_Heart(a._id)}/>
-            } 
+              : <img className="main_herat_off" src="img/main_heart_on.png"
+                  onClick={() => Off_Heart(a._id)}/>
+              } 
 
-            {/* 팔로잉 클릭 취소 삼항연산자 */}
-            {
-            follow[i] === false
-            ?  <img className="main_follow" src="img/main_follow_off.png"
-                onClick={()=>On_Follow(a.user._id, a.user.username)}/>
 
-            :  <img className="main_follow" src="img/main_follow_on.png"
-                onClick={()=>Off_Follow(a.user._id, a.user.username)}/>
-            } 
+               {
+              follow[i] === false
+              ?  <img className="main_follow" src="img/main_follow_off.png"
+                 onClick={()=>On_Follow(a.user._id, a.user.username)}/>
+
+              :  <img className="main_follow" src="img/main_follow_on.png"
+                 onClick={()=>Off_Follow(a.user._id, a.user.username)}/>
+              } 
 
               </div>
 
@@ -316,8 +357,8 @@ function MainCard() {
             {/* 게시물 코맨트 */}
             <div className="contents_div" key={i}>{a.contents}</div>
 
-            {/* 댓글쓴이 & 댓글 */}
-            {CommentOjArr[i] && CommentOjArr[i].map((w,j)=>(
+               {/* 댓글쓴이 & 댓글 */}
+               {CommentOjArr[i] && CommentOjArr[i].map((w,j)=>(
                  <>
             <div className="contents_div_username">  <Link to={{pathname: `/namprofiles/${w.whoid}`}} className="modal_text_blue"><span className="W_Who">{w.who}</span></Link>
             <span className="contents_div_username_span">{w.content}</span>
@@ -330,7 +371,8 @@ function MainCard() {
               : null
             }
 
-                
+           
+            
             </div>
             </>
               ))}   
@@ -350,9 +392,9 @@ function MainCard() {
             <button className="main_card_textarea_button">게시</button>
             </form>
 
-            </ListGroupItem> 
-          </ListGroup>
-        </div>
+          </ListGroupItem> 
+        </ListGroup>
+      </div>
               )
             })
           }
@@ -363,10 +405,14 @@ function MainCard() {
         : null
         }
 
-
+        {
+        comment === true
+        ? <Modal_Main_Comments closecomment={closecomment}/>
+        : null
+        }
 
     </>
       
-   )
+      )
 }
 export default withRouter(MainCard);

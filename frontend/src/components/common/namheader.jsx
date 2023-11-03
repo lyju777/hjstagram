@@ -1,7 +1,8 @@
 import React, {useState, useEffect} from "react";
 import { Link } from "react-router-dom";
-import { Container, Nav } from 'react-bootstrap';
+import { Container, Nav, Form, FormControl } from 'react-bootstrap';
 import Modal_main_profile from "../main/modal_main_profile";
+import Modal_main_heart from "../main/modal_main_herat";
 import axios from "axios";
 
 
@@ -28,6 +29,10 @@ function NamHeader() {
             setProfile(response.data.profileurl)
         }
     )}, []);
+
+
+
+
 
 
     const main_profileImage = <div className="main_profileImage_box">
@@ -78,6 +83,17 @@ function NamHeader() {
   : null
 }
 
+{
+  modal_heart === true
+  ? <Modal_main_heart closeModal_herat={closeModal_herat}/>
+  : null
+}
+
+{/* {
+  modal_edit === true
+  ? <Modal_main_edit closeModal_edit={closeModal_edit}/>
+  : null
+} */}
 
 
 </>

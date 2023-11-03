@@ -10,10 +10,13 @@ import MainPage from './pages/mainPage';
 import ProfilePage from './pages/profilePage';
 import EditProfilePage from './pages/editprofilePage';
 import ChangePasswordPage from './pages/changepasswordPage';
+import Profile_ZzimPage from './pages/profile_ZzimPage';
+import Profile_TagsPage from './pages/profile_TagsPage';
 import MainEditFile from './pages/mainEditFile';
 import Profile_changePage from './pages/profile_changePage';
 import RecoverPassword from './components/auth/RecoverPassword';
 import UpdatePassword from './components/auth/UpdatePassword';
+
 import Other_Profile from './components/profile/other_profile';
 import Other_Profile_Post from './components/profile/other_profile_post';
 import NamHeader from './components/common/namheader';
@@ -33,16 +36,19 @@ function App() {
             <Route path="/profiles" component={ProfilePage} />
             <Route path="/editprofile" component={EditProfilePage} />
             <Route path="/changepassword" component={ChangePasswordPage} />
+            <Route path="/profile_zzim" component={Profile_ZzimPage} />
+            <Route path="/profile_Tags" component={Profile_TagsPage} />
             <Route path="/main_edit_file" component={MainEditFile} />
             <Route path="/profile_change" component={Profile_changePage}/>
+
             <Route path="/recover_password" component={RecoverPassword} />
 
-            <Route
-                path="/update-password/:userId/:token"
-                render={({ match }) => (
-                  <UpdatePassword userId={match.params.userId} token={match.params.token} />
-                )}
-              />
+          <Route
+              path="/update-password/:userId/:token"
+              render={({ match }) => (
+                <UpdatePassword userId={match.params.userId} token={match.params.token} />
+              )}
+            />
 
 
             <Route

@@ -9,10 +9,15 @@ import axios from "axios";
 function Profile(){
 
     let [gear , gear_change] = useState(false);
+
     let [profile , profile_change] = useState(false);
+
     let [follow , follow_change] = useState(false);
+
     let [follower , follower_change] = useState(false);
-    let [Profile,setProfile] = useState("");
+
+    let [Profile,setProfile] = useState("img/default_profile.png");
+
 
     const closeGear = () => {
         gear_change(false);
@@ -44,13 +49,17 @@ function Profile(){
         .then(response =>  {
             setDataUsername(response.data.username) // 사용자이름
             setDataName(response.data.name) // 이름
-            setIntroment(response.data.introment)  // 소개글   
+            setIntroment(response.data.introment)  // 소개글 
+            
             setfollowingNum(response.data.followingNum)
             setfollowerNum(response.data.followerNum)
             setPostNum(response.data.postsNum)
+
             setProfile(response.data.profileurl)
 
         }
+
+
     )}, []);
 
 
@@ -62,8 +71,7 @@ function Profile(){
 
 
     return(
-
-    <>
+<>
     <div className="profile_profile_div"> 
     <div className="profile_profile"> 
     {main_profileImage}{username}
@@ -114,7 +122,7 @@ function Profile(){
     : null
     }
     
-    </>
+</>
     )
 }
 

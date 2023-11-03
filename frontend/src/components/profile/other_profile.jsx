@@ -1,14 +1,44 @@
 import React, {useState, useEffect} from "react";
+import Modal_profile_gear from "./modal_profile_gear";
+import Modal_Profile_Change from "./modal_profile_change";
+import Modal_Profile_Follow from "./modal_profile_follow";
+import Modal_Profile_Follower from "./modal_profile_follower";
 import axios from "axios";
 
 
 function Other_Profile(match){
 
-    let [Profile,setProfile] = useState("");
+    let [gear , gear_change] = useState(false);
+
+    let [profile , profile_change] = useState(false);
+
+    let [follow , follow_change] = useState(false);
+
+    let [follower , follower_change] = useState(false);
+
+    let [Profile,setProfile] = useState("/img/default_profile.png");
+
+
+    const closeGear = () => {
+        gear_change(false);
+    }
+
+    const closeProfile = () => {
+        profile_change(false);
+    }
+
+    const closeFollow = () => {
+        follow_change(false);
+    }
+
+    const closeFollower = () => {
+        follower_change(false);
+    }
 
     const [DataUsername, setDataUsername] = useState("")  // state에 데이터바인딩할 response값 담아서 뿌리기
     const [DataName, setDataName] = useState("")
     const [Introment, setIntroment] = useState("")
+
     const [followingNum, setfollowingNum] = useState(0); // 팔로잉 숫자
     const [followerNum, setfollowerNum] = useState(0); // 팔로워 숫자
     const [postNum, setPostNum] = useState(0); // 게시글 숫자
@@ -42,16 +72,18 @@ function Other_Profile(match){
                     if(isFollowing[i] === whofollowname){
                         setIsFollower(true);
                     }
-                }         
+                }
+            
             })
-        })           
+        })
+      
+        
     }, []);
 
 
     const On_Follow = () => {
         axios.get(`/api/auth/check`)
         .then(response => {
-
             const whofollowid = response.data._id;
             const whofollowname = response.data.username;
 
@@ -59,8 +91,8 @@ function Other_Profile(match){
 
             axios.patch(`/api/auth/following/${whofollowid}/${ID}`, body)
             .then(response => {
-
-                console.log("팔로잉성공!");           
+                console.log("팔로잉성공!");
+               
                 window.location.reload();
             })
         })
@@ -75,22 +107,26 @@ function Other_Profile(match){
 
         axios.patch(`/api/auth/unfollowing/${whounfollowid}/${ID}`,  body)
         .then(res => {
-
-          console.log("언팔성공!") 
-         window.location.reload();
+          console.log("언팔성공!")
+         
+         window.location.reload(); //댓글 새로고침없이 페이지 갱신 
         })
       }) 
     }
 
+    
+
     const main_profileImage = <div className="closefriends_profileImage_box profile_profileImage_box">
-    <img className="profile_profileImage" src={Profile}/></div>
+    <img className="profile_profileImage" src={Profile} onClick={() => { profile_change(true) } }/></div>
+
 
     return(
-
-    <>
+<>
     <div className="profile_profile_div"> 
     <div className="profile_profile"> 
     {main_profileImage}
+
+
 
     <div className="profile_username">{DataUsername}
         {
@@ -99,11 +135,14 @@ function Other_Profile(match){
         }
     </div>
 
+
     </div>
+
 
     <div className="namprofile_button_div">
    
     </div>
+
 
     </div>
 
@@ -111,10 +150,10 @@ function Other_Profile(match){
 
         <div className="profile_profile_text">게시물 {postNum}</div>
         
-        <div className="profile_profile_text">
+        <div className="profile_profile_text" onClick={() => {follower_change(true)}}>
         팔로워 {followerNum}</div>
 
-        <div className="profile_profile_text">
+        <div className="profile_profile_text" onClick={() => {follow_change(true)}}>
         팔로우 {followingNum}</div>
 
 
@@ -128,7 +167,9 @@ function Other_Profile(match){
         <div className="profile_profile_name">{Introment}</div>
     </div>
 
-      </>
+
+    
+</>
     )
 }
 

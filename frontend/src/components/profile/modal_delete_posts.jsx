@@ -1,7 +1,9 @@
-import React from "react";
-import { withRouter} from "react-router-dom";
+import React, {useEffect} from "react";
+import { withRouter, useHistory } from "react-router-dom";
 
 function Modal_Delete_Posts(props){
+
+    const history = useHistory();
 
     return(
 
@@ -19,4 +21,5 @@ function Modal_Delete_Posts(props){
         </div>
     )
 }
+// onClick={() => window.location.reload()}
 export default withRouter(Modal_Delete_Posts);

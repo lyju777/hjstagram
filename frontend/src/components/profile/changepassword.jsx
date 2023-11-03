@@ -1,11 +1,13 @@
 import React, {useState, useEffect} from "react";
 import { Link, withRouter } from "react-router-dom";
 import axios from "axios";
-
+import {useDispatch} from 'react-redux';
 
 function ChangePassword(props){
 
-    let [Profile,setProfile] = useState("");
+    const dispatch = useDispatch();
+
+    let [Profile,setProfile] = useState("img/default_profile.png");
 
     const[OldPassword, setOldPassword] = useState("")
     const[NewPassword, setNewPassword] = useState("")
@@ -64,6 +66,7 @@ function ChangePassword(props){
     useEffect(() => {
     axios.get('/api/auth/check')
     .then(response =>  {
+
         setProfile(response.data.profileurl)
         }
     )}, []);
@@ -117,18 +120,18 @@ function ChangePassword(props){
     .then(response => {
 
       id = response.data._id
-    if(PassWordMsg !== '8 ~ 15자 영문 또는 숫자로 입력해주세요.'){
-        axios.patch(`/api/auth/changePassword/${id}`, body)
-        .then(response => {
-  
-        if(response){
-          props.history.push("/login")
-        }else{
-          alert("Failed")
-        }
-      })
-    }
+
+      axios.patch(`/api/auth/changePassword/${id}`, body)
+      .then(response => {
+
+      if(response){
+        props.history.push("/login")
+      }else{
+        alert("Failed")
+      }
     })
+    })
+
   }
   
 

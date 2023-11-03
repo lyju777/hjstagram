@@ -107,7 +107,6 @@ function SignUp(props){
         }
         
 
-         if(PassWordMsg !== '8 ~ 15자 영문 또는 숫자로 입력해주세요.'){
             dispatch(registerUser(body))
             .then(response => {
                 if(response.payload){
@@ -116,7 +115,6 @@ function SignUp(props){
                     alert("Failed to sign up")
                 }
             })
-        }
     }
 
     return (
@@ -136,25 +134,29 @@ function SignUp(props){
 
          
             <div className="form-group">
+                {/* <label>First name</label> */}
                 <input autoFocus type="text" className="form-control" placeholder="이메일 주소"
                 value={Email} onChange={onEmailHandler} onBlur={checkEmail}/>
                 <p className="Msg">{EmailMsg}</p>
             </div>
 
             <div className="form-group">
+                {/* <label>Last name</label> */}
                 <input type="text" className="form-control" placeholder="성명"
                 value={Name} onChange={onNameHandler} />
             </div>
 
-            <div className="form-group">    
+            <div className="form-group">
+                {/* <label>Email address</label> */}
                 <input type="text" id="username"  className="form-control" placeholder="사용자 이름"
                 value={Username} onChange={onUsernameHandler} onBlur={checkUserName} />
                 <p className="Msg">{UserNameMsg}</p>
-           
+                {/* <p className="Msg">{SamePassWordMsg}</p> */}
 
             </div>
 
-            <div className="form-group">   
+            <div className="form-group">
+                {/* <label>Password</label> */}
                 <input type="password" className="form-control" placeholder="비밀번호"
                 value={Password} onChange={onPasswordHandler} onBlur={checkPassword} />
                 <p className="Msg">{PassWordMsg}</p>
@@ -177,4 +179,10 @@ function SignUp(props){
     );
 }
 
+
 export default withRouter(SignUp);
+
+// return에 뷰 페이지를 따로 import시켜서 그 안으로 props를 전달시켜서 분리해야 정리해야할듯?
+// state만 뺴서 import시킬 수 없으니까
+
+// 유효성 글자가 else문을 사용안해서 정상적으로 작성해도 유효성글씨게 계속 뜨는문제 해결

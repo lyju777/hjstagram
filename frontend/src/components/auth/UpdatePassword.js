@@ -70,7 +70,7 @@ function UpdatePassword(match) {
     }
 
     // state 입력값이 같을경우만 post
-    if(password === confirmPassword && PassWordMsg !== '8 ~ 15자 영문 또는 숫자로 입력해주세요.'){ 
+    if(password === confirmPassword){ 
       axios
       .post(`/api/auth/receive_new_password/${userId}/${token}`, body)
       .then(() => {

@@ -1,29 +1,25 @@
 import React, {useState, useEffect} from "react";
 import axios from "axios";
 
+
 function Modal_Profile_Follow(props){
 
   const [followingPeople, setfollowingPeople] = useState([]);
   let [Profile, setProfile] = useState([]);
-  
   const myfollow = [];
-
   useEffect(() => {
 
     axios.get(`/api/auth/check`)
     .then(response => {
-      
       setfollowingPeople(response.data.followingPeople);
       const follow = response.data.followingPeople;
-
       for(let i=0; i<follow.length; i++){
-
+        console.log(follow[i]);
         axios.patch('/api/auth/getF4Fprofile', {username:follow[i]})
         .then(response => {
-
+          console.log(response);
           myfollow[i] = response.data.profileurl;
           setProfile([...myfollow]);
-
         })
       }
     })
@@ -31,6 +27,7 @@ function Modal_Profile_Follow(props){
 
     return(
 
+      // <div className="modal_background modal_background_white" onClick={props.closeFollow}>
       <div className="modal_background modal_background_white">
 
         <div className="modal_profile_follow">
@@ -38,6 +35,7 @@ function Modal_Profile_Follow(props){
           <div className="modal_profile_follow_text">
 
           <p className="following_text">팔로잉</p>
+
 
 
       {
@@ -57,11 +55,15 @@ function Modal_Profile_Follow(props){
         })
       }
           
+
           </div>
         </div>
         </div>
 
     )
 }
+
+// <Profile_Following closefollowing={closefollowing}/>
+// <Profile_Follow  closefollowing={closefollowing}/>
 
 export default Modal_Profile_Follow;

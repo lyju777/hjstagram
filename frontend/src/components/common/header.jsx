@@ -1,12 +1,12 @@
 import React, {useState, useEffect} from "react";
 import { Link } from "react-router-dom";
-import { Container, Nav } from 'react-bootstrap';
+import { Container, Nav, Form, FormControl } from 'react-bootstrap';
 import Modal_main_profile from "../main/modal_main_profile";
+import Modal_main_heart from "../main/modal_main_herat";
 import axios from "axios";
 
 
 function Header() {
-  
     // 각 modal마다 다르게 state를 설정해줘야 한다 
     let [modal , modal_change] = useState(false);
     let [modal_heart , modal_change_herat] = useState(false);
@@ -29,6 +29,10 @@ function Header() {
             setProfile(response.data.profileurl)
         }
     )}, []);
+
+
+
+
 
 
     const main_profileImage = <div className="main_profileImage_box">
@@ -78,6 +82,18 @@ function Header() {
   ? <Modal_main_profile closeModal={closeModal}/>
   : null
 }
+
+{
+  modal_heart === true
+  ? <Modal_main_heart closeModal_herat={closeModal_herat}/>
+  : null
+}
+
+{/* {
+  modal_edit === true
+  ? <Modal_main_edit closeModal_edit={closeModal_edit}/>
+  : null
+} */}
 
 
 </>

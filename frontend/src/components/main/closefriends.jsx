@@ -27,18 +27,20 @@ function CloseFriends(){
         const following = response.data.followingPeople;
         const follower = response.data.followerPeople;
         const FollowingEachOther = following.filter(it => follower.includes(it)); 
-        
         setF4F([...FollowingEachOther])
+        console.log(FollowingEachOther);
 
         for(let i=0; i<FollowingEachOther.length; i++){
-       
+          console.log(FollowingEachOther[i]);
           axios.patch('/api/auth/getF4Fprofile', {username:FollowingEachOther[i]})
           .then(response => {
+            console.log(response);
 
             f4fid[i] = response.data._id;
             setF4FID([...f4fid]);
 
             f4fprofile[i] = response.data.profileurl;
+            console.log(f4fprofile);
             setProfile([...f4fprofile]);
           })
         }
@@ -48,12 +50,17 @@ function CloseFriends(){
       )}, []);
 
 
+  
+
+
+
     const username = <span className="main_username">{DataUsername}</span>;
     const name = <div className="main_name">{DataName}</div>;
 
     const main_profileImage = <div className="closefriends_profileImage_box main_cardprofileImage_box">
     <img className="main_profileImage" src={userProfile} /></div>
 
+      
 
     return(
 
@@ -62,9 +69,11 @@ function CloseFriends(){
       <div className="closefriends"> 
         {main_profileImage}{username}{name}
       <span className="closefriends_closetext">EACH OTHER</span>
+      {/* <span className="closefriends_alltext">모두보기</span> */}
       </div>
 
       <div className="closefriends_div">
+
 
 
       {

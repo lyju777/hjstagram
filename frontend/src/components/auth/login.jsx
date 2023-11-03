@@ -51,6 +51,13 @@ import axios from "axios";
                 dispatch(LoginUser(body))
                 .then(response => {
 
+                    console.log(response);
+                    console.log(response.payload._id);
+                    console.log(response.payload.LoginSuccess);
+
+                    // const _id = response.payload._id;
+                    // response.payload.LoginSuccess 안먹혀서 response.payload사용 
+                    // 유효성은 먹힘 쿠키값 생성됨
                     if(response.payload) { 
                         props.history.push('/main');
                     } else{
@@ -72,11 +79,13 @@ import axios from "axios";
                 </div>
 
                 <div className="form-group">
+                    {/* <label>Email address</label> */}
                     <input type="text" className="form-control" placeholder="사용자 이름"
                     value={Username} onChange={onUsernameHandler}/>
                 </div>
 
                 <div className="form-group">
+                    {/* <label>Password</label> */}
                     <input type="password" className="form-control" placeholder="비밀번호"
                      value={Password} onChange={onPasswordHandler} />
                 </div>

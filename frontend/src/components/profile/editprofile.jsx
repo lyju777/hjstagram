@@ -5,8 +5,7 @@ import axios from "axios";
 
 function EditProfile(props){
 
-    let [Profile,setProfile ] = useState("");
-    let [modal , modal_change] = useState(false);
+    let [Profile,setProfile ] = useState("img/default_profile.png");
 
     const [Username, setUsername] = useState("")  // state에 데이터바인딩할 response값 담아서 뿌리기
     const [TitleUsername, setTitleUsername] = useState("")  // state에 데이터바인딩할 response값 담아서 뿌리기
@@ -29,26 +28,22 @@ function EditProfile(props){
         setIntroment(event.currentTarget.value)
     }
     
+
     const onSubmitHandler = (event) => {
         event.preventDefault(); // 페이지 새로고침 방지
     }
-
-    const closeModal = () => {
-        modal_change(false);
-      }
-
 
        // 아이디 유효성 검사
        const checkUserName = (e) => {
         axios.post('/api/auth/idCheck', {username:Username})
         .then(response => {           
             if(response.data.username){
+                console.log("1=" + response.data.username);
                 setUserNameMsg('이미 존재하는 사용자이름입니다.')
             }else{
                 setUserNameMsg('') // 정규식이 맞다면 ''공백으로 처리
             }
         }) 
-        
     //  2 ~ 10자 한글, 영문, 숫자 조합
     var regExp = /^([a-zA-Z0-9ㄱ-ㅎ|ㅏ-ㅣ|가-힣]).{2,10}$/;
     // 형식에 맞는 경우 true 리턴
@@ -68,7 +63,8 @@ function EditProfile(props){
         username:Username,
         introment:Introment
     }
-
+  
+    // DB값은 수정됬고 /main으로 넘어가는거도 에러없이 성공했는데 바인딩이 실패했다 무엇일까??
     const onClickHandler = () => {  // 특정 값 필요할시 Handler에 엑시오스 2개 묶어서 사용해야함 
   
       axios.get('/api/auth/check')
@@ -84,11 +80,18 @@ function EditProfile(props){
         axios.patch(`/api/auth/edit/${id}`, body)
         .then(response => {
           console.log(response.data);
-          props.history.push("/profiles")
+          props.history.push("/profile")
         
       })
       })
     }
+
+    let [modal , modal_change] = useState(false);
+
+    const closeModal = () => {
+        modal_change(false);
+      }
+
 
     useEffect(() => {
         axios.get('/api/auth/check')

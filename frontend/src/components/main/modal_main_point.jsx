@@ -13,6 +13,7 @@ function Modal_main_point(props) {
   <Link to={{pathname: `/namprofiles/${props.NamID}`}} className="modal_text_blue"><p>게시물로 이동</p></Link>
   </div>
 
+
   <div>
     <p onClick={props.closeModal}>취소</p>
   </div>
@@ -22,4 +23,5 @@ function Modal_main_point(props) {
     )
 }
 
+//  <Link to="/profile" className="modal_text_blue"><p>게시물로 이동</p></Link> 
 export default Modal_main_point;

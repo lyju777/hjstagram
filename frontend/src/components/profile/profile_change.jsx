@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useState } from "react";
-import {withRouter } from "react-router-dom";
+import { Link,withRouter } from "react-router-dom";
 
 
 function Profile_Change(props) { 
@@ -9,18 +9,28 @@ function Profile_Change(props) {
   const [fileImage, setFileImage] = useState([]); // 단일이어도 배열 처리 해줘야함
   const [FileUpload, setFileUpload] = useState([]);
   
-    // 파일 업로드 및 미리보기 이미지
-    const saveFileImage = (e) => {
+  // 파일 업로드 및 미리보기 이미지
+  const saveFileImage = (e) => {
 
     const profile = e.target.files[0];
+
+    console.log(profile);
+
     const profilePic = [...fileImage];
+
     const nowImageUrl = URL.createObjectURL(profile);
 
     profilePic.push(nowImageUrl);
-  
+    console.log(nowImageUrl);
+
+    
     setFileImage(profilePic);
     setFileUpload(e.target.files);
   };
+
+  console.log("FileUpload")
+  console.log(FileUpload);
+  console.log(fileImage);
 
   //파일 삭제
   const deleteFileImage = () => {
@@ -32,7 +42,8 @@ function Profile_Change(props) {
     event.preventDefault(); // 페이지 새로고침 방지
 
     const formData = new FormData();
-  
+
+    
     formData.append("profile", FileUpload[0], FileUpload[0].name);
     
     const config = {
@@ -40,18 +51,19 @@ function Profile_Change(props) {
         "content-type": "multipart/form-data",
       },
     };
-
     let id = ""
     
     axios.get('/api/auth/check')
     .then(response => {
-
+      console.log(response);
       id = response.data._id
 
       axios.post(`/api/profilePic/${id}`,formData,config)
       .then(response => {
-    
+        console.log("profilePic의 response↓")
+        console.log(formData);
         const profilepicurl = response.data.path.substr(18);
+        console.log("profilepicurl: " + profilepicurl)
 
         let body = {
             profilepicurl: profilepicurl,
@@ -60,10 +72,11 @@ function Profile_Change(props) {
         //patch api 메소드 
         axios.patch(`/api/auth/profileChange`, body)
         .then(response => {
-        
+            console.log(response);
+    
             axios.patch(`api/posts/editprofileurl`,body)
             .then(response => {
-       
+              console.log(response);
               props.history.push("/profiles"); // 여기 다시 프로필 페이지로 이동
             })
 
@@ -72,6 +85,9 @@ function Profile_Change(props) {
       })      
     })
   }
+  
+
+
   
   return (
      <>
@@ -91,10 +107,12 @@ function Profile_Change(props) {
                   <button type="submit" className="btn btn-primary edit_file_submit">변경</button>
                 </div>
 
+
             </div>
             <div className="profile_change_div">
 
-  
+
+    
              { 
               (fileImage[0]) && (<img
               className="d-block w-100 edit_img_size"
@@ -102,7 +120,6 @@ function Profile_Change(props) {
               alt="First slide"
               />)
               }
-
 
           </div>
         </div>
@@ -112,3 +129,6 @@ function Profile_Change(props) {
 }
 
 export default withRouter(Profile_Change);
+
+// 파일 업로드 엑시오스 작성 한 뒤
+// 비밀번호 찾기 인증 페이지 처럼 삼항연산자를 통해 제출에 성공하면 card div가 생성 되도록 작성??

@@ -12,6 +12,10 @@ const minBreakpoints = {
   desktop: 769
 }
 
+/* You can use the media export in a styled-component like so:
+ *   ${media.desktop`display: flex;`}
+ *   ${media.tablet`display: inline-block;`}
+ *   ${media.phone`display: none;`} */
 export const media = Object.keys(breakpoints).reduce((acc, label) => {
   acc[label] = (...args) => css`
     @media (max-width: ${breakpoints[label] / 16}em) {
@@ -30,6 +34,8 @@ export const minMedia = Object.keys(minBreakpoints).reduce((acc, label) => {
   return acc
 }, {})
 
+// This mixin only works if you put the .error div *before* the input,
+// as the .error div selects its next sibling to apply border colors
 export const validationErrorMixin = css`
   .error + input {
     /* Color input red when adjacent to an error: */
@@ -91,6 +97,7 @@ export const authFormErrorsMixin = css`
   }
 `
 
+// General styles that you can spread around:
 export const flexCenterMixin = css`
   display: flex;
   justify-content: center;
@@ -105,6 +112,7 @@ export const modalBlur = css`
   filter: blur(1px);
 `
 
+// Wrote these in anticipation of a card component
 export const card = css`
   background: ${props => props.theme.primary};
   box-shadow: ${props => props.theme.boxShadow};

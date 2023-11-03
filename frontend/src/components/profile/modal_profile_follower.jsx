@@ -4,29 +4,34 @@ import axios from "axios";
 
 function Modal_Profile_Follow(props){
 
+
 const [followerPeople, setfollowerPeople] = useState([]);
+
 const [Profile, setProfile] = useState([]);
+
 const myfollower = [];
 
 useEffect(() => {
 
   axios.get(`/api/auth/check`)
   .then(response => {
-
     setfollowerPeople(response.data.followerPeople);
     const follower = response.data.followerPeople;
 
     for(let i = 0; i < follower.length; i++){
+        console.log(follower[i]);
 
         axios.patch(`api/auth/getF4Fprofile`, {username:follower[i]})
         .then(response => {
- 
+          console.log(response);
           myfollower[i] = response.data.profileurl;
           setProfile([...myfollower])
+        })
+    }
 
-          })
-        }
-    })
+
+  })
+
 }, []);
 
     return(
@@ -44,16 +49,17 @@ useEffect(() => {
               return(
                 <div className="modal_profile_follow_in">
                 <p><div className="main_profileImage_box main_profileImage_heart_box">
-                <img className="main_profileImage main_profileImage_heart" src={Profile[i]} /></div>
-                <div className="main_username main_username_heart">{a}</div></p>
+                <img className="main_profileImage main_profileImage_heart" src={Profile[i]} /></div><div className="main_username main_username_heart">{a}</div></p>
               </div>
               )
             })
           }
      
+
           </div>
         </div>
-      </div>
+        </div>
+
     )
 }
 
