@@ -39,6 +39,9 @@ function MainCard() {
 
   const [NamID, setNamID] = useState("");
 
+  // 팔로우 상태를 관리하는 상태 추가
+  const [followStatus, setFollowStatus] = useState({});
+
   const saveID = (id) => {
     setID(id);
     console.log(ID);
@@ -87,7 +90,11 @@ function MainCard() {
 
   useEffect(() => {
     axios.get("/api/posts").then((response) => {
+      const newFollowStatus = { ...followStatus };
       for (let i = 0; i < response.data.length; i += 1) {
+        writer[i] = response.data[i].user.username; // 글쓴이들 (팔로잉 당할것들)
+        newFollowStatus[writer[i]] = false; // 초기 팔로우 상태는 false
+
         post[i] = response.data[i];
         user[i] = response.data[i].user.username;
         file[i] = response.data[i].fileurls;
@@ -138,6 +145,7 @@ function MainCard() {
           for (let j = 0; j < following.length; j++) {
             if (following[j] === writer[i]) {
               //팔로우 표시
+              newFollowStatus[writer[i]] = true; // 팔로우 상태를 true로 변경
               FollowPost[i] = true;
             }
           }
@@ -158,6 +166,7 @@ function MainCard() {
           console.log(ismycmt);
         });
       }
+      setFollowStatus(newFollowStatus); // 팔로우 상태를 업데이트
     });
   }, []);
 
@@ -202,6 +211,11 @@ function MainCard() {
     let ingid = ""; // 팔로잉 하는 사람의 _id;
     let whofollow = ""; // 팔로잉 하는 사람의 username
 
+    setFollowStatus((prevState) => ({
+      ...prevState,
+      [wername]: true, // 팔로우 상태를 true로 변경
+    }));
+
     follow_change((prevState) =>
       prevState.map((item, idx) => (idx === index ? true : item))
     );
@@ -224,6 +238,11 @@ function MainCard() {
   const Off_Follow = async (werid, wername, index) => {
     let ingid = ""; // 팔로잉 하는 사람의 _id;
     let whounfollow = ""; // 팔로잉 하는 사람의 username
+
+    setFollowStatus((prevState) => ({
+      ...prevState,
+      [wername]: false, // 팔로우 상태를 false로 변경
+    }));
 
     follow_change((prevState) =>
       prevState.map((item, idx) => (idx === index ? false : item))
@@ -359,25 +378,26 @@ function MainCard() {
                       />
                     )}
 
-                    {follow[i] === false ? (
-                      <img
-                        alt=""
-                        className="main_follow"
-                        src="img/main_follow_off.png"
-                        onClick={() =>
-                          On_Follow(a.user._id, a.user.username, i)
-                        }
-                      />
-                    ) : (
-                      <img
-                        alt=""
-                        className="main_follow"
-                        src="img/main_follow_on.png"
-                        onClick={() =>
-                          Off_Follow(a.user._id, a.user.username, i)
-                        }
-                      />
-                    )}
+                    {DataUsername[i] !== WhoLogin &&
+                      (followStatus[DataUsername[i]] === false ? (
+                        <img
+                          alt=""
+                          className="main_follow"
+                          src="img/main_follow_off.png"
+                          onClick={() =>
+                            On_Follow(a.user._id, a.user.username, i)
+                          }
+                        />
+                      ) : (
+                        <img
+                          alt=""
+                          className="main_follow"
+                          src="img/main_follow_on.png"
+                          onClick={() =>
+                            Off_Follow(a.user._id, a.user.username, i)
+                          }
+                        />
+                      ))}
                   </div>
 
                   {/* 좋아요 숫자 */}
