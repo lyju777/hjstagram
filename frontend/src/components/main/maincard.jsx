@@ -8,6 +8,8 @@ import { withRouter, useHistory } from "react-router-dom";
 import { Link } from "react-router-dom";
 
 function MainCard() {
+  const history = useHistory();
+
   let [Profile, setProfile] = useState([]);
 
   let [modal, modal_change] = useState(false);
@@ -170,6 +172,18 @@ function MainCard() {
     });
   }, []);
 
+  const OnHistoryPushUser = (i, a) => {
+    const path =
+      DataUsername[i] === WhoLogin ? "/profiles" : `/namprofiles/${a.user._id}`;
+    history.push(path);
+  };
+
+  const OnHistoryPushWhoid = (i, a) => {
+    const path =
+      DataUsername[i] === WhoLogin ? "/profiles" : `/namprofiles/${a.whoid}`;
+    history.push(path);
+  };
+
   // 좋아요 하기
   const On_Heart = async (ID, index) => {
     console.log("아이디값: " + ID);
@@ -318,12 +332,13 @@ function MainCard() {
                         alt=""
                       />
                     </div>
-                    <Link
-                      to={{ pathname: `/namprofiles/${a.user._id}` }}
-                      className="modal_text_blue"
+                    <span
+                      style={{ cursor: "pointer" }}
+                      onClick={() => OnHistoryPushUser(i, a)}
+                      className="main_username"
                     >
-                      <span className="main_username">{DataUsername[i]}</span>
-                    </Link>
+                      {DataUsername[i]}
+                    </span>
                   </div>
                   <div
                     className="main_Point_div"
@@ -414,12 +429,13 @@ function MainCard() {
                       <React.Fragment key={w._id}>
                         <div className="contents_div_username">
                           {" "}
-                          <Link
-                            to={{ pathname: `/namprofiles/${w.whoid}` }}
-                            className="modal_text_blue"
+                          <span
+                            style={{ cursor: "pointer" }}
+                            onClick={() => OnHistoryPushWhoid(i, a)}
+                            className="W_Who"
                           >
-                            <span className="W_Who">{w.who}</span>
-                          </Link>
+                            {w.who}
+                          </span>
                           <span className="contents_div_username_span">
                             {w.content}
                           </span>
@@ -463,7 +479,12 @@ function MainCard() {
                       onChange={onCommentsHandler}
                     ></input>
 
-                    <button className="main_card_textarea_button">게시</button>
+                    <button
+                      disabled={comments.length === 0}
+                      className="main_card_textarea_button"
+                    >
+                      게시
+                    </button>
                   </form>
                 </ListGroupItem>
               </ListGroup>
