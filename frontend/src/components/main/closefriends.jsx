@@ -1,14 +1,16 @@
-import React,{useState, useEffect} from "react";
+import React, { useState, useEffect, useContext } from "react";
+import FollowStatusContext from "../../context/FollowStatusContext.js";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
-function CloseFriends(){
+function CloseFriends() {
+  const followStatus = useContext(FollowStatusContext);
 
-  let [userProfile,setUserProfile] = useState("img/default_profile.png");
+  let [userProfile, setUserProfile] = useState("img/default_profile.png");
 
   const [Profile, setProfile] = useState([]);
-  const [DataUsername, setDataUsername] = useState("")  // state에 데이터바인딩할 response값 담아서 뿌리기
-  const [DataName, setDataName] = useState("")
+  const [DataUsername, setDataUsername] = useState(""); // state에 데이터바인딩할 response값 담아서 뿌리기
+  const [DataName, setDataName] = useState("");
   const [F4F, setF4F] = useState([]); // 서로 맞팔한 유저 state
   const [F4FID, setF4FID] = useState([]);
 
@@ -16,85 +18,83 @@ function CloseFriends(){
   const f4fid = [];
 
   useEffect(() => {
-      axios.get('/api/auth/check')
-      // 데이터 두개 여러개 가져올때는 , 써서 연속으로 써준다
-      .then(response =>  {
-        
-        setDataUsername(response.data.username)
-        setDataName(response.data.name)
-        setUserProfile(response.data.profileurl)
-        
-        const following = response.data.followingPeople;
-        const follower = response.data.followerPeople;
-        const FollowingEachOther = following.filter(it => follower.includes(it)); 
-        setF4F([...FollowingEachOther])
-        console.log(FollowingEachOther);
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("/api/auth/check", {
+          headers: { "cache-control": "no-cache" },
+        });
+        setDataUsername(response.data.username);
+        setDataName(response.data.name);
+        setUserProfile(response.data.profileurl);
 
-        for(let i=0; i<FollowingEachOther.length; i++){
-          console.log(FollowingEachOther[i]);
-          axios.patch('/api/auth/getF4Fprofile', {username:FollowingEachOther[i]})
-          .then(response => {
-            console.log(response);
+        const following = response.data.followingPeople || [];
+        const follower = response.data.followerPeople || [];
+        const FollowingEachOther = following.filter((it) =>
+          follower.includes(it)
+        );
+        setF4F([...FollowingEachOther]);
+        const requests = FollowingEachOther.map((user) =>
+          axios.patch("/api/auth/getF4Fprofile", { username: user })
+        );
+        const responses = await Promise.all(requests);
+        responses.forEach((response, i) => {
+          f4fid[i] = response.data._id;
+          f4fprofile[i] = response.data.profileurl;
+        });
 
-            f4fid[i] = response.data._id;
-            setF4FID([...f4fid]);
-
-            f4fprofile[i] = response.data.profileurl;
-            console.log(f4fprofile);
-            setProfile([...f4fprofile]);
-          })
-        }
-
-
-      } 
-      )}, []);
-
-
-  
-
-
-
-    const username = <span className="main_username">{DataUsername}</span>;
-    const name = <div className="main_name">{DataName}</div>;
-
-    const main_profileImage = <div className="closefriends_profileImage_box main_cardprofileImage_box">
-    <img className="main_profileImage" src={userProfile} /></div>
-
-      
-
-    return(
-
-      <div className="closefriends_div_mem">
-      <div className="closefriends_div_me">
-      <div className="closefriends"> 
-        {main_profileImage}{username}{name}
-      <span className="closefriends_closetext">EACH OTHER</span>
-      {/* <span className="closefriends_alltext">모두보기</span> */}
-      </div>
-
-      <div className="closefriends_div">
-
-
-
-      {
-        F4F.map( (a,i) => {
-          return(
-            <div className="closefriends"> 
-            <div className="main_profileImage_box main_cardprofileImage_box">
-            <img className="main_profileImage" src={Profile[i]} /></div>
-            <Link to={{pathname: `/namprofiles/${F4FID[i]}`}} className="modal_text_blue"><span className="closefriends_span">{a}</span></Link>
-            </div>
-          )
-        })
+        setF4FID([...f4fid]);
+        setProfile([...f4fprofile]);
+      } catch (error) {
+        // 오류 처리
+        console.error(error);
       }
-      
+    };
 
+    if (followStatus) {
+      fetchData();
+    }
+  }, [followStatus]); // followStatus를 의존성 배열에 포함하여 followStatus가 변경될 때만 fetchData 함수 호출
 
+  const username = <span className="main_username">{DataUsername}</span>;
+  const name = <div className="main_name">{DataName}</div>;
+
+  const main_profileImage = (
+    <div className="closefriends_profileImage_box main_cardprofileImage_box">
+      <img className="main_profileImage" src={userProfile} />
+    </div>
+  );
+
+  return (
+    <div className="closefriends_div_mem">
+      <div className="closefriends_div_me">
+        <div className="closefriends">
+          {main_profileImage}
+          {username}
+          {name}
+          <span className="closefriends_closetext">EACH OTHER</span>
+          {/* <span className="closefriends_alltext">모두보기</span> */}
+        </div>
+
+        <div className="closefriends_div">
+          {F4F.map((a, i) => {
+            return (
+              <div className="closefriends">
+                <div className="main_profileImage_box main_cardprofileImage_box">
+                  <img className="main_profileImage" src={Profile[i]} />
+                </div>
+                <Link
+                  to={{ pathname: `/namprofiles/${F4FID[i]}` }}
+                  className="modal_text_blue"
+                >
+                  <span className="closefriends_span">{a}</span>
+                </Link>
+              </div>
+            );
+          })}
+        </div>
       </div>
-      </div> 
-      </div>
-      
-    )
+    </div>
+  );
 }
 
 export default CloseFriends;

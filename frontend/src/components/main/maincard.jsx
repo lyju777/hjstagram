@@ -5,6 +5,8 @@ import Modal_Main_Comments from "./modal_main_comments";
 import axios from "axios";
 import { Carousel } from "react-bootstrap";
 import { withRouter, useHistory } from "react-router-dom";
+import FollowStatusContext from "../../context/FollowStatusContext.js";
+import CloseFriends from "./closefriends";
 import { Link } from "react-router-dom";
 
 function MainCard() {
@@ -220,60 +222,58 @@ function MainCard() {
     }
   };
 
-  // 팔로우 하기
   const On_Follow = async (werid, wername, index) => {
     let ingid = ""; // 팔로잉 하는 사람의 _id;
     let whofollow = ""; // 팔로잉 하는 사람의 username
-
-    setFollowStatus((prevState) => ({
-      ...prevState,
-      [wername]: true, // 팔로우 상태를 true로 변경
-    }));
 
     follow_change((prevState) =>
       prevState.map((item, idx) => (idx === index ? true : item))
     );
 
-    await axios.get(`/api/auth/check`).then((response) => {
-      ingid = response.data._id;
-      whofollow = response.data.username;
-      let body = {
-        whofollowing: wername,
-        whofollower: whofollow,
-      };
+    const response = await axios.get(`/api/auth/check`);
+    ingid = response.data._id;
+    whofollow = response.data.username;
+    let body = {
+      whofollowing: wername,
+      whofollower: whofollow,
+    };
 
-      axios
-        .patch(`api/auth/following/${ingid}/${werid}`, body)
-        .then((res) => {});
-    });
+    await axios.patch(`api/auth/following/${ingid}/${werid}`, body);
+
+    if (wername !== whofollow) {
+      // 로그인한 사용자와 게시글의 작성자가 같지 않을 때만 새로고침 없이 노출
+      setFollowStatus((prevState) => ({
+        ...prevState,
+        [wername]: true, // 팔로우 상태를 true로 변경
+      }));
+    }
   };
 
-  // 팔로우 취소
   const Off_Follow = async (werid, wername, index) => {
     let ingid = ""; // 팔로잉 하는 사람의 _id;
     let whounfollow = ""; // 팔로잉 하는 사람의 username
-
-    setFollowStatus((prevState) => ({
-      ...prevState,
-      [wername]: false, // 팔로우 상태를 false로 변경
-    }));
 
     follow_change((prevState) =>
       prevState.map((item, idx) => (idx === index ? false : item))
     );
 
-    await axios.get(`/api/auth/check`).then((response) => {
-      ingid = response.data._id;
-      whounfollow = response.data.username;
-      let body = {
-        whounfollowing: wername,
-        whounfollower: whounfollow,
-      };
+    const response = await axios.get(`/api/auth/check`);
+    ingid = response.data._id;
+    whounfollow = response.data.username;
+    let body = {
+      whounfollowing: wername,
+      whounfollower: whounfollow,
+    };
 
-      axios
-        .patch(`api/auth/unfollowing/${ingid}/${werid}`, body)
-        .then((res) => {});
-    });
+    await axios.patch(`api/auth/unfollowing/${ingid}/${werid}`, body);
+
+    if (wername !== whounfollow) {
+      // 로그인한 사용자와 게시글의 작성자가 같지 않을 때만 새로고침 없이 노출
+      setFollowStatus((prevState) => ({
+        ...prevState,
+        [wername]: false, // 팔로우 상태를 false로 변경
+      }));
+    }
   };
 
   // 댓글 게시
@@ -315,7 +315,7 @@ function MainCard() {
   }
 
   return (
-    <>
+    <FollowStatusContext.Provider value={followStatus}>
       {
         // Contents 배열에 담긴 갯수 기준으로 반복문 돌려서 card retrun해주고 i로 매개변수 따로 만들어줘서
         // 데이터 바인딩 할 곳에 배열 [i]로 뿌려줘야함
@@ -500,7 +500,9 @@ function MainCard() {
       {comment === true ? (
         <Modal_Main_Comments closecomment={closecomment} />
       ) : null}
-    </>
+
+      <CloseFriends />
+    </FollowStatusContext.Provider>
   );
 }
 export default withRouter(MainCard);
