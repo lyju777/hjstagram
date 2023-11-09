@@ -79,8 +79,8 @@ function CloseFriends() {
           {F4F.map((a, i) => {
             return (
               <div className="closefriends">
-                <div className="main_profileImage_box main_cardprofileImage_box">
-                  <img className="main_profileImage" src={Profile[i]} />
+                <div className="each_other_image_box main_cardprofileImage_box">
+                  <img alt="" className="each_other_profile" src={Profile[i]} />
                 </div>
                 <Link
                   to={{ pathname: `/namprofiles/${F4FID[i]}` }}

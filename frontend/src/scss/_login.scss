@@ -2,7 +2,8 @@
 
 html { overflow-y:scroll; }
 
-@import url('https://fonts.googleapis.com/css?family=Fira+Sans:400,500,600,700,800');
+// @import url('https://fonts.googleapis.com/css?family=Fira+Sans:400,500,600,700,800');
+@import url('https://fonts.cdnfonts.com/css/instagram-sans-2');
 
 $link-color: #4395ff;
 $link-font-color:#7f7d7d;
@@ -15,12 +16,12 @@ body {
   min-height: 100vh;
   display: flex;
   font-weight: 400;
-  font-family: 'Fira Sans', sans-serif;
+  font-family: 'Instagram Sans', sans-serif;
 }
 
 h1,h2,h3,h4,h5,h6,label,span {
   font-weight: 500;
-  font-family: 'Fira Sans', sans-serif;
+  font-family: 'Instagram Sans', sans-serif;
 }
 
 body, html, .App, #root, .auth-wrapper {
