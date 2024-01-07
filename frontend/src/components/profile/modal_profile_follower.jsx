@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import axios from "axios";
+import requestAxios from '../../api/requestAxios';
 
 
 function Modal_Profile_Follow(props){
@@ -13,7 +13,7 @@ const myfollower = [];
 
 useEffect(() => {
 
-  axios.get(`/api/auth/check`)
+  requestAxios.get(`/api/auth/check`)
   .then(response => {
     setfollowerPeople(response.data.followerPeople);
     const follower = response.data.followerPeople;
@@ -21,7 +21,7 @@ useEffect(() => {
     for(let i = 0; i < follower.length; i++){
         console.log(follower[i]);
 
-        axios.patch(`api/auth/getF4Fprofile`, {username:follower[i]})
+        requestAxios.patch(`api/auth/getF4Fprofile`, {username:follower[i]})
         .then(response => {
           console.log(response);
           myfollower[i] = response.data.profileurl;

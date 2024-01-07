@@ -1,4 +1,4 @@
-import axios from "axios";
+import requestAxios from '../../api/requestAxios';
 import React, { useState } from "react";
 import { Link, withRouter } from "react-router-dom";
 
@@ -50,11 +50,11 @@ function Profile_Change(props) {
     };
     let id = "";
 
-    axios.get("/api/auth/check").then((response) => {
+    requestAxios.get("/api/auth/check").then((response) => {
       console.log(response);
       id = response.data._id;
 
-      axios.post(`/api/profilePic/${id}`, formData, config).then((response) => {
+      requestAxios.post(`/api/profilePic/${id}`, formData, config).then((response) => {
         console.log("profilePic의 response↓");
         console.log(formData);
         const profilepicurl = response.data.path.substr(18);
@@ -65,10 +65,10 @@ function Profile_Change(props) {
         };
 
         //patch api 메소드
-        axios.patch(`/api/auth/profileChange`, body).then((response) => {
+        requestAxios.patch(`/api/auth/profileChange`, body).then((response) => {
           console.log(response);
 
-          axios.patch(`api/posts/editprofileurl`, body).then((response) => {
+          requestAxios.patch(`api/posts/editprofileurl`, body).then((response) => {
             console.log(response);
             props.history.push("/profiles"); // 여기 다시 프로필 페이지로 이동
           });

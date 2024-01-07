@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import { Link, withRouter } from "react-router-dom";
 import {useDispatch} from 'react-redux';
 import {registerUser}  from '../../_actions/user_action';
-import axios from "axios";
+import requestAxios from '../../api/requestAxios';
 
 function SignUp(props){
 
@@ -40,7 +40,7 @@ function SignUp(props){
     // 이메일 유효성 검사
     const checkEmail = (e) => {
 
-        axios.post('/api/auth/emailCheck', {email:Email})
+        requestAxios.post('/api/auth/emailCheck', {email:Email})
         .then(response => {
             if(response.data.email){
                 setEmailMsg('이미 존재하는 이메일입니다.')
@@ -62,7 +62,7 @@ function SignUp(props){
 
     // 아이디 유효성 검사
     const checkUserName = (e) => {
-        axios.post('/api/auth/idCheck', {username:Username})
+        requestAxios.post('/api/auth/idCheck', {username:Username})
         .then(response => {           
             if(response.data.username){
                 console.log("1=" + response.data.username);

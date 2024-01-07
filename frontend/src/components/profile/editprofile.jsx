@@ -1,7 +1,7 @@
 import React,{useState, useEffect} from "react";
 import { Link, withRouter } from "react-router-dom";
 import Modal_EditProfile from "./modal_editprofile";
-import axios from "axios";
+import requestAxios from '../../api/requestAxios';
 
 function EditProfile(props){
 
@@ -35,7 +35,7 @@ function EditProfile(props){
 
        // 아이디 유효성 검사
        const checkUserName = (e) => {
-        axios.post('/api/auth/idCheck', {username:Username})
+        requestAxios.post('/api/auth/idCheck', {username:Username})
         .then(response => {           
             if(response.data.username){
                 console.log("1=" + response.data.username);
@@ -67,17 +67,17 @@ function EditProfile(props){
     // DB값은 수정됬고 /main으로 넘어가는거도 에러없이 성공했는데 바인딩이 실패했다 무엇일까??
     const onClickHandler = () => {  // 특정 값 필요할시 Handler에 엑시오스 2개 묶어서 사용해야함 
   
-      axios.get('/api/auth/check')
+        requestAxios.get('/api/auth/check')
       .then(response => {
 
         id = response.data._id
 
-        axios.patch(`api/posts/editusername`, {username:Username})
+        requestAxios.patch(`api/posts/editusername`, {username:Username})
         .then(response => {
             console.log("이름 수정 성공!")
         })
 
-        axios.patch(`/api/auth/edit/${id}`, body)
+        requestAxios.patch(`/api/auth/edit/${id}`, body)
         .then(response => {
           console.log(response.data);
           props.history.push("/profile")
@@ -94,7 +94,7 @@ function EditProfile(props){
 
 
     useEffect(() => {
-        axios.get('/api/auth/check')
+        requestAxios.get('/api/auth/check')
         // 데이터 두개 여러개 가져올때는 , 써서 연속으로 써준다
         .then(response =>  {
          setUsername(response.data.username)

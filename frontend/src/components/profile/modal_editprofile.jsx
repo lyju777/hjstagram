@@ -1,6 +1,6 @@
 import React, {useEffect} from "react";
 import { withRouter } from "react-router-dom";
-import axios from "axios";
+import requestAxios from '../../api/requestAxios';
 
 
 function Modal_EditProfile(props){
@@ -9,12 +9,12 @@ function Modal_EditProfile(props){
 
   const onClickHandler = () => {  // 특정 값 필요할시 Handler에 엑시오스 2개 묶어서 사용해야함 
 
-    axios.get('/api/auth/check')
+    requestAxios.get('/api/auth/check')
     .then(response => {
 
       id = response.data._id
 
-      axios.delete(`/api/auth/delete/${id}`)
+      requestAxios.delete(`/api/auth/delete/${id}`)
       .then(response => {
 
       if(response){

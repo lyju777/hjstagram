@@ -3,7 +3,7 @@ import Modal_profile_gear from "./modal_profile_gear";
 import Modal_Profile_Change from "./modal_profile_change";
 import Modal_Profile_Follow from "./modal_profile_follow";
 import Modal_Profile_Follower from "./modal_profile_follower";
-import axios from "axios";
+import requestAxios from '../../api/requestAxios';
 
 
 function Profile(){
@@ -45,7 +45,7 @@ function Profile(){
 
 
     useEffect(() => {
-        axios.get('/api/auth/check')
+        requestAxios.get('/api/auth/check')
         .then(response =>  {
             setDataUsername(response.data.username) // 사용자이름
             setDataName(response.data.name) // 이름

@@ -1,11 +1,11 @@
 import React from "react";
 import { Link, withRouter } from "react-router-dom";
-import axios from "axios";
+import requestAxios from '../../api/requestAxios';
 
 function Modal_main_profile(props){
 
     const onClickHandler = () => {
-      axios.post('/api/auth/logout')
+      requestAxios.post('/api/auth/logout')
       .then(response => {
         if(response){
           props.history.push("/login")

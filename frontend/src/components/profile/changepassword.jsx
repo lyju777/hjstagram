@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from "react";
 import { Link, withRouter } from "react-router-dom";
-import axios from "axios";
+import requestAxios from '../../api/requestAxios';
 import {useDispatch} from 'react-redux';
 
 function ChangePassword(props){
@@ -45,12 +45,12 @@ function ChangePassword(props){
     
     // 이전 비밀번호 DB값 비교
     const OldcheckPassword = (e) => {
-        axios.get('/api/auth/check')
+        requestAxios.get('/api/auth/check')
         .then(response => {
 
                 id = response.data._id
 
-                axios.post(`api/auth/expwCheck/${id}`, {password:OldPassword})
+                requestAxios.post(`api/auth/expwCheck/${id}`, {password:OldPassword})
                 .then(response => {
                     
                 if(response.data.expw === "틀림"){
@@ -64,7 +64,7 @@ function ChangePassword(props){
 
 
     useEffect(() => {
-    axios.get('/api/auth/check')
+        requestAxios.get('/api/auth/check')
     .then(response =>  {
 
         setProfile(response.data.profileurl)
@@ -78,7 +78,7 @@ function ChangePassword(props){
         //비밀번호 유효성 검사
         const checkPassword = (e) => {
 
-            axios.get('/api/auth/check')     // 입력한 비밀번호와 내 기존 비밀번호가 일치한지비교?
+            requestAxios.get('/api/auth/check')     // 입력한 비밀번호와 내 기존 비밀번호가 일치한지비교?
             .then(response => {
                 console.log(response.data);
             })
@@ -116,12 +116,12 @@ function ChangePassword(props){
   
   const onClickHandler = () => {  // 특정 값 필요할시 Handler에 엑시오스 2개 묶어서 사용해야함 
 
-    axios.get('/api/auth/check')
+    requestAxios.get('/api/auth/check')
     .then(response => {
 
       id = response.data._id
 
-      axios.patch(`/api/auth/changePassword/${id}`, body)
+      requestAxios.patch(`/api/auth/changePassword/${id}`, body)
       .then(response => {
 
       if(response){
@@ -139,7 +139,7 @@ function ChangePassword(props){
 
 
     useEffect(() => {
-        axios.get('/api/auth/check')
+        requestAxios.get('/api/auth/check')
         .then(response =>  (setDataUsername(response.data.username))
       
     )}, []);

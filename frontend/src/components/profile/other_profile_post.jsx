@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from "react";
 import Modal_Delete_Posts from "./modal_delete_posts";
-import axios from "axios";
+import requestAxios from '../../api/requestAxios';
 import { withRouter, useHistory } from "react-router-dom";
 
 
@@ -22,11 +22,11 @@ function Other_Profile_Post(match){
     const{id} = match;
 
     useEffect(() => {
-        axios.get(`/api/auth/${id}`)
+        requestAxios.get(`/api/auth/${id}`)
         .then(response => {
             console.log("로그인한 사람 username : "+response.data.username);
             const logusername = response.data.username;
-            axios.get(`/api/posts?username=${logusername}`)
+            requestAxios.get(`/api/posts?username=${logusername}`)
             .then(response => {
                 console.log(response);
               
@@ -43,11 +43,11 @@ function Other_Profile_Post(match){
 
 
     const deletePost = (ID) => {
-        axios.delete(`/api/posts/${ID}`)
+        requestAxios.delete(`/api/posts/${ID}`)
         .then(response => {
             console.log("삭제됨!");
 
-            axios.patch('/api/auth/removePost')
+            requestAxios.patch('/api/auth/removePost')
             .then(res => {
                 console.log("게시물 -1");
                 window.location.reload();

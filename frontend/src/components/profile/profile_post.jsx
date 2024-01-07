@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Modal_Delete_Posts from "./modal_delete_posts";
-import axios from "axios";
+import requestAxios from '../../api/requestAxios';
 import { withRouter, useHistory } from "react-router-dom";
 
 function Profile_Post(props) {
@@ -16,10 +16,10 @@ function Profile_Post(props) {
   };
 
   useEffect(() => {
-    axios.get("/api/auth/check").then((response) => {
+    requestAxios.get("/api/auth/check").then((response) => {
       console.log("로그인한 사람 username : " + response.data.username);
       const logusername = response.data.username;
-      axios.get(`/api/posts?username=${logusername}`).then((response) => {
+      requestAxios.get(`/api/posts?username=${logusername}`).then((response) => {
         console.log(response);
 
         for (let i = 0; i < response.data.length; i++) {
@@ -33,16 +33,16 @@ function Profile_Post(props) {
   }, []);
 
   const deletePost = (ID) => {
-    axios.delete(`/api/posts/${ID}`).then((response) => {
+    requestAxios.delete(`/api/posts/${ID}`).then((response) => {
       console.log("삭제됨!");
 
-      axios.patch("/api/auth/removePost").then((res) => {
+      requestAxios.patch("/api/auth/removePost").then((res) => {
         console.log("게시물 -1");
 
         // 게시물 삭제 후에 게시물 목록을 다시 불러옵니다.
-        axios.get("/api/auth/check").then((response) => {
+        requestAxios.get("/api/auth/check").then((response) => {
           const logusername = response.data.username;
-          axios.get(`/api/posts?username=${logusername}`).then((response) => {
+          requestAxios.get(`/api/posts?username=${logusername}`).then((response) => {
             const updatedPosts = response.data;
             setPosts(updatedPosts);
           });

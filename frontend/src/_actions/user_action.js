@@ -1,4 +1,4 @@
-import axios from "axios";
+import requestAxios from '../api/requestAxios';
 import {
     LOGIN_USER,
     REGISTER_USER,
@@ -8,7 +8,7 @@ import {
 
 export function LoginUser(dataToSubmit) {   // body를 dataToSubmit파라미터를 통해 전달받음
 
-const request = axios.post('api/auth/login', dataToSubmit)  // 서버에서 받은 data를 request에 저장
+const request = requestAxios.post('api/auth/login', dataToSubmit)  // 서버에서 받은 data를 request에 저장
     .then(response => response.data)
 
     // return을 시켜서 reducer 로 보냄 
@@ -20,7 +20,7 @@ const request = axios.post('api/auth/login', dataToSubmit)  // 서버에서 받�
 
 export function registerUser(dataToSubmit) {
 
-    const request = axios.post('api/auth/register', dataToSubmit)
+    const request = requestAxios.post('api/auth/register', dataToSubmit)
         .then(response => response.data)
     
         
@@ -32,7 +32,7 @@ export function registerUser(dataToSubmit) {
 
     export function CheckUser(dataToSubmit) {
 
-        const request = axios.get('api/auth/check', dataToSubmit)
+        const request = requestAxios.get('api/auth/check', dataToSubmit)
             .then(response => response.data)
         
             
@@ -44,7 +44,7 @@ export function registerUser(dataToSubmit) {
 
     export function SendEmail(dataToSubmit) {
 
-        const request = axios.post('/api/auth/sendemail', dataToSubmit)
+        const request = requestAxios.post('/api/auth/sendemail', dataToSubmit)
             .then(response => response.data)
         
             

@@ -1,4 +1,4 @@
-import axios from "axios";
+import requestAxios from '../../api/requestAxios';
 import React, { useState } from "react";
 import { Link, withRouter } from "react-router-dom";
 import { Carousel } from "react-bootstrap";
@@ -62,16 +62,16 @@ function Main_Edit_File(props) {
     };
     let id = "";
     const fileurls = [];
-    axios.post("/api/posts", body).then((response) => {
+    requestAxios.post("/api/posts", body).then((response) => {
       console.log(response);
       id = response.data._id;
 
-      axios.post(`/api/files/${id}`, formData, config).then((response) => {
+      requestAxios.post(`/api/files/${id}`, formData, config).then((response) => {
         console.log("file의 response↓");
         console.log(formData);
 
-        axios
-          .get(`api/files?id=${id}`) // post id id배열에 담길때마다 GET 액시오스 호출
+        
+        requestAxios.get(`api/files?id=${id}`) // post id id배열에 담길때마다 GET 액시오스 호출
           .then((response) => {
             console.log("id : " + id);
             console.log("포스트 하나당 파일 정보");
@@ -86,13 +86,13 @@ function Main_Edit_File(props) {
               fileurl: fileurls,
             };
             //patch api 메소드
-            axios.patch(`api/posts/${id}`, body).then((response) => {
+            requestAxios.patch(`api/posts/${id}`, body).then((response) => {
               console.log(response);
               props.history.push("/main");
             });
           });
       });
-      axios.patch(`/api/auth/addPost`).then((response) => {
+      requestAxios.patch(`/api/auth/addPost`).then((response) => {
         console.log("게시글추가");
       });
     });

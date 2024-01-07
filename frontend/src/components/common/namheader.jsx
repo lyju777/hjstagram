@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Container, Nav, Form, FormControl } from 'react-bootstrap';
 import Modal_main_profile from "../main/modal_main_profile";
 import Modal_main_heart from "../main/modal_main_herat";
-import axios from "axios";
+import requestAxios from '../../api/requestAxios';
 
 
 function NamHeader() {
@@ -23,7 +23,7 @@ function NamHeader() {
 
 
         useEffect(() => {
-        axios.get('/api/auth/check')
+          requestAxios.get('/api/auth/check')
         .then(response =>  {
 
             setProfile(response.data.profileurl)

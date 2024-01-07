@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import FollowStatusContext from "../../context/FollowStatusContext.js";
-import axios from "axios";
+import requestAxios from '../../api/requestAxios';
 import { Link } from "react-router-dom";
 
 function CloseFriends() {
@@ -20,7 +20,7 @@ function CloseFriends() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("/api/auth/check", {
+        const response = await requestAxios.get("/api/auth/check", {
           headers: { "cache-control": "no-cache" },
         });
         setDataUsername(response.data.username);
@@ -34,7 +34,7 @@ function CloseFriends() {
         );
         setF4F([...FollowingEachOther]);
         const requests = FollowingEachOther.map((user) =>
-          axios.patch("/api/auth/getF4Fprofile", { username: user })
+        requestAxios.patch("/api/auth/getF4Fprofile", { username: user })
         );
         const responses = await Promise.all(requests);
         responses.forEach((response, i) => {

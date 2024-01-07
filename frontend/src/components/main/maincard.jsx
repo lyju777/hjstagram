@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Card, ListGroup, ListGroupItem } from "react-bootstrap";
 import Modal_main_point from "./modal_main_point";
 import Modal_Main_Comments from "./modal_main_comments";
-import axios from "axios";
+import requestAxios from '../../api/requestAxios';
 import { Carousel } from "react-bootstrap";
 import { withRouter, useHistory } from "react-router-dom";
 import FollowStatusContext from "../../context/FollowStatusContext.js";
@@ -93,7 +93,7 @@ function MainCard() {
   let id = [];
 
   useEffect(() => {
-    axios.get("/api/posts").then((response) => {
+    requestAxios.get("/api/posts").then((response) => {
       const newFollowStatus = { ...followStatus };
       for (let i = 0; i < response.data.length; i += 1) {
         writer[i] = response.data[i].user.username; // 글쓴이들 (팔로잉 당할것들)
@@ -127,7 +127,7 @@ function MainCard() {
         console.log(writer);
 
         // 내가 좋아요 누른 게시물
-        axios.get("api/auth/check").then((response) => {
+        requestAxios.get("api/auth/check").then((response) => {
           console.log(response);
 
           const name = response.data.username;
@@ -198,8 +198,8 @@ function MainCard() {
     );
 
     try {
-      await axios.patch(`/api/posts/${ID}/likeby`);
-      await axios.patch(`/api/posts/${ID}/addlike`);
+      await requestAxios.patch(`/api/posts/${ID}/likeby`);
+      await requestAxios.patch(`/api/posts/${ID}/addlike`);
     } catch (error) {
       console.error(error);
     }
@@ -215,8 +215,8 @@ function MainCard() {
     );
 
     try {
-      await axios.patch(`/api/posts/${ID}/cancleLikeby`);
-      await axios.patch(`/api/posts/${ID}/canclelike`);
+      await requestAxios.patch(`/api/posts/${ID}/cancleLikeby`);
+      await requestAxios.patch(`/api/posts/${ID}/canclelike`);
     } catch (error) {
       console.error(error);
     }
@@ -230,7 +230,7 @@ function MainCard() {
       prevState.map((item, idx) => (idx === index ? true : item))
     );
 
-    const response = await axios.get(`/api/auth/check`);
+    const response = await requestAxios.get(`/api/auth/check`);
     ingid = response.data._id;
     whofollow = response.data.username;
     let body = {
@@ -238,7 +238,7 @@ function MainCard() {
       whofollower: whofollow,
     };
 
-    await axios.patch(`api/auth/following/${ingid}/${werid}`, body);
+    await requestAxios.patch(`api/auth/following/${ingid}/${werid}`, body);
 
     if (wername !== whofollow) {
       // 로그인한 사용자와 게시글의 작성자가 같지 않을 때만 새로고침 없이 노출
@@ -257,7 +257,7 @@ function MainCard() {
       prevState.map((item, idx) => (idx === index ? false : item))
     );
 
-    const response = await axios.get(`/api/auth/check`);
+    const response = await requestAxios.get(`/api/auth/check`);
     ingid = response.data._id;
     whounfollow = response.data.username;
     let body = {
@@ -265,7 +265,7 @@ function MainCard() {
       whounfollower: whounfollow,
     };
 
-    await axios.patch(`api/auth/unfollowing/${ingid}/${werid}`, body);
+    await requestAxios.patch(`api/auth/unfollowing/${ingid}/${werid}`, body);
 
     if (wername !== whounfollow) {
       // 로그인한 사용자와 게시글의 작성자가 같지 않을 때만 새로고침 없이 노출
@@ -278,11 +278,10 @@ function MainCard() {
 
   // 댓글 게시
   async function onSubmitHandler(index) {
-    await axios
-      .patch(`api/posts/${ID}/givecomment`, { content: comments })
+    await requestAxios.patch(`api/posts/${ID}/givecomment`, { content: comments })
       .then((response) => {
         // 댓글 게시 후에 댓글 목록을 다시 불러옵니다.
-        axios.get(`/api/posts/${ID}`).then((response) => {
+        requestAxios.get(`/api/posts/${ID}`).then((response) => {
           const updatedComments = response.data.comment;
           setCommentOjArr((prev) =>
             prev.map((item, idx) => (idx === index ? updatedComments : item))
@@ -295,12 +294,11 @@ function MainCard() {
 
   // 댓글 삭제
   async function deletecmt(cid, ID, index) {
-    await axios
-      .patch(`api/posts/${ID}/${cid}/deleteComment`)
+    await requestAxios.patch(`api/posts/${ID}/${cid}/deleteComment`)
       .then((response) => {
         console.log("댓글삭제 성공!!");
         // 댓글 삭제 후에 댓글 목록을 다시 불러옵니다.
-        axios.get(`/api/posts/${ID}`).then((response) => {
+        requestAxios.get(`/api/posts/${ID}`).then((response) => {
           const updatedComments = response.data.comment;
           setCommentOjArr((prev) =>
             prev.map((item, idx) => (idx === index ? updatedComments : item))

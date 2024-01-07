@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import { Link, withRouter } from "react-router-dom";
 import {useDispatch} from 'react-redux';
 import {LoginUser}  from '../../_actions/user_action';
-import axios from "axios";
+import requestAxios from '../../api/requestAxios';
 
     function Login(props){
 
@@ -30,7 +30,7 @@ import axios from "axios";
 
             
         // 아이디 유효성 검사
-        axios.post('/api/auth/idAndPassWordCheck', {username:Username, password:Password})
+        requestAxios.post('/api/auth/idAndPassWordCheck', {username:Username, password:Password})
         .then(response => {           
             if(response.data.person === "없다고"){
                 setUserNameMsg('사용자이름이 존재하지 않습니다.')
