@@ -13,6 +13,7 @@
     "@koa/multer": "^3.0.0",
     "bcrypt": "^5.0.1",
     "concurrently": "^6.4.0",
+    "dotenv": "^16.3.1",
     "esm": "^3.2.25",
     "joi": "^17.4.2",
     "jsonwebtoken": "^8.5.1",

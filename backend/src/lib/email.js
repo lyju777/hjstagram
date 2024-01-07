@@ -1,15 +1,18 @@
 import nodemailer from "nodemailer";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 export const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
-    user: process.env.REACT_APP_GMAIL_USER,
-    pass: process.env.REACT_APP_GMAIL_PASS,
+    user: process.env.GMAIL_USER,
+    pass: process.env.GMAIL_PASS,
   },
 });
 
 export const getPasswordResetURL = (user, token) =>
-  `http://localhost:3000/update-password/${user._id}/${token}`;
+  `${process.env.URL}/update-password/${user._id}/${token}`;
 
 export const resetPasswordTemplate = (user, url) => {
   const from = "hjstagram";

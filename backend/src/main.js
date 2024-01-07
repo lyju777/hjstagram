@@ -6,10 +6,13 @@ import api from "./api";
 import jwtMiddleware from "./lib/jwtMiddleware";
 import serve from "koa-static";
 import path from "path";
+import dotenv from "dotenv";
 
 const port = 4000;
 const app = new Koa();
 const router = new Router();
+
+dotenv.config();
 
 router.use("/api", api.routes());
 
@@ -22,7 +25,7 @@ app.use(serve(path.join(__dirname, "../../frontend/public/profile")));
 
 //MongoDB 연결
 mongoose
-  .connect("mongodb://localhost:27017/hjstagram", { useNewUrlParser: true })
+  .connect(process.env.DB_URL, { useNewUrlParser: true })
   .then(() => {
     console.log("Connected to MongoDB");
   })
