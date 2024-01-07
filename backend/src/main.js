@@ -14,7 +14,10 @@ const port = 4000;
 const app = new Koa();
 const router = new Router();
 
-app.use(cors({ origin: true, credentials: true }));
+// app.use(cors({ origin: true, credentials: true }));
+//https://web-hjstagram-13d1yv2clqvx92fu.sel5.cloudtype.app
+
+app.use(cors({origin: process.env.URL, credentials: true}))
 
 dotenv.config();
 
