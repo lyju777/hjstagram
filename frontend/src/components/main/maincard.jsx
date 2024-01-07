@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Card, ListGroup, ListGroupItem } from "react-bootstrap";
 import Modal_main_point from "./modal_main_point";
 import Modal_Main_Comments from "./modal_main_comments";
-import requestAxios from '../../api/requestAxios';
+import requestAxios from "../../api/requestAxios";
 import { Carousel } from "react-bootstrap";
 import { withRouter, useHistory } from "react-router-dom";
 import FollowStatusContext from "../../context/FollowStatusContext.js";
@@ -29,6 +29,9 @@ function MainCard() {
   let [zzim, zzim_change] = useState(false);
 
   let [comment, comment_change] = useState(false);
+
+  // 서버에 보내고자 하는 값들을 state에서 가지고 있는 것
+  let [commentsList, setCommentsList] = useState([]);
 
   // 내 댓글만 삭제
   let [IsMyComment, setIsMyComment] = useState([]);
@@ -110,6 +113,10 @@ function MainCard() {
         likePost[i] = false;
 
         commentOj[i] = response.data[i].comment;
+
+        // commentsList 배열에 각 게시물의 댓글 상태 배열 추가
+        commentsList[i] = ""; // 초기 값은 빈 문자열로 설정
+        setCommentsList([...commentsList]);
 
         console.log(commentOj);
 
@@ -278,7 +285,8 @@ function MainCard() {
 
   // 댓글 게시
   async function onSubmitHandler(index) {
-    await requestAxios.patch(`api/posts/${ID}/givecomment`, { content: comments })
+    await requestAxios
+      .patch(`api/posts/${ID}/givecomment`, { content: commentsList[index] })
       .then((response) => {
         // 댓글 게시 후에 댓글 목록을 다시 불러옵니다.
         requestAxios.get(`/api/posts/${ID}`).then((response) => {
@@ -287,14 +295,16 @@ function MainCard() {
             prev.map((item, idx) => (idx === index ? updatedComments : item))
           );
         });
-        // 댓글 게시 후에 comments 상태 초기화
-        setcomments("");
+        // 댓글 게시 후에 commentsList 상태 초기화
+        commentsList[index] = "";
+        setCommentsList([...commentsList]);
       });
   }
 
   // 댓글 삭제
   async function deletecmt(cid, ID, index) {
-    await requestAxios.patch(`api/posts/${ID}/${cid}/deleteComment`)
+    await requestAxios
+      .patch(`api/posts/${ID}/${cid}/deleteComment`)
       .then((response) => {
         console.log("댓글삭제 성공!!");
         // 댓글 삭제 후에 댓글 목록을 다시 불러옵니다.
@@ -466,7 +476,7 @@ function MainCard() {
                     <img alt="" className="main_smile" src="img/smile.png" />
 
                     <input
-                      value={comments}
+                      value={commentsList[i]}
                       type="text"
                       className="main_card_textarea"
                       name="w3review"
@@ -474,11 +484,15 @@ function MainCard() {
                       rows="1"
                       cols="80"
                       placeholder="댓글달기..."
-                      onChange={onCommentsHandler}
+                      onChange={(e) => {
+                        // commentsList의 해당 인덱스에 댓글 입력값 저장
+                        commentsList[i] = e.target.value;
+                        setCommentsList([...commentsList]);
+                      }}
                     ></input>
 
                     <button
-                      disabled={comments.length === 0}
+                      disabled={commentsList[i].length === 0}
                       className="main_card_textarea_button"
                     >
                       게시
