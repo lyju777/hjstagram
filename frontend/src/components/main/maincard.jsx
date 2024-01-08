@@ -7,7 +7,6 @@ import { Carousel } from "react-bootstrap";
 import { withRouter, useHistory } from "react-router-dom";
 import FollowStatusContext from "../../context/FollowStatusContext.js";
 import CloseFriends from "./closefriends";
-import { Link } from "react-router-dom";
 
 function MainCard() {
   const history = useHistory();
@@ -30,13 +29,13 @@ function MainCard() {
 
   let [comment, comment_change] = useState(false);
 
+  // 댓글
+  let [commentsList, setCommentsList] = useState([]);
+
   // 내 댓글만 삭제
   let [IsMyComment, setIsMyComment] = useState([]);
 
   const [WhoLogin, setWhoLogin] = useState("");
-
-  // 서버에 보내고자 하는 값들을 state에서 가지고 있는것
-  const [comments, setcomments] = useState("");
 
   // ID값 담을  state
   const [ID, setID] = useState("");
@@ -51,16 +50,8 @@ function MainCard() {
     console.log(ID);
   };
 
-  const onCommentsHandler = (event) => {
-    setcomments(event.currentTarget.value);
-  };
-
   const closeModal = () => {
     modal_change(false);
-  };
-
-  const closezzim = () => {
-    zzim_change(!zzim);
   };
 
   const closecomment = () => {
@@ -82,7 +73,6 @@ function MainCard() {
   const likePost = []; // 각 게시물의 좋아요 여부
 
   const commentOj = [];
-  const commentWho = [];
 
   const writer = []; // 게시글 쓴사람
   const FollowPost = []; //팔로우 여부
@@ -110,6 +100,10 @@ function MainCard() {
         likePost[i] = false;
 
         commentOj[i] = response.data[i].comment;
+
+        // commentsList 배열에 각 게시물의 댓글 상태 배열 추가
+        commentsList[i] = ""; // 초기 값은 빈 문자열로 설정
+        setCommentsList([...commentsList]);
 
         console.log(commentOj);
 
@@ -278,8 +272,7 @@ function MainCard() {
 
   // 댓글 게시
   async function onSubmitHandler(index) {
-    await axios
-      .patch(`api/posts/${ID}/givecomment`, { content: comments })
+    await axios.patch(`api/posts/${ID}/givecomment`, { content: commentsList[index] })
       .then((response) => {
         // 댓글 게시 후에 댓글 목록을 다시 불러옵니다.
         axios.get(`/api/posts/${ID}`).then((response) => {
@@ -288,15 +281,15 @@ function MainCard() {
             prev.map((item, idx) => (idx === index ? updatedComments : item))
           );
         });
-        // 댓글 게시 후에 comments 상태 초기화
-        setcomments("");
+        // 댓글 게시 후에 commentsList 상태 초기화
+        commentsList[index] = "";
+        setCommentsList([...commentsList]);
       });
   }
 
   // 댓글 삭제
   async function deletecmt(cid, ID, index) {
-    await axios
-      .patch(`api/posts/${ID}/${cid}/deleteComment`)
+    await axios.patch(`api/posts/${ID}/${cid}/deleteComment`)
       .then((response) => {
         console.log("댓글삭제 성공!!");
         // 댓글 삭제 후에 댓글 목록을 다시 불러옵니다.
@@ -468,7 +461,7 @@ function MainCard() {
                     <img alt="" className="main_smile" src="img/smile.png" />
 
                     <input
-                      value={comments}
+                      value={commentsList[i]}
                       type="text"
                       className="main_card_textarea"
                       name="w3review"
@@ -476,11 +469,15 @@ function MainCard() {
                       rows="1"
                       cols="80"
                       placeholder="댓글달기..."
-                      onChange={onCommentsHandler}
+                      onChange={(e) => {
+                        // commentsList의 해당 인덱스에 댓글 입력값 저장
+                        commentsList[i] = e.target.value;
+                        setCommentsList([...commentsList]);
+                      }}
                     ></input>
 
                     <button
-                      disabled={comments.length === 0}
+                      disabled={commentsList[i].length === 0}
                       className="main_card_textarea_button"
                     >
                       게시
