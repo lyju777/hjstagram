@@ -5,6 +5,7 @@
 - Node.js와 Express로 RESTful API 서버 구축
 - JWT를 사용한 사용자 인증 및 권한 부여를 처리 및 bcrypt를 통한 비밀번호 암호화 적용
 
+<br>
 
 ![1.project](./frontend/public/img/1.project.png)
 ![2.project](./frontend/public/img/2.project.png)
