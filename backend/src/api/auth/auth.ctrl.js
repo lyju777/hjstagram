@@ -1,4 +1,5 @@
 import User from '../../models/user';
+import Post from '../../models/post';
 import Joi from 'joi';
 
 
@@ -140,11 +141,43 @@ export const edit = async (ctx) => {
 
 // 삭제
 export const remove = async (ctx) => {
+
+    const {username} = ctx.state.user; // 로그인한 유저 데이터
     const { id } = ctx.params;
     try{
+
+        // 업로드 게시물 삭제 
+        await Post.deleteMany({ "user._id": id }).exec();
+
+         // 입력한 댓글 삭제
+         await Post.updateMany(
+            { "comment.whoid": id },
+            { $pull: { comment: { whoid: id } } }
+        ).exec();
+
+        // 팔로워 팔로잉 삭제 및 팔로워 팔로잉 수 -1
+        await User.updateMany(
+            { followerPeople: username },
+            { $pull: { followerPeople: username }, $inc: { followerNum: -1 } }
+        ).exec();
+
+        await User.updateMany(
+            { followingPeople: username },
+            { $pull: { followingPeople: username }, $inc: { followingNum: -1 } }
+        ).exec();
+
+        // 좋아요 삭제 및 게시물 좋아요 수 -1
+        await Post.updateMany(
+            { likeBy: username },
+            { $pull: { likeBy: username }, $inc: { like: -1 } }
+        ).exec();
+
+        // 유저 삭제
         await User.findByIdAndDelete(id).exec();
         ctx.status = 204;
     }catch(e){
+        console.log('에러발생:'+e);
+        
         ctx.throw(500,e);
     }
 }
