@@ -36,6 +36,7 @@ function Main_Edit_File(props) {
     URL.revokeObjectURL(fileImage);
     setFileImage([]);
     setFileUpload([]);
+    setText("");
   };
 
   // 텍스트 전송
@@ -132,7 +133,7 @@ function Main_Edit_File(props) {
                 삭제
               </button>
               <button
-                disabled={Text.length === 0}
+                disabled={Text.length === 0 || fileImage.length === 0}
                 type="submit"
                 className="btn btn-primary edit_file_submit"
               >

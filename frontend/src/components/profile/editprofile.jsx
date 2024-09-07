@@ -80,7 +80,7 @@ function EditProfile(props){
         requestAxios.patch(`/api/auth/edit/${id}`, body)
         .then(response => {
           console.log(response.data);
-          props.history.push("/profile")
+          props.history.push("/profiles")
         
       })
       })
@@ -155,7 +155,7 @@ function EditProfile(props){
                 onClick={onClickHandler}>제출</button> 
     
             <p className=" text-right editprofile_forgot_password" onClick={()=>{modal_change(true)}}>
-                 <Link>회원탈퇴 하시겠습니까?</Link>
+                 <p style={{ color: '#0d6eff',  cursor: 'pointer' }} >회원탈퇴 하시겠습니까?</p>
             </p>
             
         </form>

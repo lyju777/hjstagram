@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Card, ListGroup, ListGroupItem } from "react-bootstrap";
-import Modal_main_point from "./modal_main_point";
 import Modal_Main_Comments from "./modal_main_comments";
 import requestAxios from "../../api/requestAxios";
 import { Carousel } from "react-bootstrap";
 import { withRouter, useHistory } from "react-router-dom";
 import FollowStatusContext from "../../context/FollowStatusContext.js";
 import CloseFriends from "./closefriends";
-import { Link } from "react-router-dom";
 
 function MainCard() {
   const history = useHistory();
@@ -317,11 +315,6 @@ function MainCard() {
       });
   }
 
-  async function clickPoint(id) {
-    modal_change(true);
-    setNamID(id);
-  }
-
   return (
     <FollowStatusContext.Provider value={followStatus}>
       {
@@ -348,18 +341,7 @@ function MainCard() {
                       {DataUsername[i]}
                     </span>
                   </div>
-                  <div
-                    className="main_Point_div"
-                    onClick={() => {
-                      clickPoint(a.user._id);
-                    }}
-                  >
-                    <img
-                      className="main_Point"
-                      src="img/main_Point.png"
-                      alt=""
-                    />
-                  </div>
+
                 </div>
               </div>
 
@@ -504,10 +486,6 @@ function MainCard() {
           );
         })
       }
-
-      {modal === true ? (
-        <Modal_main_point closeModal={closeModal} NamID={NamID} />
-      ) : null}
 
       {comment === true ? (
         <Modal_Main_Comments closecomment={closecomment} />
