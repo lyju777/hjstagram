@@ -79,7 +79,7 @@ function Main_Edit_File(props) {
             console.log(response);
 
             for (let i = 0; i < response.data.length; i++) {
-              fileurls[i] = response.data[i].path.substr(18);
+              fileurls[i] = response.data[i].path;
             }
             console.log(fileurls); // file path 다 담아줌!
 

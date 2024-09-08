@@ -57,7 +57,7 @@ function Profile_Change(props) {
       requestAxios.post(`/api/profilePic/${id}`, formData, config).then((response) => {
         console.log("profilePic의 response↓");
         console.log(formData);
-        const profilepicurl = response.data.path.substr(18);
+        const profilepicurl = response.data.path;
         console.log("profilepicurl: " + profilepicurl);
 
         let body = {

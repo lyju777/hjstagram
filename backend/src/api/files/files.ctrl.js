@@ -1,64 +1,65 @@
 import File from "../../models/files";
 import mongoose from 'mongoose';
 
-
 // 파일 저장
 export const saveFile = async (ctx) => {
-    try{
+    try {
         const files = ctx.request.files;
-        
-        if(Array.isArray(files)){
-            
-            for(let i=0; i<files.length; i++){
-                
+
+        if (Array.isArray(files)) {
+            const savedFiles = [];
+
+            for (let i = 0; i < files.length; i++) {
                 const file = new File({
-                    originalFileName:files[i].originalname, 
-                    serverFileName: files[i].filename,
+                    originalFileName: files[i].originalname,
+                    serverFileName: files[i].key,
                     size: files[i].size,
-                    path: files[i].path,
-                    postid:ctx.state.post._id,
-                    postcontents:ctx.state.post.contents,
-                })
+                    path: `${process.env.CLOUD_FRONT_URL}/${files[i].key}`, // S3 URL
+                    postid: ctx.state.post._id,
+                    postcontents: ctx.state.post.contents,
+                });
 
                 await file.save();
-                ctx.body = file;
+                savedFiles.push(file);
             }
+
+            ctx.body = savedFiles;
         }
-    }catch(e){
-        ctx.throw(500,e);
+    } catch (e) {
+        ctx.throw(500, e);
     }
-}
+};
 
 // 파일 리스트
-export const filelist = async (ctx) =>{
+export const filelist = async (ctx) => {
     const { id } = ctx.query;
     const query = {
-        ...(id ? {'postid':id}:{}),
+        ...(id ? { 'postid': id } : {}),
     };
 
-    try{
+    try {
         const files = await File.find(query)
-        .sort({_id:-1})
-        .limit(20)
-        .lean()
-        .exec();
+            .sort({ _id: -1 })
+            .limit(20)
+            .lean()
+            .exec();
 
-        ctx.body = files.map((file)=>({
+        ctx.body = files.map((file) => ({
             ...file,
-            body:file.body,
+            body: file.body,
         }));
-    }catch(e){
-        ctx.throw(500,e);
+    } catch (e) {
+        ctx.throw(500, e);
     }
-}
+};
 
-//파일 삭제
+// 파일 삭제
 export const removeFile = async (ctx) => {
     const { id } = ctx.params;
-    try{
+    try {
         await File.findByIdAndRemove(id).exec();
         ctx.status = 204;
-    }catch(e){
-        ctx.throw(500,e);
+    } catch (e) {
+        ctx.throw(500, e);
     }
-}
+};
