@@ -42,7 +42,7 @@ export const register = async (ctx) => {
         ctx.body = user.serialize();
 
         const token = user.generateToken();
-        ctx.cookie('hjsta_token',token,{
+        ctx.cookies.set('hjsta_token',token,{
             maxAge: 1000 * 60 * 60 * 24 *7,
             httpOnly:true,
             //secure: true,
@@ -81,7 +81,7 @@ export const login = async(ctx) => {
         // 토큰 만들어줌
         const token = user.generateToken();
         //쿠키 생성
-        ctx.cookie('hjsta_token',token,{
+        ctx.cookies.set('hjsta_token',token,{
             maxAge: 1000 * 60 * 60 * 24 * 7,
             httpOnly:true, // 자바스크립트 해킹 방지!
             //secure: true, 
@@ -133,7 +133,7 @@ export const edit = async (ctx) => {
         }
         const token = user.generateToken();
         
-        ctx.cookie('hjsta_token',token,{
+        ctx.cookies.set('hjsta_token',token,{
             maxAge: 1000 * 60 * 60 * 24 * 7,
             httpOnly:true, 
             //secure: true, 
@@ -190,7 +190,7 @@ export const remove = async (ctx) => {
 
 // 로그아웃
 export const logout = async (ctx) => {
-    ctx.cookie('hjsta_token');
+    ctx.cookies.set('hjsta_token');
     ctx.status = 204;
 }
 
@@ -217,7 +217,7 @@ export const changePassword = async (ctx) => {
 
             const token = user.generateToken();
             
-            ctx.cookie('hjsta_token',token,{
+            ctx.cookies.set('hjsta_token',token,{
                 maxAge: 1000 * 60 * 60 * 24 *7,
                 httpOnly:true,
                 //secure: true, 
@@ -331,7 +331,7 @@ export const following = async (ctx) => {
         console.log("팔로워 +1");
         const token = user1.generateToken();
         
-        ctx.cookie('hjsta_token',token,{
+        ctx.cookies.set('hjsta_token',token,{
             maxAge: 1000 * 60 * 60 * 24 * 7,
             httpOnly:true,
             //secure: true, 
@@ -374,7 +374,7 @@ export const unfollowing = async (ctx) => {
     await user2.save();
     const token = user1.generateToken();
         
-        ctx.cookie('hjsta_token',token,{
+        ctx.cookies.set('hjsta_token',token,{
             maxAge: 1000 * 60 * 60 * 24 * 7,
             httpOnly:true,
             //secure: true, 
@@ -394,7 +394,7 @@ export const addPost = async (ctx) => {
         await user.save();
         const token = user.generateToken();
         
-        ctx.cookie('hjsta_token',token,{
+        ctx.cookies.set('hjsta_token',token,{
             maxAge: 1000 * 60 * 60 * 24 * 7,
             httpOnly:true,
             //secure: true,
@@ -416,7 +416,7 @@ export const removePost = async (ctx) => {
         await user.save();
         const token = user.generateToken();
         
-        ctx.cookie('hjsta_token',token,{
+        ctx.cookies.set('hjsta_token',token,{
             maxAge: 1000 * 60 * 60 * 24 * 7,
             httpOnly:true,
             //secure: true,
@@ -440,7 +440,7 @@ export const profileurl = async (ctx) => {
         await user.save();
         const token = user.generateToken();
         
-        ctx.cookie('hjsta_token',token,{
+        ctx.cookies.set('hjsta_token',token,{
             maxAge: 1000 * 60 * 60 * 24 * 7,
             httpOnly:true,
             //secure: true,

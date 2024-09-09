@@ -24,7 +24,7 @@ const jwtMiddleware = async(ctx,next)=>{
         if(decoded.exp - now < 60 * 60 *24 *3.5){ // 남은 시간이 3.5일보다 적다면
             const user = await User.findById(decoded._id);
             const token = user.generateToken();
-            ctx.cookie('hjsta_token',token,{
+            ctx.cookies.set('hjsta_token',token,{
                 maxAge: 1000 * 60 * 60 * 24 * 7,
                 httpOnly: true,
                 //sameSite: 'None',
