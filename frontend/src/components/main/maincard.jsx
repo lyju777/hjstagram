@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Card, ListGroup, ListGroupItem } from "react-bootstrap";
-import Modal_Main_Comments from "./modal_main_comments";
+import ModalMainComments from "./modal_main_comments";
 import requestAxios from "../../api/requestAxios";
 import { Carousel } from "react-bootstrap";
 import { withRouter, useHistory } from "react-router-dom";
@@ -12,8 +12,6 @@ function MainCard() {
 
   let [Profile, setProfile] = useState([]);
 
-  let [modal, modal_change] = useState(false);
-
   // 좋아요 이미지변경 state
   let [heart, heart_change] = useState([false]);
 
@@ -23,8 +21,6 @@ function MainCard() {
   //팔로우 이미지변경 state
   let [follow, follow_change] = useState([false]);
 
-  // 찜 모달 말풍선 모달
-  let [zzim, zzim_change] = useState(false);
 
   let [comment, comment_change] = useState(false);
 
@@ -36,32 +32,14 @@ function MainCard() {
 
   const [WhoLogin, setWhoLogin] = useState("");
 
-  // 서버에 보내고자 하는 값들을 state에서 가지고 있는것
-  const [comments, setcomments] = useState("");
-
   // ID값 담을  state
   const [ID, setID] = useState("");
-
-  const [NamID, setNamID] = useState("");
 
   // 팔로우 상태를 관리하는 상태 추가
   const [followStatus, setFollowStatus] = useState({});
 
   const saveID = (id) => {
     setID(id);
-    console.log(ID);
-  };
-
-  const onCommentsHandler = (event) => {
-    setcomments(event.currentTarget.value);
-  };
-
-  const closeModal = () => {
-    modal_change(false);
-  };
-
-  const closezzim = () => {
-    zzim_change(!zzim);
   };
 
   const closecomment = () => {
@@ -81,10 +59,7 @@ function MainCard() {
   const LikeBy = []; // 좋아요 리스트
   const HeartNum = []; // 좋아요 숫자
   const likePost = []; // 각 게시물의 좋아요 여부
-
   const commentOj = [];
-  const commentWho = [];
-
   const writer = []; // 게시글 쓴사람
   const FollowPost = []; //팔로우 여부
   const eachprofile = [];
@@ -116,7 +91,6 @@ function MainCard() {
         commentsList[i] = ""; // 초기 값은 빈 문자열로 설정
         setCommentsList([...commentsList]);
 
-        console.log(commentOj);
 
         HeartNum[i] = response.data[i].like;
         setHeartNum([...HeartNum]);
@@ -129,18 +103,15 @@ function MainCard() {
         setDataUsername(user);
 
         setFileImg([...file]); // file을 setFileImg하면 게시물이 하나만 나옴
-        console.log(writer);
 
         // 내가 좋아요 누른 게시물
         requestAxios.get("api/auth/check").then((response) => {
-          console.log(response);
+  
 
           const name = response.data.username;
-          console.log(name);
           setWhoLogin(name);
 
           const following = response.data.followingPeople;
-          console.log(following); //이거 왜 undefind임?
 
           for (let j = 0; j < LikeBy[i].length; j++) {
             if (name === LikeBy[i][j]) {
@@ -159,7 +130,6 @@ function MainCard() {
             }
           }
           follow_change([...FollowPost]);
-          console.log(follow);
 
           for (let j = 0; j < commentOj.length; j++) {
             for (let k = 0; k < commentOj[i].length; k++) {
@@ -172,7 +142,6 @@ function MainCard() {
             setIsMyComment([...ismycmt]);
           }
 
-          console.log(ismycmt);
         });
       }
       setFollowStatus(newFollowStatus); // 팔로우 상태를 업데이트
@@ -193,7 +162,6 @@ function MainCard() {
 
   // 좋아요 하기
   const On_Heart = async (ID, index) => {
-    console.log("아이디값: " + ID);
 
     heart_change((prevState) =>
       prevState.map((item, idx) => (idx === index ? true : item))
@@ -304,7 +272,6 @@ function MainCard() {
     await requestAxios
       .patch(`api/posts/${ID}/${cid}/deleteComment`)
       .then((response) => {
-        console.log("댓글삭제 성공!!");
         // 댓글 삭제 후에 댓글 목록을 다시 불러옵니다.
         requestAxios.get(`/api/posts/${ID}`).then((response) => {
           const updatedComments = response.data.comment;
@@ -488,7 +455,7 @@ function MainCard() {
       }
 
       {comment === true ? (
-        <Modal_Main_Comments closecomment={closecomment} />
+        <ModalMainComments closecomment={closecomment} />
       ) : null}
 
       <CloseFriends />

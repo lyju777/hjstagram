@@ -60,7 +60,7 @@ function CloseFriends() {
 
   const main_profileImage = (
     <div className="closefriends_profileImage_box main_cardprofileImage_box">
-      <img className="main_profileImage" src={userProfile} />
+      <img className="main_profileImage" src={userProfile} alt="" />
     </div>
   );
 

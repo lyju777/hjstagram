@@ -1,11 +1,8 @@
 import React, {useState, useEffect} from "react";
 import { Link, withRouter } from "react-router-dom";
 import requestAxios from '../../api/requestAxios';
-import {useDispatch} from 'react-redux';
 
 function ChangePassword(props){
-
-    const dispatch = useDispatch();
 
     let [Profile,setProfile] = useState("img/default_profile.png");
 
@@ -80,7 +77,6 @@ function ChangePassword(props){
 
             requestAxios.get('/api/auth/check')     // 입력한 비밀번호와 내 기존 비밀번호가 일치한지비교?
             .then(response => {
-                console.log(response.data);
             })
         
             //  8 ~ 15자 영문, 숫자 조합
@@ -148,7 +144,7 @@ function ChangePassword(props){
     const username = <div className="profile_username editprofile_username">{DataUsername}</div>;
 
     const main_profileImage = <div className="closefriends_profileImage_box editprofile_profileImage_box">
-    <img className="profile_profileImage" src={Profile} /></div>
+    <img className="profile_profileImage" src={Profile} alt="" /></div>
 
     return(
         <div className="auth-wrapper">

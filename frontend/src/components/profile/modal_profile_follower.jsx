@@ -19,11 +19,9 @@ useEffect(() => {
     const follower = response.data.followerPeople;
 
     for(let i = 0; i < follower.length; i++){
-        console.log(follower[i]);
 
         requestAxios.patch(`api/auth/getF4Fprofile`, {username:follower[i]})
         .then(response => {
-          console.log(response);
           myfollower[i] = response.data.profileurl;
           setProfile([...myfollower])
         })
@@ -38,7 +36,7 @@ useEffect(() => {
 
         <div className="modal_background modal_background_white">
         <div className="modal_profile_follow">
-        <img className="CloseButton" src="img/close.png" onClick={props.closeFollow}/>
+        <img className="CloseButton" src="img/close.png" alt="" onClick={props.closeFollow}/>
           <div className="modal_profile_follow_text">
 
           <p className="following_text">팔로워</p>
@@ -49,7 +47,7 @@ useEffect(() => {
               return(
                 <div className="modal_profile_follow_in">
                 <p><div className="main_profileImage_box main_profileImage_heart_box">
-                <img className="main_profileImage main_profileImage_heart" src={Profile[i]} /></div><div className="main_username main_username_heart">{a}</div></p>
+                <img className="main_profileImage main_profileImage_heart" alt="" src={Profile[i]} /></div><div className="main_username main_username_heart">{a}</div></p>
               </div>
               )
             })

@@ -1,6 +1,6 @@
 import React,{useState, useEffect} from "react";
 import { Link, withRouter } from "react-router-dom";
-import Modal_EditProfile from "./modal_editprofile";
+import ModalEditProfile from "./modal_editprofile";
 import requestAxios from '../../api/requestAxios';
 
 function EditProfile(props){
@@ -38,7 +38,6 @@ function EditProfile(props){
         requestAxios.post('/api/auth/idCheck', {username:Username})
         .then(response => {           
             if(response.data.username){
-                console.log("1=" + response.data.username);
                 setUserNameMsg('이미 존재하는 사용자이름입니다.')
             }else{
                 setUserNameMsg('') // 정규식이 맞다면 ''공백으로 처리
@@ -74,12 +73,10 @@ function EditProfile(props){
 
         requestAxios.patch(`api/posts/editusername`, {username:Username})
         .then(response => {
-            console.log("이름 수정 성공!")
         })
 
         requestAxios.patch(`/api/auth/edit/${id}`, body)
         .then(response => {
-          console.log(response.data);
           props.history.push("/profiles")
         
       })
@@ -110,7 +107,7 @@ function EditProfile(props){
     const username = <div className="profile_username editprofile_username">{TitleUsername}</div>;
 
     const main_profileImage = <div className="closefriends_profileImage_box editprofile_profileImage_box">
-    <img className="profile_profileImage" src={Profile} /></div>
+    <img className="profile_profileImage" src={Profile} alt="" /></div>
 
     return(
         <>
@@ -164,7 +161,7 @@ function EditProfile(props){
 
     {
     modal === true
-    ? <Modal_EditProfile closeModal={closeModal}/>
+    ? <ModalEditProfile closeModal={closeModal}/>
     : null
     }
     

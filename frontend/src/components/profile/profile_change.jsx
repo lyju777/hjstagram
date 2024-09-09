@@ -19,15 +19,10 @@ function Profile_Change(props) {
     const profilePic = [...fileImage];
     const nowImageUrl = URL.createObjectURL(profile);
     profilePic.push(nowImageUrl);
-    console.log(nowImageUrl);
 
     setFileImage(profilePic);
     setFileUpload(e.target.files);
   };
-
-  console.log("FileUpload");
-  console.log(FileUpload);
-  console.log(fileImage);
 
   //파일 삭제
   const deleteFileImage = () => {
@@ -51,15 +46,10 @@ function Profile_Change(props) {
     let id = "";
 
     requestAxios.get("/api/auth/check").then((response) => {
-      console.log(response);
       id = response.data._id;
 
       requestAxios.post(`/api/profilePic/${id}`, formData, config).then((response) => {
-        console.log("profilePic의 response↓");
-        console.log(formData);
         const profilepicurl = response.data.path;
-        console.log("profilepicurl: " + profilepicurl);
-
         let body = {
           profilepicurl: profilepicurl,
         };
@@ -130,6 +120,3 @@ function Profile_Change(props) {
 }
 
 export default withRouter(Profile_Change);
-
-// 파일 업로드 엑시오스 작성 한 뒤
-// 비밀번호 찾기 인증 페이지 처럼 삼항연산자를 통해 제출에 성공하면 card div가 생성 되도록 작성??

@@ -14,10 +14,8 @@ function Modal_Profile_Follow(props){
       setfollowingPeople(response.data.followingPeople);
       const follow = response.data.followingPeople;
       for(let i=0; i<follow.length; i++){
-        console.log(follow[i]);
         requestAxios.patch('/api/auth/getF4Fprofile', {username:follow[i]})
         .then(response => {
-          console.log(response);
           myfollow[i] = response.data.profileurl;
           setProfile([...myfollow]);
         })
@@ -31,7 +29,7 @@ function Modal_Profile_Follow(props){
       <div className="modal_background modal_background_white">
 
         <div className="modal_profile_follow">
-        <img className="CloseButton" src="img/close.png" onClick={props.closeFollow}/>
+        <img className="CloseButton" src="img/close.png" alt="" onClick={props.closeFollow}/>
           <div className="modal_profile_follow_text">
 
           <p className="following_text">팔로잉</p>
@@ -44,7 +42,7 @@ function Modal_Profile_Follow(props){
             <div className="modal_profile_follow_in"> 
               <p>
                 <div className="main_profileImage_box main_profileImage_heart_box">
-                  <img className="main_profileImage main_profileImage_heart" src={Profile[i]} />
+                  <img className="main_profileImage main_profileImage_heart" src={Profile[i]} alt="" />
                 </div>
                 <div className="main_username main_username_heart">
                     {a}
@@ -62,8 +60,5 @@ function Modal_Profile_Follow(props){
 
     )
 }
-
-// <Profile_Following closefollowing={closefollowing}/>
-// <Profile_Follow  closefollowing={closefollowing}/>
 
 export default Modal_Profile_Follow;
