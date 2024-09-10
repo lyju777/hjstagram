@@ -50,7 +50,7 @@ function SignUp(props){
         })
 
 
-        var regExp = /^([0-9a-zA-Z_\.-]+)@([0-9a-zA-Z_-]+)(\.[0-9a-zA-Z_-]+){1,2}$/;
+        var regExp = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
         // 형식에 맞는 경우 true 리턴
         if(!regExp.test(e.target.value)){
             setEmailMsg('이메일 형식을 확인해주세요.')
@@ -65,7 +65,6 @@ function SignUp(props){
         requestAxios.post('/api/auth/idCheck', {username:Username})
         .then(response => {           
             if(response.data.username){
-                console.log("1=" + response.data.username);
                 setUserNameMsg('이미 존재하는 사용자이름입니다.')
             }else{
                 setUserNameMsg('') // 정규식이 맞다면 ''공백으로 처리
@@ -125,7 +124,7 @@ function SignUp(props){
         <form onSubmit={onSubmitHandler}>
 
             <div className="login-instagram-logo">
-                <img className="login-instagram-logo" src="img/instagramlogo.png"/>
+                <img className="login-instagram-logo" src="img/instagramlogo.png" alt=""/>
             </div>
 
             
@@ -181,8 +180,3 @@ function SignUp(props){
 
 
 export default withRouter(SignUp);
-
-// return에 뷰 페이지를 따로 import시켜서 그 안으로 props를 전달시켜서 분리해야 정리해야할듯?
-// state만 뺴서 import시킬 수 없으니까
-
-// 유효성 글자가 else문을 사용안해서 정상적으로 작성해도 유효성글씨게 계속 뜨는문제 해결

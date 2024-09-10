@@ -1,6 +1,6 @@
 import requestAxios from '../../api/requestAxios';
 import React, { useState } from "react";
-import { Link, withRouter } from "react-router-dom";
+import {  withRouter } from "react-router-dom";
 import { Carousel } from "react-bootstrap";
 
 function Main_Edit_File(props) {
@@ -127,9 +127,9 @@ function Main_Edit_File(props) {
           <div className="main_edit_fileimage_div">
             <Carousel>
               {/* map함수로  fileImage state를 [] 순서대로 src에 넣기*/}
-              {fileImage.map(function (a) {
+              {fileImage.map(function (a,index) {
                 return (
-                  <Carousel.Item>
+                  <Carousel.Item key={index}>
                     {a && (
                       <img
                         className="d-block w-100 edit_img_size"

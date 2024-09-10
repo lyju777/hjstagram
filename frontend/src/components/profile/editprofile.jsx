@@ -1,5 +1,5 @@
 import React,{useState, useEffect} from "react";
-import { Link, withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import ModalEditProfile from "./modal_editprofile";
 import requestAxios from '../../api/requestAxios';
 

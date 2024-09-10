@@ -27,7 +27,6 @@ function Other_Profile_Post(match){
             .then(response => {
               
                 for(let i=0; i<response.data.length; i++){
-                    console.log(response.data[i].fileurls[0]);
                     PostsArr[i] = response.data[i];
                     setPosts([...PostsArr]);
                 }
@@ -46,9 +45,9 @@ function Other_Profile_Post(match){
 
 
 {
-    Posts && Posts.map((a) => {
+    Posts && Posts.map((a,index) => {
         return(
-            <div className="profile_div_imgbox">
+            <div className="profile_div_imgbox" key={index}>
             <img className="profile_div_img" alt="" src={a.fileurls[0]} onClick={()=>{saveIDandModal(a._id)}}/>
             </div>
         )

@@ -1,6 +1,6 @@
 import requestAxios from '../../api/requestAxios';
 import React, { useState } from "react";
-import { Link, withRouter } from "react-router-dom";
+import {  withRouter } from "react-router-dom";
 
 function Profile_Change(props) {
   //파일 미리볼 url을 저장해줄 state
@@ -56,10 +56,8 @@ function Profile_Change(props) {
 
         //patch api 메소드
         requestAxios.patch(`/api/auth/profileChange`, body).then((response) => {
-          console.log(response);
 
           requestAxios.patch(`api/posts/editprofileurl`, body).then((response) => {
-            console.log(response);
             props.history.push("/profiles"); // 여기 다시 프로필 페이지로 이동
           });
         });

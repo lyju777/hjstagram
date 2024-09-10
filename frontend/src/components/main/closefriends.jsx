@@ -14,11 +14,10 @@ function CloseFriends() {
   const [F4F, setF4F] = useState([]); // 서로 맞팔한 유저 state
   const [F4FID, setF4FID] = useState([]);
 
-  const f4fprofile = [];
-  const f4fid = [];
-
   useEffect(() => {
     const fetchData = async () => {
+      const f4fprofile = [];
+      const f4fid = [];
       try {
         const response = await requestAxios.get("/api/auth/check", {
           headers: { "cache-control": "no-cache" },
@@ -78,7 +77,7 @@ function CloseFriends() {
         <div className="closefriends_div">
           {F4F.map((a, i) => {
             return (
-              <div className="closefriends">
+              <div className="closefriends" key={i}>
                 <div className="each_other_image_box main_cardprofileImage_box">
                   <img alt="" className="each_other_profile" src={Profile[i]} />
                 </div>

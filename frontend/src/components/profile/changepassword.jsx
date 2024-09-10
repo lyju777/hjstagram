@@ -101,7 +101,7 @@ function ChangePassword(props){
               setCheckPassWordMsg('') // 정규식이 맞다면 ''공백으로 처리
             }
       
-            if(NewPassword != confirmPassword){  // 입력된 두 state값을 서로 비교해준다.
+            if(NewPassword !== confirmPassword){  // 입력된 두 state값을 서로 비교해준다.
               setCheckPassWordMsg('비밀번호가 다릅니다.')
             }else{
               setCheckPassWordMsg('')

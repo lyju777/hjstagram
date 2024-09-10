@@ -5,23 +5,26 @@ import {
     SEND_EMAIL
 } from '../_actions/types';
 
-export default function (state= {}, action){
-    switch (action.type) { // 다른 type이 올때마다 다른 조취를 취해야 하기 때문에 switch로 처리
+const initialState = {
+    LoginSuccess: null,
+    register: null,
+    check: null,
+    send: null
+};
+
+export default function userReducer(state = initialState, action) {
+    switch (action.type) {
         case LOGIN_USER:
-             return {...state, LoginSuccess: action.payload} //action.payload == 서버에서 가져온 response
-            break;
-    
+            return { ...state, LoginSuccess: action.payload };
+
         case REGISTER_USER:
-            return{...state, register: action.payload}
-            break;
+            return { ...state, register: action.payload };
 
-            case CHECK_USER:
-                return{...state, check: action.payload}
-                break;
+        case CHECK_USER:
+            return { ...state, check: action.payload };
 
-                case SEND_EMAIL:
-                    return{...state, send: action.payload}
-                    break;
+        case SEND_EMAIL:
+            return { ...state, send: action.payload };
 
         default:
             return state;

@@ -1,8 +1,8 @@
 import React, {useState, useEffect} from "react";
-import Modal_profile_gear from "./modal_profile_gear";
-import Modal_Profile_Change from "./modal_profile_change";
-import Modal_Profile_Follow from "./modal_profile_follow";
-import Modal_Profile_Follower from "./modal_profile_follower";
+import Modalprofilegear from "./modal_profile_gear";
+import ModalProfileChange from "./modal_profile_change";
+import ModalProfileFollow from "./modal_profile_follow";
+import ModalProfileFollower from "./modal_profile_follower";
 import requestAxios from '../../api/requestAxios';
 
 
@@ -64,10 +64,10 @@ function Profile(){
 
 
     const username = <div className="profile_username">{DataUsername}
-    <img className="profile_gear" src="img/gear.png"  onClick={() => { gear_change(true) } }/></div>;
+    <img className="profile_gear" src="img/gear.png" alt=""  onClick={() => { gear_change(true) } }/></div>;
 
     const main_profileImage = <div className="closefriends_profileImage_box profile_profileImage_box">
-    <img className="profile_profileImage" src={Profile} onClick={() => { profile_change(true) } }/></div>
+    <img className="profile_profileImage" src={Profile} alt=""  onClick={() => { profile_change(true) } }/></div>
 
 
     return(
@@ -100,25 +100,25 @@ function Profile(){
 
     {
     gear === true
-    ? <Modal_profile_gear closeGear={closeGear}/>
+    ? <Modalprofilegear closeGear={closeGear}/>
     : null
     }
 
     {
     profile === true
-    ? <Modal_Profile_Change closeProfile={closeProfile}/>
+    ? <ModalProfileChange closeProfile={closeProfile}/>
     : null
     }
 
     {
     follow === true
-    ? <Modal_Profile_Follow closeFollow={closeFollow}/>
+    ? <ModalProfileFollow closeFollow={closeFollow}/>
     : null
     }
 
     {
     follower === true
-    ? <Modal_Profile_Follower closeFollow={closeFollower}/>
+    ? <ModalProfileFollower closeFollow={closeFollower}/>
     : null
     }
     

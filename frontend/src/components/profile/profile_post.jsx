@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
-import Modal_Delete_Posts from "./modal_delete_posts";
 import requestAxios from '../../api/requestAxios';
-import { withRouter, useHistory } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 
 function Profile_Post(props) {
   const [Posts, setPosts] = useState([]);
@@ -12,18 +11,14 @@ function Profile_Post(props) {
   const saveIDandModal = (id) => {
     setID(id);
     modal_change(true);
-    console.log(ID);
   };
 
   useEffect(() => {
     requestAxios.get("/api/auth/check").then((response) => {
-      console.log("로그인한 사람 username : " + response.data.username);
       const logusername = response.data.username;
       requestAxios.get(`/api/posts?username=${logusername}`).then((response) => {
-        console.log(response);
 
         for (let i = 0; i < response.data.length; i++) {
-          console.log(response.data[i].fileurls[0]);
 
           PostsArr[i] = response.data[i];
           setPosts([...PostsArr]);
@@ -63,9 +58,9 @@ function Profile_Post(props) {
 
       <div className="profile_div_box">
         {Posts &&
-          Posts.map((a) => {
+          Posts.map((a,index) => {
             return (
-              <div className="profile_div_imgbox">
+              <div className="profile_div_imgbox" key={index}>
                 <img
                   alt=""
                   className="profile_div_img"

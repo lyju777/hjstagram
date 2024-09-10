@@ -13,7 +13,7 @@ import { Link, useHistory  } from "react-router-dom";
             <form>
 
                 <div className="auth-mail-logo">
-                    <img className="auth-mail-logo" src="img/email.png"/>
+                    <img className="auth-mail-logo" src="img/email.png" alt=""/>
                 </div>
 
                 <div className="sendmail-text">

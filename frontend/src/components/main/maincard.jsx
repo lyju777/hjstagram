@@ -6,9 +6,11 @@ import { Carousel } from "react-bootstrap";
 import { withRouter, useHistory } from "react-router-dom";
 import FollowStatusContext from "../../context/FollowStatusContext.js";
 import CloseFriends from "./closefriends";
+import { Spinner } from 'react-bootstrap';
 
 function MainCard() {
   const history = useHistory();
+  const [loading, setLoading] = useState(true);
 
   let [Profile, setProfile] = useState([]);
 
@@ -282,6 +284,16 @@ function MainCard() {
       });
   }
 
+  if (loading) {
+    return (
+      <div className="maincard">
+        <Spinner animation="border" role="status">
+          <span className="sr-only">Loading...</span>
+        </Spinner>
+      </div>
+    );
+  }
+
   return (
     <FollowStatusContext.Provider value={followStatus}>
       {
@@ -316,9 +328,9 @@ function MainCard() {
                 {
                   // [[],[],[]] 으로 뽑으려면 && 연산자 활용
                   FileImg[i] &&
-                    FileImg[i].map((j) => {
+                    FileImg[i].map((j,index) => {
                       return (
-                        <Carousel.Item>
+                        <Carousel.Item key={index}>
                           <Card.Img
                             variant="top"
                             src={j}

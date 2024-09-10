@@ -68,7 +68,7 @@ function RecoverPassword(){
 
     // 이메일 유효성 검사
     const checkEmail = (e) => {
-      var regExp = /^([0-9a-zA-Z_\.-]+)@([0-9a-zA-Z_-]+)(\.[0-9a-zA-Z_-]+){1,2}$/;
+      var regExp = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
       // 형식에 맞는 경우 true 리턴
       if(!regExp.test(e.target.value)){
           setEmailMsg('이메일 형식을 확인해주세요.')
@@ -102,7 +102,7 @@ const sendPasswordResetEmail = (event) => {
       <div className="auth-wrapper">
       <div className="auth-inner auth-inner-recoverpassword">
 
-    <img className="auth-mail-logo" src="img/email.png"/>
+    <img className="auth-mail-logo" src="img/email.png" alt=""/>
     <div className="sendmail-text">
       <h3 className="sendmail-text">링크를 받을 이메일을 입력하세요</h3>
     </div>
@@ -125,7 +125,7 @@ const sendPasswordResetEmail = (event) => {
 
     
               <div className="form-group">
-                  <input type="text" className="form-control" placeholder="이메일 주소"
+                  <input type="text" className="form-control" placeholder="이메일 주소(Email)"
                   onChange={onEmailHandler} value={Email} onBlur={checkEmail} />
                   <p className="Msg">{EmailMsg}</p>
               </div>

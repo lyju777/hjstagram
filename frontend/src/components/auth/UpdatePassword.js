@@ -48,7 +48,7 @@ function UpdatePassword(match) {
         setCheckPassWordMsg('') // 정규식이 맞다면 ''공백으로 처리
       }
 
-      if(password != confirmPassword){  // 입력된 두 state값을 서로 비교해준다.
+      if(password !== confirmPassword){  // 입력된 두 state값을 서로 비교해준다.
         setCheckPassWordMsg('비밀번호가 다릅니다.')
       }else{
         setCheckPassWordMsg('')
@@ -86,7 +86,7 @@ function UpdatePassword(match) {
 
             <div className="auth-wrapper">
       <div className="auth-inner auth-inner-recoverpassword">
-        <img className="auth-mail-logo" src="/img/email.png"/>
+        <img className="auth-mail-logo" src="/img/email.png" alt=""/>
           <div className="sendmail-text">
             <h3 className="sendmail-text">변경할 비밀번호를 입력하세요</h3>
           </div>
@@ -109,13 +109,13 @@ function UpdatePassword(match) {
    
               <div className="form-group">
                 <input className="form-control" onChange={onpassword} value={password} onBlur={checkPassword}
-                placeholder="새 비밀번호" type="password"/>
+                placeholder="새 비밀번호" type="password" autocomplete="new-password"/>
                 <p className="Msg">{PassWordMsg}</p>
               </div>
 
               <div className="form-group">
                 <input className="form-control" onChange={onconfirmPassword} value={confirmPassword}
-                 onBlur={Check_checkPassword} placeholder="비밀번호 확인" type="password"/>
+                 onBlur={Check_checkPassword} placeholder="비밀번호 확인" type="password" autocomplete="new-password"/>
                  <p className="Msg">{CheckPassWordMsg}</p>
               </div>
               <Button className="btn btn-primary btn-block">

@@ -1,7 +1,7 @@
 import React from "react";
 import Header from "../components/common/header";
 import Profile from "../components/profile/profile";
-import Profile_Post from "../components/profile/profile_post";
+import ProfilePost from "../components/profile/profile_post";
 
 function ProfilePage(){
 
@@ -10,7 +10,7 @@ function ProfilePage(){
         <>
         <Header/>
         <Profile/>
-        <Profile_Post/>
+        <ProfilePost/>
         </>
     )
 }

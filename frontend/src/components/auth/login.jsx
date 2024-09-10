@@ -14,7 +14,6 @@ import requestAxios from '../../api/requestAxios';
 
         // 유효성 메세지 state
         const[UserNameMsg, setUserNameMsg] = useState("");
-        const[PassWordMsg, setPassWordMsg] = useState("");
 
         const onUsernameHandler = (event) => {
             setUsername(event.currentTarget.value)
@@ -51,17 +50,8 @@ import requestAxios from '../../api/requestAxios';
                 dispatch(LoginUser(body))
                 .then(response => {
 
-                    console.log(response);
-                    console.log(response.payload._id);
-                    console.log(response.payload.LoginSuccess);
-
-                    // const _id = response.payload._id;
-                    // response.payload.LoginSuccess 안먹혀서 response.payload사용 
-                    // 유효성은 먹힘 쿠키값 생성됨
                     if(response.payload) { 
                         props.history.push('/main');
-                    } else{
-                        alert('Error');
                     }
                 })
                 
@@ -75,7 +65,7 @@ import requestAxios from '../../api/requestAxios';
             <form onSubmit={onSubmitHandler}>
 
                 <div className="login-instagram-logo">
-                    <img className="login-instagram-logo" src="img/instagramlogo.png"/>
+                    <img className="login-instagram-logo" src="img/instagramlogo.png" alt=""/>
                 </div>
 
                 <div className="form-group">
