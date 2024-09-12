@@ -1,12 +1,14 @@
-import React, {useState, useEffect} from "react";
+import React, {useState, useLayoutEffect} from "react";
 import Modalprofilegear from "./modal_profile_gear";
 import ModalProfileChange from "./modal_profile_change";
 import ModalProfileFollow from "./modal_profile_follow";
 import ModalProfileFollower from "./modal_profile_follower";
 import requestAxios from '../../api/requestAxios';
-
+import { BeatLoader } from "react-spinners";
 
 function Profile(){
+
+    const [loading, setLoading] = useState(true);
 
     let [gear , gear_change] = useState(false);
 
@@ -16,7 +18,7 @@ function Profile(){
 
     let [follower , follower_change] = useState(false);
 
-    let [Profile,setProfile] = useState("img/default_profile.png");
+    let [Profile,setProfile] = useState("https://d3gxsp5zp8da8n.cloudfront.net/hjstagram/icon/default_profile.png");
 
 
     const closeGear = () => {
@@ -44,25 +46,38 @@ function Profile(){
     const [postNum, setPostNum] = useState(0); // 게시글 숫자
 
 
-    useEffect(() => {
-        requestAxios.get('/api/auth/check')
-        .then(response =>  {
-            setDataUsername(response.data.username) // 사용자이름
-            setDataName(response.data.name) // 이름
-            setIntroment(response.data.introment)  // 소개글 
-            
-            setfollowingNum(response.data.followingNum)
-            setfollowerNum(response.data.followerNum)
-            setPostNum(response.data.postsNum)
+    useLayoutEffect(() => {
+        const fetchData = async () => {
 
-            setProfile(response.data.profileurl)
-
+            try {
+           const response = await requestAxios.get('/api/auth/check')
+      
+                    setDataUsername(response.data.username) // 사용자이름
+                    setDataName(response.data.name) // 이름
+                    setIntroment(response.data.introment)  // 소개글 
+                    setfollowingNum(response.data.followingNum)
+                    setfollowerNum(response.data.followerNum)
+                    setPostNum(response.data.postsNum)
+                    setProfile(response.data.profileurl)
+        
+            } catch (error) {
+                console.log(error);
+            } finally {
+                setLoading(false);
+            }
         }
+        fetchData();
+    }, []);
 
-
-    )}, []);
-
-
+    if (loading) {
+        return (
+          <div className="loading_spinner" style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
+            <BeatLoader  color="#308fff" animation="border" role="status">
+            </BeatLoader >
+          </div>
+        );
+      }
+    
     const username = <div className="profile_username">{DataUsername}
     <img className="profile_gear" src="img/gear.png" alt=""  onClick={() => { gear_change(true) } }/></div>;
 
@@ -80,22 +95,28 @@ function Profile(){
 
     <div className="profile_profile_div2">
 
-        <div className="profile_profile_text">게시물 {postNum}</div>
+        <div className="profile_profile_text">
+            <span>게시물 {postNum}</span>
+        </div>
         
         <div className="profile_profile_text" onClick={() => {follower_change(true)}}>
-        팔로워 {followerNum}</div>
+            <span>팔로워 {followerNum}</span>
+        </div>
 
         <div className="profile_profile_text" onClick={() => {follow_change(true)}}>
-        팔로우 {followingNum}</div>
+        <span>팔로잉 {followingNum}</span>
+        </div>
         
     </div>
 
     <div className="profile_profile_div2">
-        <div className="profile_profile_name">{DataName}</div>
+        <div className="profile_profile_name">
+            <span>{DataName}</span>
+        </div>
     </div>
 
     <div className="profile_profile_div2 profile_profile_div3">
-        <div className="profile_profile_name">{Introment}</div>
+        <div className="profile_profile_name"><span>{Introment}</span></div>
     </div>
 
     {

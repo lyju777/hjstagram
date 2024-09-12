@@ -2,10 +2,13 @@ import React,{useState, useEffect} from "react";
 import { withRouter } from "react-router-dom";
 import ModalEditProfile from "./modal_editprofile";
 import requestAxios from '../../api/requestAxios';
+import { BeatLoader } from "react-spinners";
 
 function EditProfile(props){
 
-    let [Profile,setProfile ] = useState("img/default_profile.png");
+    const [loading, setLoading] = useState(true);
+
+    let [Profile,setProfile ] = useState("https://d3gxsp5zp8da8n.cloudfront.net/hjstagram/icon/default_profile.png");
 
     const [Username, setUsername] = useState("")  // state에 데이터바인딩할 response값 담아서 뿌리기
     const [TitleUsername, setTitleUsername] = useState("")  // state에 데이터바인딩할 response값 담아서 뿌리기
@@ -91,23 +94,42 @@ function EditProfile(props){
 
 
     useEffect(() => {
-        requestAxios.get('/api/auth/check')
-        // 데이터 두개 여러개 가져올때는 , 써서 연속으로 써준다
-        .then(response =>  {
-         setUsername(response.data.username)
-         setName(response.data.name)
-         setIntroment(response.data.introment)
-         setTitleUsername(response.data.username)
-         setProfile(response.data.profileurl)
-         }
 
-    )}, []);
+        const fetchData = async () => {
+            try {
+              await  requestAxios.get('/api/auth/check')
+                // 데이터 두개 여러개 가져올때는 , 써서 연속으로 써준다
+                .then(response =>  {
+                 setUsername(response.data.username)
+                 setName(response.data.name)
+                 setIntroment(response.data.introment)
+                 setTitleUsername(response.data.username)
+                 setProfile(response.data.profileurl)
+                 }
+        )} catch (e) {
+                console.log(e);
+        } finally {
+            setLoading(false);
+        }
+    }
+    fetchData();
+    }, []);
+
+    if (loading) {
+        return (
+        <div className="loading_spinner" style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
+            <BeatLoader  color="#308fff" animation="border" role="status">
+            </BeatLoader >
+        </div>
+        );
+    }
 
 
     const username = <div className="profile_username editprofile_username">{TitleUsername}</div>;
 
     const main_profileImage = <div className="closefriends_profileImage_box editprofile_profileImage_box">
     <img className="profile_profileImage" src={Profile} alt="" /></div>
+
 
     return(
         <>
@@ -149,11 +171,11 @@ function EditProfile(props){
             </div>
     
                 <button type="submit" className="btn btn-primary editprofile_btn"
-                onClick={onClickHandler}>제출</button> 
+                onClick={onClickHandler}>변경</button> 
     
-            <p className=" text-right editprofile_forgot_password" onClick={()=>{modal_change(true)}}>
+            <span className=" text-right editprofile_forgot_password" onClick={()=>{modal_change(true)}}>
                  <p style={{ color: '#0d6eff',  cursor: 'pointer' }} >회원탈퇴 하시겠습니까?</p>
-            </p>
+            </span>
             
         </form>
     </div>

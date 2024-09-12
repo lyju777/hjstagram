@@ -1,10 +1,13 @@
 import React, {useState, useEffect} from "react";
 import { Link, withRouter } from "react-router-dom";
 import requestAxios from '../../api/requestAxios';
+import { BeatLoader } from "react-spinners";
 
 function ChangePassword(props){
 
-    let [Profile,setProfile] = useState("img/default_profile.png");
+    const [loading, setLoading] = useState(true);
+
+    let [Profile,setProfile] = useState("https://d3gxsp5zp8da8n.cloudfront.net/hjstagram/icon/default_profile.png");
 
     const[OldPassword, setOldPassword] = useState("")
     const[NewPassword, setNewPassword] = useState("")
@@ -61,12 +64,24 @@ function ChangePassword(props){
 
 
     useEffect(() => {
-        requestAxios.get('/api/auth/check')
-    .then(response =>  {
+        const fetchData = async () => {
+            try{
+            await requestAxios.get('/api/auth/check')
+                .then(response =>  {
+            
+                    setProfile(response.data.profileurl)
+                    })
 
-        setProfile(response.data.profileurl)
+                    await  requestAxios.get('/api/auth/check')
+            .then(response =>  (setDataUsername(response.data.username))
+                )} catch(e){
+                console.error(e);
+        } finally {
+            setLoading(false);
         }
-    )}, []);
+     }
+     fetchData();
+    }, []);
 
 
 
@@ -134,11 +149,19 @@ function ChangePassword(props){
     const [DataUsername, setDataUsername] = useState("")  // state에 데이터바인딩할 response값 담아서 뿌리기
 
 
-    useEffect(() => {
-        requestAxios.get('/api/auth/check')
-        .then(response =>  (setDataUsername(response.data.username))
+    // useEffect(() => {
       
-    )}, []);
+    // )}, []);
+
+    
+    if (loading) {
+        return (
+        <div className="loading_spinner" style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
+            <BeatLoader  color="#308fff" animation="border" role="status">
+            </BeatLoader >
+        </div>
+        );
+    }
 
     
     const username = <div className="profile_username editprofile_username">{DataUsername}</div>;
@@ -183,7 +206,7 @@ function ChangePassword(props){
             </div>
 
                 <button type="submit" className="btn btn-primary editprofile_btn" onClick={onClickHandler}>
-                    비밀번호변경
+                    비밀번호 변경
                 </button>  
 
             <p className=" text-right editprofile_forgot_password">

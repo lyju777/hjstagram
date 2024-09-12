@@ -1,5 +1,6 @@
 import requestAxios from '../../api/requestAxios';
 import React, { useState } from "react";
+import Form from 'react-bootstrap/Form';
 import {  withRouter } from "react-router-dom";
 
 function Profile_Change(props) {
@@ -77,13 +78,14 @@ function Profile_Change(props) {
           ></img>
 
           <div className="profile_change_div2">
-            <input
+
+          <Form.Group controlId="formFile" className="mb-3">
+           <Form.Control type="file" className="imgUpload"
               name="profile"
-              className="profile_change_imgUpload"
-              type="file"
               onChange={saveFileImage}
-              disabled={fileImage.length > 0}
-            />
+              style={{width: "75%"}}
+              disabled={fileImage.length > 0} />
+            </Form.Group>
 
             <div className="main_edit_fileimage_button">
               <button

@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from "react";
 import requestAxios from '../../api/requestAxios';
 import { withRouter } from "react-router-dom";
+import { MoonLoader  } from "react-spinners";
 
 function Profile_Post(props) {
+
+  const [loading, setLoading] = useState(true);
+
   const [Posts, setPosts] = useState([]);
 
   const PostsArr = [];
@@ -14,17 +18,25 @@ function Profile_Post(props) {
   };
 
   useEffect(() => {
-    requestAxios.get("/api/auth/check").then((response) => {
-      const logusername = response.data.username;
-      requestAxios.get(`/api/posts?username=${logusername}`).then((response) => {
+    const fetchData = async () => {
+      try {
 
-        for (let i = 0; i < response.data.length; i++) {
+      const response = await requestAxios.get("/api/auth/check")
+          const logusername = response.data.username;
+          await requestAxios.get(`/api/posts?username=${logusername}`).then((response) => {
+            for (let i = 0; i < response.data.length; i++) {
+              PostsArr[i] = response.data[i];
+              setPosts([...PostsArr]);
+            }
+          });
+      } catch (e) {
+        console.error(e);
+      } finally {
+        setLoading(false);
+      }
+  };
 
-          PostsArr[i] = response.data[i];
-          setPosts([...PostsArr]);
-        }
-      });
-    });
+  fetchData();
   }, []);
 
   const deletePost = (ID) => {
@@ -51,6 +63,15 @@ function Profile_Post(props) {
   const closeModal = () => {
     modal_change(false);
   };
+
+  if (loading) {
+    return (
+      <div className="loading_spinner" style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "60vh" }}>
+        <MoonLoader size={40}  color="#308fff" animation="border" role="status">
+        </MoonLoader >
+      </div>
+    );
+  }
 
   return (
     <>

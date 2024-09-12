@@ -1,12 +1,16 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useLayoutEffect, useContext } from "react";
 import FollowStatusContext from "../../context/FollowStatusContext.js";
 import requestAxios from '../../api/requestAxios';
 import { Link } from "react-router-dom";
+import { MoonLoader } from "react-spinners";
 
 function CloseFriends() {
   const followStatus = useContext(FollowStatusContext);
+  
 
-  let [userProfile, setUserProfile] = useState("img/default_profile.png");
+  let [userProfile, setUserProfile] = useState("https://d3gxsp5zp8da8n.cloudfront.net/hjstagram/icon/default_profile.png");
+
+  const [loading, setLoading] = useState(true);
 
   const [Profile, setProfile] = useState([]);
   const [DataUsername, setDataUsername] = useState(""); // state에 데이터바인딩할 response값 담아서 뿌리기
@@ -14,7 +18,7 @@ function CloseFriends() {
   const [F4F, setF4F] = useState([]); // 서로 맞팔한 유저 state
   const [F4FID, setF4FID] = useState([]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const fetchData = async () => {
       const f4fprofile = [];
       const f4fid = [];
@@ -22,6 +26,7 @@ function CloseFriends() {
         const response = await requestAxios.get("/api/auth/check", {
           headers: { "cache-control": "no-cache" },
         });
+
         setDataUsername(response.data.username);
         setDataName(response.data.name);
         setUserProfile(response.data.profileurl);
@@ -32,7 +37,7 @@ function CloseFriends() {
           follower.includes(it)
         );
         setF4F([...FollowingEachOther]);
-        const requests = FollowingEachOther.map((user) =>
+        const requests = await FollowingEachOther.map((user) =>
         requestAxios.patch("/api/auth/getF4Fprofile", { username: user })
         );
         const responses = await Promise.all(requests);
@@ -43,15 +48,19 @@ function CloseFriends() {
 
         setF4FID([...f4fid]);
         setProfile([...f4fprofile]);
+
       } catch (error) {
         // 오류 처리
         console.error(error);
+      } finally {
+        setLoading(false);
       }
     };
 
     if (followStatus) {
       fetchData();
     }
+
   }, [followStatus]); // followStatus를 의존성 배열에 포함하여 followStatus가 변경될 때만 fetchData 함수 호출
 
   const username = <span className="main_username">{DataUsername}</span>;
@@ -63,6 +72,15 @@ function CloseFriends() {
     </div>
   );
 
+  if (loading) {
+    return (
+      <div className="loading_spinner" style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
+        <MoonLoader size={40} color="#308fff" animation="border" role="status">
+        </MoonLoader>
+      </div>
+    );
+  }
+
   return (
     <div className="closefriends_div_mem">
       <div className="closefriends_div_me">
@@ -70,8 +88,6 @@ function CloseFriends() {
           {main_profileImage}
           {username}
           {name}
-          <span className="closefriends_closetext">EACH OTHER</span>
-          {/* <span className="closefriends_alltext">모두보기</span> */}
         </div>
 
         <div className="closefriends_div">

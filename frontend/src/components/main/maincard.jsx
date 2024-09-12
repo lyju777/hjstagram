@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { Card, ListGroup, ListGroupItem } from "react-bootstrap";
+import { BeatLoader } from "react-spinners";
 import ModalMainComments from "./modal_main_comments";
 import requestAxios from "../../api/requestAxios";
 import { Carousel } from "react-bootstrap";
 import { withRouter, useHistory } from "react-router-dom";
 import FollowStatusContext from "../../context/FollowStatusContext.js";
 import CloseFriends from "./closefriends";
-import { Spinner } from 'react-bootstrap';
 
 function MainCard() {
   const history = useHistory();
   const [loading, setLoading] = useState(true);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   let [Profile, setProfile] = useState([]);
 
@@ -71,54 +72,52 @@ function MainCard() {
   let id = [];
 
   useEffect(() => {
-    requestAxios.get("/api/posts").then((response) => {
-      const newFollowStatus = { ...followStatus };
-      for (let i = 0; i < response.data.length; i += 1) {
-        writer[i] = response.data[i].user.username; // 글쓴이들 (팔로잉 당할것들)
-        newFollowStatus[writer[i]] = false; // 초기 팔로우 상태는 false
+    const fetchData = async () => {
+      try {
+        const response = await requestAxios.get("/api/posts");
+        const newFollowStatus = { ...followStatus };
+        for (let i = 0; i < response.data.length; i += 1) {
+          writer[i] = response.data[i].user.username; // 글쓴이들 (팔로잉 당할것들)
+          newFollowStatus[writer[i]] = false; // 초기 팔로우 상태는 false
 
-        post[i] = response.data[i];
-        user[i] = response.data[i].user.username;
-        file[i] = response.data[i].fileurls;
+          post[i] = response.data[i];
+          user[i] = response.data[i].user.username;
+          file[i] = response.data[i].fileurls;
 
-        LikeBy[i] = response.data[i].likeby; // 좋아요 누른사람
-        writer[i] = response.data[i].user.username; // 글쓴이들 (팔로잉 당할것들)
-        eachprofile[i] = response.data[i].user.profileurl;
-        FollowPost[i] = false;
-        likePost[i] = false;
+          LikeBy[i] = response.data[i].likeby; // 좋아요 누른사람
+          writer[i] = response.data[i].user.username; // 글쓴이들 (팔로잉 당할것들)
+          eachprofile[i] = response.data[i].user.profileurl;
+          FollowPost[i] = false;
+          likePost[i] = false;
 
-        commentOj[i] = response.data[i].comment;
+          commentOj[i] = response.data[i].comment;
 
-        // commentsList 배열에 각 게시물의 댓글 상태 배열 추가
-        commentsList[i] = ""; // 초기 값은 빈 문자열로 설정
-        setCommentsList([...commentsList]);
+          // commentsList 배열에 각 게시물의 댓글 상태 배열 추가
+          commentsList[i] = ""; // 초기 값은 빈 문자열로 설정
+          setCommentsList([...commentsList]);
 
+          HeartNum[i] = response.data[i].like;
+          setHeartNum([...HeartNum]);
 
-        HeartNum[i] = response.data[i].like;
-        setHeartNum([...HeartNum]);
+          id[i] = response.data[i]._id;
 
-        id[i] = response.data[i]._id;
+          setCommentOjArr([...commentOj]);
+          setProfile([...eachprofile]);
+          setContents(post);
+          setDataUsername(user);
 
-        setCommentOjArr([...commentOj]);
-        setProfile([...eachprofile]);
-        setContents(post);
-        setDataUsername(user);
+          setFileImg([...file]); // file을 setFileImg하면 게시물이 하나만 나옴
 
-        setFileImg([...file]); // file을 setFileImg하면 게시물이 하나만 나옴
-
-        // 내가 좋아요 누른 게시물
-        requestAxios.get("api/auth/check").then((response) => {
-  
-
-          const name = response.data.username;
+          // 내가 좋아요 누른 게시물
+          const authResponse = await requestAxios.get("api/auth/check");
+          const name = authResponse.data.username;
           setWhoLogin(name);
 
-          const following = response.data.followingPeople;
+          const following = authResponse.data.followingPeople;
 
           for (let j = 0; j < LikeBy[i].length; j++) {
             if (name === LikeBy[i][j]) {
               // 로그인한 사람이랑 좋아요 누른사람이 같다면
-
               likePost[i] = true; // true로 변경
             }
           }
@@ -143,22 +142,20 @@ function MainCard() {
             }
             setIsMyComment([...ismycmt]);
           }
-
-        });
+        }
+        setFollowStatus(newFollowStatus); // 팔로우 상태를 업데이트
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
       }
-      setFollowStatus(newFollowStatus); // 팔로우 상태를 업데이트
-    });
+    };
+    fetchData();
   }, []);
 
   const OnHistoryPushUser = (i, a) => {
     const path =
       DataUsername[i] === WhoLogin ? "/profiles" : `/namprofiles/${a.user._id}`;
-    history.push(path);
-  };
-
-  const OnHistoryPushWhoid = (i, a) => {
-    const path =
-      DataUsername[i] === WhoLogin ? "/profiles" : `/namprofiles/${a.whoid}`;
     history.push(path);
   };
 
@@ -198,9 +195,16 @@ function MainCard() {
   };
 
   const On_Follow = async (werid, wername, index) => {
+
+    if (isSubmitting) {
+      return;
+    }
+    setIsSubmitting(true);
+
     let ingid = ""; // 팔로잉 하는 사람의 _id;
     let whofollow = ""; // 팔로잉 하는 사람의 username
 
+  try{
     follow_change((prevState) =>
       prevState.map((item, idx) => (idx === index ? true : item))
     );
@@ -222,32 +226,51 @@ function MainCard() {
         [wername]: true, // 팔로우 상태를 true로 변경
       }));
     }
+  } catch (error) {
+    console.log(error);
+    
+  } finally{
+    setIsSubmitting(false);
+  }
   };
 
   const Off_Follow = async (werid, wername, index) => {
+
+    if (isSubmitting) {
+      return;
+    }
+  
+    setIsSubmitting(true);
+
     let ingid = ""; // 팔로잉 하는 사람의 _id;
     let whounfollow = ""; // 팔로잉 하는 사람의 username
 
-    follow_change((prevState) =>
-      prevState.map((item, idx) => (idx === index ? false : item))
-    );
-
-    const response = await requestAxios.get(`/api/auth/check`);
-    ingid = response.data._id;
-    whounfollow = response.data.username;
-    let body = {
-      whounfollowing: wername,
-      whounfollower: whounfollow,
-    };
-
-    await requestAxios.patch(`api/auth/unfollowing/${ingid}/${werid}`, body);
-
-    if (wername !== whounfollow) {
-      // 로그인한 사용자와 게시글의 작성자가 같지 않을 때만 새로고침 없이 노출
-      setFollowStatus((prevState) => ({
-        ...prevState,
-        [wername]: false, // 팔로우 상태를 false로 변경
-      }));
+    try{
+      follow_change((prevState) =>
+        prevState.map((item, idx) => (idx === index ? false : item))
+      );
+  
+      const response = await requestAxios.get(`/api/auth/check`);
+      ingid = response.data._id;
+      whounfollow = response.data.username;
+      let body = {
+        whounfollowing: wername,
+        whounfollower: whounfollow,
+      };
+  
+      await requestAxios.patch(`api/auth/unfollowing/${ingid}/${werid}`, body);
+  
+      if (wername !== whounfollow) {
+        // 로그인한 사용자와 게시글의 작성자가 같지 않을 때만 새로고침 없이 노출
+        setFollowStatus((prevState) => ({
+          ...prevState,
+          [wername]: false, // 팔로우 상태를 false로 변경
+        }));
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -286,10 +309,9 @@ function MainCard() {
 
   if (loading) {
     return (
-      <div className="maincard">
-        <Spinner animation="border" role="status">
-          <span className="sr-only">Loading...</span>
-        </Spinner>
+      <div className="loading_spinner" style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
+        <BeatLoader color="#308fff" animation="border" role="status">
+        </BeatLoader>
       </div>
     );
   }
@@ -385,7 +407,8 @@ function MainCard() {
                   </div>
 
                   {/* 좋아요 숫자 */}
-                  <div className="like_div">좋아요 {heartNum[i]}개</div>
+                  <div className="like_div">
+                    좋아요 {heartNum[i]}개</div>
 
                   {/* 게시물 코맨트 */}
                   <div className="contents_div" key={i}>
@@ -399,8 +422,6 @@ function MainCard() {
                         <div className="contents_div_username">
                           {" "}
                           <span
-                            style={{ cursor: "pointer" }}
-                            onClick={() => OnHistoryPushWhoid(i, a)}
                             className="W_Who"
                           >
                             {w.who}

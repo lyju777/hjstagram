@@ -135,6 +135,7 @@ textarea:focus {
 .main_smile {
   position: relative;
   width: 36px;
+  right: 5px;
   top: 1px;
 }
 
@@ -249,15 +250,15 @@ textarea:focus {
 }
 
 .closefriends_div::-webkit-scrollbar {
-  background-color: #eeeeee;
+  background-color: #fafafa;
   border-radius: 5vw;
-  width: 10px;
+  width: 7px;
 }
 
-.closefriends_div::-webkit-scrollbar-thumb {
-  background-color: #a2bece;
-  border-radius: 5vw;
-}
+// .closefriends_div::-webkit-scrollbar-thumb {
+//   background-color: #4395ff;
+//   border-radius: 5vw;
+// }
 
 .main_name {
   position: relative;
@@ -462,6 +463,7 @@ textarea:focus {
   height: 40px;
   border-radius: 70%;
   overflow: hidden;
+  margin-top: 5px;
   margin-left: 20px;
 }
 
@@ -570,7 +572,7 @@ textarea:focus {
 .main_edit_file_textarea {
   resize: none;
   height: 60px;
-  width: 30px;
+  // width: 30px;
 }
 
 .edit_file_submit {
@@ -579,7 +581,7 @@ textarea:focus {
 
 .imgUpload {
   position: relative;
-  right: 193px;
+  display: flex;
   margin-top: 20px;
   background-color: 30px;
 }
@@ -599,7 +601,7 @@ textarea:focus {
 .main_edit_fileimage_button {
   position: relative;
   left: 270px;
-  bottom: 30px;
+  bottom: 54px;
 }
 
 .comment_div {
@@ -652,16 +654,16 @@ textarea:focus {
   bottom: 100px;
   left: 250px;
   width: 300px;
-  height: 330px;
+  height: 280px;
   bottom: 200px;
   object-fit: contain;
 }
 
 // 메인카드
 .edit_img_size_card {
-  bottom: 100px;
+  // bottom: 100px;
   left: 250px;
-  width: 300px;
+  // width: 300px;
   height: 550px;
   bottom: 200px;
   object-fit: cover;
@@ -688,9 +690,6 @@ textarea:focus {
   margin-bottom: 30px;
 }
 
-// .contents_div_div{
-//     border: 1px solid red;
-// }
 
 .contents_div_username {
   font-weight: bold;
@@ -707,7 +706,6 @@ textarea:focus {
   width: 17px;
   margin-bottom: 4px;
   cursor: pointer;
-  // font-weight: bold;
   color: #353535;
 }
 
@@ -720,12 +718,8 @@ textarea:focus {
   width: 100%;
   height: 100%;
   object-fit: cover; // 이거 card 이미지에 적용해보기
-  //   border: 2px solid transparent;
   border-radius: 50%;
-  //   background-image: linear-gradient(#fff, #fff),
-  //     linear-gradient(to right, rgb(255, 196, 0) 10%, red 50%, #ad00ff 100%);
-  //   background-origin: border-box;
-  //   background-clip: content-box, border-box;
+
 }
 
 .each_other_image_box {
@@ -734,27 +728,3 @@ textarea:focus {
   border-radius: 70%;
   overflow: hidden;
 }
-
-// .main_edit_fileimage_div{
-//     position: relative;
-//     bottom: 150px;
-//     height: 200px;
-// }
-
-// .main_edit_fileimage_div3{
-//     position: relative;
-//     bottom: 700px;
-// }
-
-// .main_edit_fileimage_img{
-//     position: relative;
-// }
-
-// height: '50rem', width: '40rem'
-
-/* add me css end*/
-
-// display: flex;
-// justify-content: center;
-// flex-direction: column;
-// text-align: left;

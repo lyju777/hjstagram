@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useLayoutEffect } from "react";
 import { Link } from "react-router-dom";
 import { Container, Nav } from "react-bootstrap";
 import requestAxios from "../../api/requestAxios";
@@ -10,7 +10,7 @@ function Header() {
   let [modal, modal_change] = useState(false);
   let [modal_heart, modal_change_herat] = useState(false);
 
-  let [Profile, setProfile] = useState("img/default_profile.png");
+  let [Profile, setProfile] = useState("https://d3gxsp5zp8da8n.cloudfront.net/hjstagram/icon/default_profile.png");
 
   const closeModal = () => {
     modal_change(false);
@@ -20,7 +20,7 @@ function Header() {
     modal_change_herat(false);
   };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     requestAxios.get("/api/auth/check").then((response) => {
       setProfile(response.data.profileurl);
     });

@@ -1,4 +1,5 @@
 import requestAxios from '../../api/requestAxios';
+import Form from 'react-bootstrap/Form';
 import React, { useState } from "react";
 import {  withRouter } from "react-router-dom";
 import { Carousel } from "react-bootstrap";
@@ -92,20 +93,19 @@ function Main_Edit_File(props) {
             <input
               type="text"
               className="form-control main_edit_file_textarea"
-              placeholder="게시글작성"
+              placeholder="게시글을 작성하세요."
               value={Text}
               onChange={onTextHandler}
             />
 
-            <input
-              name="attachment"
-              className="imgUpload"
-              type="file"
+      <Form.Group controlId="formFile" className="mb-3">
+        <Form.Control type="file" className="imgUpload"
               multiple
               accept="image/*"
               onChange={saveFileImage}
-              disabled={fileImage.length > 0}
-            />
+              style={{width: "75%"}}
+              disabled={fileImage.length > 0} />
+      </Form.Group>
 
             <div className="main_edit_fileimage_button">
               <button
@@ -120,7 +120,7 @@ function Main_Edit_File(props) {
                 type="submit"
                 className="btn btn-primary edit_file_submit"
               >
-                제출
+                등록
               </button>
             </div>
           </div>

@@ -37,7 +37,7 @@ const UserSchema = new Schema({
     followerPeople : [String], 
     profileurl: {
         type:String,
-        default:"/img/default_profile.png"
+        default:"https://d3gxsp5zp8da8n.cloudfront.net/hjstagram/icon/default_profile.png"
     }
 });
 

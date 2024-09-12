@@ -306,12 +306,6 @@ export const following = async (ctx) => {
         const user1 = await User.findById(ingid);
         user1.followingNum += 1;
         const followingarr = user1.followingPeople;
-        for(let i=0; i<followingarr.length; i++){
-            if(followingarr[i] === whofollowing){
-                console.log("이미 ※팔로우※ 했음!!");
-                return false;
-            }
-        }
         user1.followingPeople = [whofollowing, ...followingarr];
         await user1.save();
         console.log("팔로잉 + 1");
@@ -320,12 +314,6 @@ export const following = async (ctx) => {
         const user2 = await User.findById(werid);
         user2.followerNum += 1;
         const followerarr = user2.followerPeople;
-        for(let i=0; i<followerarr.length; i++){
-            if(followerarr[i] === ctx.state.user.username){
-                console.log("이미 ※팔로우※ 했음!!");
-                return false;
-            }
-        }
         user2.followerPeople = [whofollower, ...followerarr];
         await user2.save();
         console.log("팔로워 +1");
