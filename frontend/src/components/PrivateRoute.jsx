@@ -11,7 +11,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
     const checkAuth = async () => {
       try {
         const response = await axios.get('/api/auth/check');
-        console.log(response);
+        console.log(response.data);
         console.log(response.data._id);
         if (response.data._id) {
           setIsAuthenticated(true);
