@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { BeatLoader } from "react-spinners";
 import { Route, Redirect } from 'react-router-dom';
-import axios from 'axios';
+import requestAxios from '../api/requestAxios';
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(null);
@@ -10,9 +10,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const response = await axios.get('/api/auth/check');
-        console.log(response.data);
-        console.log(response.data._id);
+      const response = await requestAxios.get('/api/auth/check');
         if (response.data._id) {
           setIsAuthenticated(true);
         } else {
