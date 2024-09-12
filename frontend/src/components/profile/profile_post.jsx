@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
-import requestAxios from '../../api/requestAxios';
+import requestAxios from "../../api/requestAxios";
 import { withRouter } from "react-router-dom";
-import { MoonLoader  } from "react-spinners";
+import { MoonLoader } from "react-spinners";
 
 function Profile_Post(props) {
-
   const [loading, setLoading] = useState(true);
 
   const [Posts, setPosts] = useState([]);
@@ -20,10 +19,11 @@ function Profile_Post(props) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-
-      const response = await requestAxios.get("/api/auth/check")
-          const logusername = response.data.username;
-          await requestAxios.get(`/api/posts?username=${logusername}`).then((response) => {
+        const response = await requestAxios.get("/api/auth/check");
+        const logusername = response.data.username;
+        await requestAxios
+          .get(`/api/posts?username=${logusername}`)
+          .then((response) => {
             for (let i = 0; i < response.data.length; i++) {
               PostsArr[i] = response.data[i];
               setPosts([...PostsArr]);
@@ -34,9 +34,9 @@ function Profile_Post(props) {
       } finally {
         setLoading(false);
       }
-  };
+    };
 
-  fetchData();
+    fetchData();
   }, []);
 
   const deletePost = (ID) => {
@@ -49,10 +49,12 @@ function Profile_Post(props) {
         // 게시물 삭제 후에 게시물 목록을 다시 불러옵니다.
         requestAxios.get("/api/auth/check").then((response) => {
           const logusername = response.data.username;
-          requestAxios.get(`/api/posts?username=${logusername}`).then((response) => {
-            const updatedPosts = response.data;
-            setPosts(updatedPosts);
-          });
+          requestAxios
+            .get(`/api/posts?username=${logusername}`)
+            .then((response) => {
+              const updatedPosts = response.data;
+              setPosts(updatedPosts);
+            });
         });
       });
     });
@@ -66,9 +68,21 @@ function Profile_Post(props) {
 
   if (loading) {
     return (
-      <div className="loading_spinner" style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "60vh" }}>
-        <MoonLoader size={40}  color="#308fff" animation="border" role="status">
-        </MoonLoader >
+      <div
+        className="loading_spinner"
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "60vh",
+        }}
+      >
+        <MoonLoader
+          size={40}
+          color="#308fff"
+          animation="border"
+          role="status"
+        ></MoonLoader>
       </div>
     );
   }
@@ -79,7 +93,7 @@ function Profile_Post(props) {
 
       <div className="profile_div_box">
         {Posts &&
-          Posts.map((a,index) => {
+          Posts.map((a, index) => {
             return (
               <div className="profile_div_imgbox" key={index}>
                 <img

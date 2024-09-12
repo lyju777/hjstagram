@@ -24,7 +24,6 @@ function MainCard() {
   //팔로우 이미지변경 state
   let [follow, follow_change] = useState([false]);
 
-
   let [comment, comment_change] = useState(false);
 
   // 서버에 보내고자 하는 값들을 state에서 가지고 있는 것
@@ -161,7 +160,6 @@ function MainCard() {
 
   // 좋아요 하기
   const On_Heart = async (ID, index) => {
-
     heart_change((prevState) =>
       prevState.map((item, idx) => (idx === index ? true : item))
     );
@@ -195,7 +193,6 @@ function MainCard() {
   };
 
   const On_Follow = async (werid, wername, index) => {
-
     if (isSubmitting) {
       return;
     }
@@ -204,52 +201,50 @@ function MainCard() {
     let ingid = ""; // 팔로잉 하는 사람의 _id;
     let whofollow = ""; // 팔로잉 하는 사람의 username
 
-  try{
-    follow_change((prevState) =>
-      prevState.map((item, idx) => (idx === index ? true : item))
-    );
+    try {
+      follow_change((prevState) =>
+        prevState.map((item, idx) => (idx === index ? true : item))
+      );
 
-    const response = await requestAxios.get(`/api/auth/check`);
-    ingid = response.data._id;
-    whofollow = response.data.username;
-    let body = {
-      whofollowing: wername,
-      whofollower: whofollow,
-    };
+      const response = await requestAxios.get(`/api/auth/check`);
+      ingid = response.data._id;
+      whofollow = response.data.username;
+      let body = {
+        whofollowing: wername,
+        whofollower: whofollow,
+      };
 
-    await requestAxios.patch(`api/auth/following/${ingid}/${werid}`, body);
+      await requestAxios.patch(`api/auth/following/${ingid}/${werid}`, body);
 
-    if (wername !== whofollow) {
-      // 로그인한 사용자와 게시글의 작성자가 같지 않을 때만 새로고침 없이 노출
-      setFollowStatus((prevState) => ({
-        ...prevState,
-        [wername]: true, // 팔로우 상태를 true로 변경
-      }));
+      if (wername !== whofollow) {
+        // 로그인한 사용자와 게시글의 작성자가 같지 않을 때만 새로고침 없이 노출
+        setFollowStatus((prevState) => ({
+          ...prevState,
+          [wername]: true, // 팔로우 상태를 true로 변경
+        }));
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsSubmitting(false);
     }
-  } catch (error) {
-    console.log(error);
-    
-  } finally{
-    setIsSubmitting(false);
-  }
   };
 
   const Off_Follow = async (werid, wername, index) => {
-
     if (isSubmitting) {
       return;
     }
-  
+
     setIsSubmitting(true);
 
     let ingid = ""; // 팔로잉 하는 사람의 _id;
     let whounfollow = ""; // 팔로잉 하는 사람의 username
 
-    try{
+    try {
       follow_change((prevState) =>
         prevState.map((item, idx) => (idx === index ? false : item))
       );
-  
+
       const response = await requestAxios.get(`/api/auth/check`);
       ingid = response.data._id;
       whounfollow = response.data.username;
@@ -257,9 +252,9 @@ function MainCard() {
         whounfollowing: wername,
         whounfollower: whounfollow,
       };
-  
+
       await requestAxios.patch(`api/auth/unfollowing/${ingid}/${werid}`, body);
-  
+
       if (wername !== whounfollow) {
         // 로그인한 사용자와 게시글의 작성자가 같지 않을 때만 새로고침 없이 노출
         setFollowStatus((prevState) => ({
@@ -309,9 +304,20 @@ function MainCard() {
 
   if (loading) {
     return (
-      <div className="loading_spinner" style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
-        <BeatLoader color="#308fff" animation="border" role="status">
-        </BeatLoader>
+      <div
+        className="loading_spinner"
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+        }}
+      >
+        <BeatLoader
+          color="#308fff"
+          animation="border"
+          role="status"
+        ></BeatLoader>
       </div>
     );
   }
@@ -342,7 +348,6 @@ function MainCard() {
                       {DataUsername[i]}
                     </span>
                   </div>
-
                 </div>
               </div>
 
@@ -350,7 +355,7 @@ function MainCard() {
                 {
                   // [[],[],[]] 으로 뽑으려면 && 연산자 활용
                   FileImg[i] &&
-                    FileImg[i].map((j,index) => {
+                    FileImg[i].map((j, index) => {
                       return (
                         <Carousel.Item key={index}>
                           <Card.Img
@@ -407,8 +412,7 @@ function MainCard() {
                   </div>
 
                   {/* 좋아요 숫자 */}
-                  <div className="like_div">
-                    좋아요 {heartNum[i]}개</div>
+                  <div className="like_div">좋아요 {heartNum[i]}개</div>
 
                   {/* 게시물 코맨트 */}
                   <div className="contents_div" key={i}>
@@ -416,35 +420,31 @@ function MainCard() {
                   </div>
 
                   {/* 댓글쓴이 & 댓글 */}
-              <div className="contents_div_container">
-                  {CommentOjArr[i] &&
-                    CommentOjArr[i].map((w, j) => (
-                      <React.Fragment key={w._id}>
-                        <div className="contents_div_username">
-                          {" "}
-                          <span
-                            className="W_Who"
-                          >
-                            {w.who}
-                          </span>
-                          <span className="contents_div_username_span">
-                            {w.content}
-                          </span>
-                          {w.who === WhoLogin ||
-                          WhoLogin === a.user.username ? (
+                  <div className="contents_div_container">
+                    {CommentOjArr[i] &&
+                      CommentOjArr[i].map((w, j) => (
+                        <React.Fragment key={w._id}>
+                          <div className="contents_div_username">
+                            {" "}
+                            <span className="W_Who">{w.who}</span>
                             <span className="contents_div_username_span">
-                              <img
-                                alt=""
-                                className="delete_1"
-                                src="img/delete_1.png"
-                                onClick={() => deletecmt(w._id, a._id, i)}
-                              />
+                              {w.content}
                             </span>
-                          ) : null}
-                        </div>
-                      </React.Fragment>
-                    ))}
-                </div>
+                            {w.who === WhoLogin ||
+                            WhoLogin === a.user.username ? (
+                              <span className="contents_div_username_span">
+                                <img
+                                  alt=""
+                                  className="delete_1"
+                                  src="img/delete_1.png"
+                                  onClick={() => deletecmt(w._id, a._id, i)}
+                                />
+                              </span>
+                            ) : null}
+                          </div>
+                        </React.Fragment>
+                      ))}
+                  </div>
                 </ListGroupItem>
 
                 <ListGroupItem style={{ paddingBottom: "10px" }}>

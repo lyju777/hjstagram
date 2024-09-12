@@ -1,47 +1,40 @@
-import { css } from "styled-components"
+import { css } from "styled-components";
 
-// MEDIA TEMPLATES
 const breakpoints = {
   desktop: 1024,
   tablet: 768,
-  phone: 576
-}
+  phone: 576,
+};
 
 const minBreakpoints = {
   tablet: 577,
-  desktop: 769
-}
+  desktop: 769,
+};
 
-/* You can use the media export in a styled-component like so:
- *   ${media.desktop`display: flex;`}
- *   ${media.tablet`display: inline-block;`}
- *   ${media.phone`display: none;`} */
 export const media = Object.keys(breakpoints).reduce((acc, label) => {
   acc[label] = (...args) => css`
     @media (max-width: ${breakpoints[label] / 16}em) {
       ${css(...args)};
     }
-  `
-  return acc
-}, {})
+  `;
+  return acc;
+}, {});
 
 export const minMedia = Object.keys(minBreakpoints).reduce((acc, label) => {
   acc[label] = (...args) => css`
     @media (min-width: ${breakpoints[label] / 16}em) {
       ${css(...args)};
     }
-  `
-  return acc
-}, {})
+  `;
+  return acc;
+}, {});
 
-// This mixin only works if you put the .error div *before* the input,
-// as the .error div selects its next sibling to apply border colors
 export const validationErrorMixin = css`
   .error + input {
     /* Color input red when adjacent to an error: */
     border: 1px solid #cea0a5;
   }
-`
+`;
 
 export const authFormErrorsMixin = css`
   .form-field {
@@ -95,28 +88,26 @@ export const authFormErrorsMixin = css`
     justify-content: center;
     padding: 10px;
   }
-`
+`;
 
-// General styles that you can spread around:
 export const flexCenterMixin = css`
   display: flex;
   justify-content: center;
   align-items: center;
-`
+`;
 
 export const boxShadowMixin = css`
   box-shadow: 0 0 0.625rem 0 rgba(0, 0, 0, 0.1);
-`
+`;
 
 export const modalBlur = css`
   filter: blur(1px);
-`
+`;
 
-// Wrote these in anticipation of a card component
 export const card = css`
-  background: ${props => props.theme.primary};
-  box-shadow: ${props => props.theme.boxShadow};
-`
+  background: ${(props) => props.theme.primary};
+  box-shadow: ${(props) => props.theme.boxShadow};
+`;
 
 export const fontDeclarations = css`
   @font-face {
@@ -167,7 +158,7 @@ export const fontDeclarations = css`
     font-style: italic;
     font-display: fallback;
   }
-`
+`;
 
 export const fontMixin = css`
   html * {
@@ -180,7 +171,7 @@ export const fontMixin = css`
   h1 {
     font-size: 3rem;
     font-weight: 400;
-    color: ${props => props.theme.primary};
+    color: ${(props) => props.theme.primary};
   }
   h2 {
     font-size: 2.75rem;
@@ -196,4 +187,4 @@ export const fontMixin = css`
     font-size: 1.75rem;
     margin-bottom: 16px;
   }
-`
+`;

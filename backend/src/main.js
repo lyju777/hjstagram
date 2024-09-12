@@ -8,13 +8,13 @@ import serve from "koa-static";
 import path from "path";
 import dotenv from "dotenv";
 
-const cors = require('@koa/cors');
+const cors = require("@koa/cors");
 
 const port = 4000;
 const app = new Koa();
 const router = new Router();
 
-app.use(cors({origin: process.env.URL, credentials: true,}));
+app.use(cors({ origin: process.env.URL, credentials: true }));
 
 dotenv.config();
 

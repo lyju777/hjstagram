@@ -1,12 +1,11 @@
-/* login, signup, sendemail, signup scss */
+html {
+  overflow-y: scroll;
+}
 
-html { overflow-y:scroll; }
-
-// @import url('https://fonts.googleapis.com/css?family=Fira+Sans:400,500,600,700,800');
-@import url('https://fonts.cdnfonts.com/css/instagram-sans-2');
+@import url("https://fonts.cdnfonts.com/css/instagram-sans-2");
 
 $link-color: #4395ff;
-$link-font-color:#7f7d7d;
+$link-font-color: #7f7d7d;
 
 * {
   box-sizing: border-box;
@@ -16,22 +15,32 @@ body {
   min-height: 100vh;
   display: flex;
   font-weight: 400;
-  font-family: 'Instagram Sans', sans-serif;
+  font-family: "Instagram Sans", sans-serif;
 }
 
-h1,h2,h3,h4,h5,h6,label,span {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+label,
+span {
   font-weight: 500;
-  font-family: 'Instagram Sans', sans-serif;
+  font-family: "Instagram Sans", sans-serif;
 }
 
-body, html, .App, #root, .auth-wrapper {
+body,
+html,
+.App,
+#root,
+.auth-wrapper {
   width: 100%;
   height: 100%;
 }
 
 .navbar-light {
   background-color: #ffffff;
-  // box-shadow: 0px 14px 80px rgba(34, 35, 58, 0.2);
 }
 
 .auth-wrapper {
@@ -45,11 +54,9 @@ body, html, .App, #root, .auth-wrapper {
   width: 450px;
   margin: auto;
   background: #ffffff;
-  // box-shadow: 0px 14px 80px rgba(34, 35, 58, 0.2);
   border: 1px solid rgb(228, 228, 228);
   padding: 40px 55px 45px 55px;
-  /* border-radius: 15px; */
-  transition: all .3s;
+  transition: all 0.3s;
 }
 
 .auth-wrapper .form-control:focus {
@@ -57,13 +64,13 @@ body, html, .App, #root, .auth-wrapper {
   box-shadow: none;
 }
 
-.auth-wrapper{
-    h3 {
-        text-align: center;
-        margin: 0;
-        line-height: 1;
-        padding-bottom: 20px;
-      }
+.auth-wrapper {
+  h3 {
+    text-align: center;
+    margin: 0;
+    line-height: 1;
+    padding-bottom: 20px;
+  }
 }
 
 .custom-control-label {
@@ -79,19 +86,19 @@ body, html, .App, #root, .auth-wrapper {
   font-weight: bolder;
 }
 
-.forgot-password{
-    a {
-        color: $link-color;
-        text-decoration-line: none;
-        font-weight: bolder;
-      }
+.forgot-password {
+  a {
+    color: $link-color;
+    text-decoration-line: none;
+    font-weight: bolder;
+  }
 }
 
-.form-group{
+.form-group {
   margin-top: 10px;
 }
 
-.sign-up{
+.sign-up {
   text-align: center;
   font-size: 15px;
   padding-top: 10px;
@@ -99,51 +106,48 @@ body, html, .App, #root, .auth-wrapper {
   font-weight: bolder;
 }
 
-.sign-up{
-    a{
-        color: $link-color;
-        text-decoration-line: none;
-        font-weight: bolder;
-      }
+.sign-up {
+  a {
+    color: $link-color;
+    text-decoration-line: none;
+    font-weight: bolder;
+  }
 }
 
-
-/* add me css*/
-
-.login-instagram-logo{
+.login-instagram-logo {
   width: 250px;
   margin: auto;
   position: relative;
   bottom: 4px;
 }
 
-.btn-block{ 
+.btn-block {
   width: 100%;
 }
 
-.signup-text{
+.signup-text {
   font-size: 15px;
   font-weight: bold;
   color: #505050;
 }
 
-.login{
+.login {
   @extend .sign-up;
 }
 
-.login{
-    a{
-        color: $link-color;
-        text-decoration-line: none;
-        font-weight: bolder;
-      }
+.login {
+  a {
+    color: $link-color;
+    text-decoration-line: none;
+    font-weight: bolder;
+  }
 }
 
-.signup-text-div{
+.signup-text-div {
   margin-top: 150px;
 }
 
-.sendmail-text{
+.sendmail-text {
   font-size: 16px;
   font-weight: bold;
   color: #505050;
@@ -153,66 +157,63 @@ body, html, .App, #root, .auth-wrapper {
   top: 10px;
 }
 
-.auth-mail-logo{
+.auth-mail-logo {
   position: relative;
   left: 110px;
   top: 30px;
 }
 
-.auth-return{
+.auth-return {
   text-align: center;
   font-size: 15px;
   padding-top: 232px;
   color: $link-font-color;
 }
 
-.auth-return{
-    a{
-        color: $link-color;
-        text-decoration-line: none;
-        font-weight: bolder;
-      }
+.auth-return {
+  a {
+    color: $link-color;
+    text-decoration-line: none;
+    font-weight: bolder;
+  }
 }
 
-.auth-inner-recoverpassword{
+.auth-inner-recoverpassword {
   height: 639.25px;
 }
 
-.text-right_pw{
+.text-right_pw {
   position: relative;
   top: 30px;
   margin-top: 10px;
 }
 
-.pw_text{
+.pw_text {
   text-align: center;
 }
 
-.Msg{
+.Msg {
   text-align: left;
   color: rgb(255, 0, 43);
   font-size: 13px;
   margin-top: 3px;
-  font-weight:bold;
+  font-weight: bold;
 }
 
-.Msg2{  // changepassword
+.Msg2 {
   position: relative;
   left: 115px;
   color: rgb(255, 0, 43);
   font-size: 13px;
   margin-top: 3px;
-  font-weight:bold;
+  font-weight: bold;
 }
 
-.Msg3{
+.Msg3 {
   text-align: center;
   color: rgb(255, 0, 43);
   font-size: 13.5px;
-  font-weight:bold;
+  font-weight: bold;
   position: relative;
   top: 30px;
 }
-
-/* add me css end*/
-/* login, signup, sendemail, signup scss end */

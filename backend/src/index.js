@@ -1,5 +1,5 @@
-require = require('esm')(module);  
-module.exports = require('./main.js');
+require = require("esm")(module);
+module.exports = require("./main.js");
 
 // require로 esm 모듈을 불러오고
 // 모듈을 불러온 상태에서 main.js를 불러와서 여기에서 실행 !

@@ -1,8 +1,8 @@
-import axios from 'axios'
+import axios from "axios";
 
 const requestAxios = axios.create({
-	baseURL : process.env.REACT_APP_API,
-	withCredentials: true,
+  baseURL: process.env.REACT_APP_API,
+  withCredentials: true,
 });
 
-export default requestAxios
+export default requestAxios;

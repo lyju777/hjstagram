@@ -1,10 +1,10 @@
-import Router from 'koa-router';
-import * as filesCtrl from './files.ctrl';
+import Router from "koa-router";
+import * as filesCtrl from "./files.ctrl";
 import { getPostById } from "../posts/post.ctrl";
-import multer from '@koa/multer';
-import multerS3 from 'multer-s3';
-import path from 'path';
-import s3 from '../../lib/s3';
+import multer from "@koa/multer";
+import multerS3 from "multer-s3";
+import path from "path";
+import s3 from "../../lib/s3";
 
 const files = new Router();
 
@@ -24,8 +24,13 @@ const upload = multer({
   },
 });
 
-files.post('/:id',getPostById,upload.array('attachment',20),filesCtrl.saveFile);
-files.get('/', filesCtrl.filelist);
-files.delete('/:id', filesCtrl.removeFile);
+files.post(
+  "/:id",
+  getPostById,
+  upload.array("attachment", 20),
+  filesCtrl.saveFile
+);
+files.get("/", filesCtrl.filelist);
+files.delete("/:id", filesCtrl.removeFile);
 
 export default files;

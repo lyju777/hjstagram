@@ -1,10 +1,10 @@
-import Router from 'koa-router';
-import * as profilePicCtrl from './profilePic.ctrl';
-import multer from '@koa/multer';
-import multerS3 from 'multer-s3';
-import path from 'path';
-import s3 from '../../lib/s3';
-import { getUserById } from '../../lib/getUserById';
+import Router from "koa-router";
+import * as profilePicCtrl from "./profilePic.ctrl";
+import multer from "@koa/multer";
+import multerS3 from "multer-s3";
+import path from "path";
+import s3 from "../../lib/s3";
+import { getUserById } from "../../lib/getUserById";
 
 const profilePic = new Router();
 
@@ -24,7 +24,12 @@ const upload = multer({
   },
 });
 
-profilePic.post('/:id', getUserById, upload.single('profile'), profilePicCtrl.saveProfile);
-profilePic.delete('/:id', profilePicCtrl.removeProPic);
+profilePic.post(
+  "/:id",
+  getUserById,
+  upload.single("profile"),
+  profilePicCtrl.saveProfile
+);
+profilePic.delete("/:id", profilePicCtrl.removeProPic);
 
 export default profilePic;

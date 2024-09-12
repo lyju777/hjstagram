@@ -1,7 +1,7 @@
-import requestAxios from '../../api/requestAxios';
-import Form from 'react-bootstrap/Form';
+import requestAxios from "../../api/requestAxios";
+import Form from "react-bootstrap/Form";
 import React, { useState } from "react";
-import {  withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import { Carousel } from "react-bootstrap";
 
 function Main_Edit_File(props) {
@@ -60,26 +60,26 @@ function Main_Edit_File(props) {
     requestAxios.post("/api/posts", body).then((response) => {
       id = response.data._id;
 
-      requestAxios.post(`/api/files/${id}`, formData, config).then((response) => {
-        
-        requestAxios.get(`api/files?id=${id}`) // post id id배열에 담길때마다 GET 액시오스 호출
-          .then((response) => {
+      requestAxios
+        .post(`/api/files/${id}`, formData, config)
+        .then((response) => {
+          requestAxios
+            .get(`api/files?id=${id}`) // post id id배열에 담길때마다 GET 액시오스 호출
+            .then((response) => {
+              for (let i = 0; i < response.data.length; i++) {
+                fileurls[i] = response.data[i].path;
+              }
 
-            for (let i = 0; i < response.data.length; i++) {
-              fileurls[i] = response.data[i].path;
-            }
-
-            let body = {
-              fileurl: fileurls,
-            };
-            //patch api 메소드
-            requestAxios.patch(`api/posts/${id}`, body).then((response) => {
-              props.history.push("/main");
+              let body = {
+                fileurl: fileurls,
+              };
+              //patch api 메소드
+              requestAxios.patch(`api/posts/${id}`, body).then((response) => {
+                props.history.push("/main");
+              });
             });
-          });
-      });
-      requestAxios.patch(`/api/auth/addPost`).then((response) => {
-      });
+        });
+      requestAxios.patch(`/api/auth/addPost`).then((response) => {});
     });
   };
 
@@ -98,14 +98,17 @@ function Main_Edit_File(props) {
               onChange={onTextHandler}
             />
 
-      <Form.Group controlId="formFile" className="mb-3">
-        <Form.Control type="file" className="imgUpload"
-              multiple
-              accept="image/*"
-              onChange={saveFileImage}
-              style={{width: "75%"}}
-              disabled={fileImage.length > 0} />
-      </Form.Group>
+            <Form.Group controlId="formFile" className="mb-3">
+              <Form.Control
+                type="file"
+                className="imgUpload"
+                multiple
+                accept="image/*"
+                onChange={saveFileImage}
+                style={{ width: "75%" }}
+                disabled={fileImage.length > 0}
+              />
+            </Form.Group>
 
             <div className="main_edit_fileimage_button">
               <button
@@ -116,7 +119,11 @@ function Main_Edit_File(props) {
                 삭제
               </button>
               <button
-                disabled={Text.length === 0 || fileImage.length === 0 || fileImage.length > 20}
+                disabled={
+                  Text.length === 0 ||
+                  fileImage.length === 0 ||
+                  fileImage.length > 20
+                }
                 type="submit"
                 className="btn btn-primary edit_file_submit"
               >
@@ -127,7 +134,7 @@ function Main_Edit_File(props) {
           <div className="main_edit_fileimage_div">
             <Carousel>
               {/* map함수로  fileImage state를 [] 순서대로 src에 넣기*/}
-              {fileImage.map(function (a,index) {
+              {fileImage.map(function (a, index) {
                 return (
                   <Carousel.Item key={index}>
                     {a && (
@@ -149,4 +156,3 @@ function Main_Edit_File(props) {
 }
 
 export default withRouter(Main_Edit_File);
-

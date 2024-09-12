@@ -10,7 +10,9 @@ function NamHeader() {
   let [modal, modal_change] = useState(false);
   let [modal_heart, modal_change_herat] = useState(false);
 
-  let [Profile, setProfile] = useState("https://d3gxsp5zp8da8n.cloudfront.net/hjstagram/icon/default_profile.png");
+  let [Profile, setProfile] = useState(
+    "https://d3gxsp5zp8da8n.cloudfront.net/hjstagram/icon/default_profile.png"
+  );
 
   const closeModal = () => {
     modal_change(false);
@@ -55,11 +57,19 @@ function NamHeader() {
               >
                 <div className="navlink_div">
                   <Nav.Link as={Link} to="/main">
-                    <img className="header_home" src="/img/header_home.png" alt="" />
+                    <img
+                      className="header_home"
+                      src="/img/header_home.png"
+                      alt=""
+                    />
                   </Nav.Link>
 
                   <Nav.Link as={Link} to="/main_edit_file">
-                    <img className="header_edit" src="/img/header_edit.png" alt="" />
+                    <img
+                      className="header_edit"
+                      src="/img/header_edit.png"
+                      alt=""
+                    />
                   </Nav.Link>
 
                   <div

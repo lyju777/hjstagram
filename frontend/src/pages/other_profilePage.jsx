@@ -1,19 +1,18 @@
 import React from "react";
-import NamHeader from '../components/common/namheader';
+import NamHeader from "../components/common/namheader";
 import OtherProfile from "../components/profile/other_profile";
 import OtherProfilePost from "../components/profile/other_profile_post";
 
-function OtherProfilePage(match){
+function OtherProfilePage(match) {
+  const { id } = match;
 
-    const { id } = match;
-
-    return (
-        <>
-          <NamHeader/>
-          <OtherProfile id={id}/>
-          <OtherProfilePost id={id}/>
-        </>
-    )
+  return (
+    <>
+      <NamHeader />
+      <OtherProfile id={id} />
+      <OtherProfilePost id={id} />
+    </>
+  );
 }
 
 export default OtherProfilePage;

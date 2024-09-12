@@ -1,7 +1,7 @@
-import requestAxios from '../../api/requestAxios';
+import requestAxios from "../../api/requestAxios";
 import React, { useState } from "react";
-import Form from 'react-bootstrap/Form';
-import {  withRouter } from "react-router-dom";
+import Form from "react-bootstrap/Form";
+import { withRouter } from "react-router-dom";
 
 function Profile_Change(props) {
   //파일 미리볼 url을 저장해줄 state
@@ -49,20 +49,25 @@ function Profile_Change(props) {
     requestAxios.get("/api/auth/check").then((response) => {
       id = response.data._id;
 
-      requestAxios.post(`/api/profilePic/${id}`, formData, config).then((response) => {
-        const profilepicurl = response.data.path;
-        let body = {
-          profilepicurl: profilepicurl,
-        };
+      requestAxios
+        .post(`/api/profilePic/${id}`, formData, config)
+        .then((response) => {
+          const profilepicurl = response.data.path;
+          let body = {
+            profilepicurl: profilepicurl,
+          };
 
-        //patch api 메소드
-        requestAxios.patch(`/api/auth/profileChange`, body).then((response) => {
-
-          requestAxios.patch(`api/posts/editprofileurl`, body).then((response) => {
-            props.history.push("/profiles"); // 여기 다시 프로필 페이지로 이동
-          });
+          //patch api 메소드
+          requestAxios
+            .patch(`/api/auth/profileChange`, body)
+            .then((response) => {
+              requestAxios
+                .patch(`api/posts/editprofileurl`, body)
+                .then((response) => {
+                  props.history.push("/profiles"); // 여기 다시 프로필 페이지로 이동
+                });
+            });
         });
-      });
     });
   };
 
@@ -78,13 +83,15 @@ function Profile_Change(props) {
           ></img>
 
           <div className="profile_change_div2">
-
-          <Form.Group controlId="formFile" className="mb-3">
-           <Form.Control type="file" className="imgUpload"
-              name="profile"
-              onChange={saveFileImage}
-              style={{width: "75%"}}
-              disabled={fileImage.length > 0} />
+            <Form.Group controlId="formFile" className="mb-3">
+              <Form.Control
+                type="file"
+                className="imgUpload"
+                name="profile"
+                onChange={saveFileImage}
+                style={{ width: "75%" }}
+                disabled={fileImage.length > 0}
+              />
             </Form.Group>
 
             <div className="main_edit_fileimage_button">
