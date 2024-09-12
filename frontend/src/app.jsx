@@ -2,6 +2,7 @@ import React from 'react';
 import './app.scss';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import PrivateRoute from './components/PrivateRoute';
 import LoginPage from './pages/loginPage';
 import SignUpPage from './pages/signupPage';
 import SendEmailPage from './pages/sendemailPage';
@@ -14,10 +15,10 @@ import MainEditFile from './pages/mainEditFile';
 import Profile_changePage from './pages/profile_changePage';
 import RecoverPassword from './components/auth/RecoverPassword';
 import UpdatePassword from './components/auth/UpdatePassword';
-
-import OtherProfile from './components/profile/other_profile';
-import OtherProfilePost from './components/profile/other_profile_post';
-import NamHeader from './components/common/namheader';
+import OtherProfilePage from './pages/other_profilePage';
+// import OtherProfile from './components/profile/other_profile';
+// import OtherProfilePost from './components/profile/other_profile_post';
+// import NamHeader from './components/common/namheader';
 
 
 function App() {
@@ -30,24 +31,31 @@ function App() {
             <Route path="/signup" component={SignUpPage} />
             <Route path="/sendemail" component={SendEmailPage} />
             <Route path="/auth" component={AuthPage} />
-            <Route path="/main" component={MainPage} />
-            <Route path="/profiles" component={ProfilePage} />
-            <Route path="/editprofile" component={EditProfilePage} />
-            <Route path="/changepassword" component={ChangePasswordPage} />
-            <Route path="/main_edit_file" component={MainEditFile} />
-            <Route path="/profile_change" component={Profile_changePage}/>
+            <PrivateRoute path="/main" component={MainPage} />
+            <PrivateRoute path="/profiles" component={ProfilePage} />
+            <PrivateRoute path="/editprofile" component={EditProfilePage} />
+            <PrivateRoute path="/changepassword" component={ChangePasswordPage} />
+            <PrivateRoute path="/main_edit_file" component={MainEditFile} />
+            <PrivateRoute path="/profile_change" component={Profile_changePage}/>
 
             <Route path="/recover_password" component={RecoverPassword} />
 
-          <Route
+          <PrivateRoute
               path="/update-password/:userId/:token"
               render={({ match }) => (
                 <UpdatePassword userId={match.params.userId} token={match.params.token} />
               )}
             />
 
+          <Route
+            path="/namprofiles/:id"
+            render={({ match }) => (
+              <OtherProfilePage id={match.params.id} />
+            )}
+           />
 
-            <Route
+
+            {/* <PrivateRoute
               path="/namprofiles/:id"
               render={({ match }) => (
                 <>
@@ -56,7 +64,7 @@ function App() {
                 <OtherProfilePost id={match.params.id}/>
                 </>
               )}
-            />
+            /> */}
 
 
           </Switch>

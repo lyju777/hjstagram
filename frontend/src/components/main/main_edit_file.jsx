@@ -116,7 +116,7 @@ function Main_Edit_File(props) {
                 삭제
               </button>
               <button
-                disabled={Text.length === 0 || fileImage.length === 0}
+                disabled={Text.length === 0 || fileImage.length === 0 || fileImage.length > 20}
                 type="submit"
                 className="btn btn-primary edit_file_submit"
               >

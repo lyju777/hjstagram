@@ -70,11 +70,11 @@ function SignUp(props){
                 setUserNameMsg('') // 정규식이 맞다면 ''공백으로 처리
             }
         }) 
-    //  2 ~ 10자 한글, 영문, 숫자 조합
-    var regExp = /^([a-zA-Z0-9ㄱ-ㅎ|ㅏ-ㅣ|가-힣]).{2,10}$/;
+    //  2 ~ 10자 영문, 숫자 조합
+    var regExp = /^[a-zA-Z0-9]{2,10}$/;
     // 형식에 맞는 경우 true 리턴
     if(!regExp.test(e.target.value)){
-        setUserNameMsg('사용자이름은 한글, 영문, 숫자만 가능하며 2-10자리 가능합니다')
+        setUserNameMsg('사용자이름은 영문, 숫자만 가능하며 2-10자리 가능합니다')
     }else{
         setUserNameMsg('') // 정규식이 맞다면 ''공백으로 처리
     }

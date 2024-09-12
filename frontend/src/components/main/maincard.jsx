@@ -416,6 +416,7 @@ function MainCard() {
                   </div>
 
                   {/* 댓글쓴이 & 댓글 */}
+              <div className="contents_div_container">
                   {CommentOjArr[i] &&
                     CommentOjArr[i].map((w, j) => (
                       <React.Fragment key={w._id}>
@@ -443,6 +444,7 @@ function MainCard() {
                         </div>
                       </React.Fragment>
                     ))}
+                </div>
                 </ListGroupItem>
 
                 <ListGroupItem style={{ paddingBottom: "10px" }}>
