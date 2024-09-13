@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "./styledComponents";
 import styled from "styled-components";
-import axios from "axios";
+import requestAxios from "../../api/requestAxios";
 
 export const RecoverPasswordStyles = styled.div`
   height: 100%;
@@ -81,7 +81,7 @@ function RecoverPassword() {
       email: Email,
     };
 
-    axios.post("/api/auth/sendemail", body).then((response) => {
+    requestAxios.post("/api/auth/sendemail", body).then((response) => {
       if (response) {
         setSubmitted(true);
         console.log(response);

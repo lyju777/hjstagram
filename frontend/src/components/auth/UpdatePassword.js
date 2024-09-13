@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios";
+import requestAxios from "../../api/requestAxios";
 import { Link } from "react-router-dom";
 import { Button } from "./styledComponents";
 
@@ -65,8 +65,7 @@ function UpdatePassword(match) {
 
     // state 입력값이 같을경우만 post
     if (password === confirmPassword) {
-      axios
-        .post(`/api/auth/receive_new_password/${userId}/${token}`, body)
+      requestAxios.post(`/api/auth/receive_new_password/${userId}/${token}`, body)
         .then(() => {
           setsubmitted(true);
         })
