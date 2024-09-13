@@ -1,6 +1,6 @@
 # hjstagram
 
-https://web-hjstagram-13d1yv2clqvx92fu.sel5.cloudtype.app/
+🔗https://web-hjstagram-13d1yv2clqvx92fu.sel5.cloudtype.app/
 
 - React 컴포넌트 기반 UI 구축 및 Redux를 통한 상태관리
 - 데이터 통신을 위한 Axios 사용과 Styled-components를 통한 스타일 정의
