@@ -50,7 +50,7 @@ function Profile() {
       try {
         const response = await requestAxios.get("/api/auth/check");
 
-        setDataUsername(response.data.username); // 사용자이름
+        setDataUsername(response.data.username); // 아이디
         setDataName(response.data.name); // 이름
         setIntroment(response.data.introment); // 소개글
         setfollowingNum(response.data.followingNum);

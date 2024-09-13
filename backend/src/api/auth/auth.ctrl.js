@@ -109,7 +109,7 @@ export const edit = async (ctx) => {
   const schema = Joi.object().keys({
     name: Joi.string(),
     username: Joi.string(),
-    introment: Joi.string(),
+    introment: Joi.string().allow(''),
   });
 
   const result = schema.validate(ctx.request.body);
@@ -255,12 +255,6 @@ export const idCheck = async (ctx) => {
   const exists = await User.findByUsername(username);
   if (exists) {
     ctx.body = exists;
-  }
-  if (exists.username === ctx.state.user.username) {
-    ctx.body = "ME";
-  }
-  if (!exists) {
-    ctx.body = { person: "없다고" };
   }
 };
 

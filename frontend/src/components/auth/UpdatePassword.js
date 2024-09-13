@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import requestAxios from "../../api/requestAxios";
 import { Link } from "react-router-dom";
 import { Button } from "./styledComponents";
@@ -12,6 +12,20 @@ function UpdatePassword(match) {
   const [PassWordMsg, setPassWordMsg] = useState("");
   const [CheckPassWordMsg, setCheckPassWordMsg] = useState("");
 
+  // 유효성 검사 체크
+  const [isFormValid, setIsFormValid] = useState(false);
+  const [passwordValid, setPasswordValid] = useState(false);
+  const [passwordCheckValid, setPasswordCheckValid] = useState(false);
+
+  useEffect(() => {
+    // 모든 필드가 유효한지 확인
+    if (passwordValid && passwordCheckValid) {
+      setIsFormValid(true);
+    } else {
+      setIsFormValid(false);
+    }
+  }, [passwordValid, passwordCheckValid]);
+
   const onpassword = (event) => {
     setpassword(event.currentTarget.value);
   };
@@ -22,13 +36,15 @@ function UpdatePassword(match) {
 
   //비밀번호 유효성 검사
   const checkPassword = (e) => {
-    //  8 ~ 15자 영문, 숫자 조합
+    //  8~15자 영문, 숫자 조합
     var regExp = /^(?=.*\d)(?=.*[a-zA-Z])[0-9a-zA-Z]{8,15}$/;
     // 형식에 맞는 경우 true 리턴
     if (!regExp.test(e.target.value)) {
-      setPassWordMsg("8 ~ 15자 영문 또는 숫자로 입력해주세요.");
+      setPassWordMsg("8~15자 영문 또는 숫자로 입력해주세요.");
+      setPasswordValid(false);
     } else {
       setPassWordMsg(""); // 정규식이 맞다면 ''공백으로 처리
+      setPasswordValid(true);
     }
   };
 
@@ -36,20 +52,13 @@ function UpdatePassword(match) {
 
   //비밀번호 확인 검사
   const Check_checkPassword = (e) => {
-    //  8 ~ 15자 영문, 숫자 조합
-    var regExp = /^(?=.*\d)(?=.*[a-zA-Z])[0-9a-zA-Z]{8,15}$/;
-    // 형식에 맞는 경우 true 리턴
-    if (!regExp.test(e.target.value)) {
-      setCheckPassWordMsg("8 ~ 15자 영문 또는 숫자로 입력해주세요.");
-    } else {
-      setCheckPassWordMsg(""); // 정규식이 맞다면 ''공백으로 처리
-    }
-
-    if (password !== confirmPassword) {
+    if (password !== confirmPassword || password === "") {
       // 입력된 두 state값을 서로 비교해준다.
       setCheckPassWordMsg("비밀번호가 다릅니다.");
+      setPasswordCheckValid(false);
     } else {
       setCheckPassWordMsg("");
+      setPasswordCheckValid(true);
     }
   };
 
@@ -65,7 +74,8 @@ function UpdatePassword(match) {
 
     // state 입력값이 같을경우만 post
     if (password === confirmPassword) {
-      requestAxios.post(`/api/auth/receive_new_password/${userId}/${token}`, body)
+      requestAxios
+        .post(`/api/auth/receive_new_password/${userId}/${token}`, body)
         .then(() => {
           setsubmitted(true);
         })
@@ -121,7 +131,12 @@ function UpdatePassword(match) {
                 />
                 <p className="Msg">{CheckPassWordMsg}</p>
               </div>
-              <Button className="btn btn-primary btn-block">확인</Button>
+              <Button
+                className="btn btn-primary btn-block"
+                disabled={!isFormValid}
+              >
+                확인
+              </Button>
             </form>
 
             <p

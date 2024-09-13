@@ -33,7 +33,7 @@ function Login(props) {
       })
       .then((response) => {
         if (response.data.person === "없다고") {
-          setUserNameMsg("사용자이름이 존재하지 않습니다.");
+          setUserNameMsg("아이디가 존재하지 않습니다.");
         } else if (response.data.pw === "틀림") {
           setUserNameMsg("비밀번호를 잘못 입력하셨습니다.");
         } else {
@@ -66,18 +66,16 @@ function Login(props) {
           </div>
 
           <div className="form-group">
-            {/* <label>Email address</label> */}
             <input
               type="text"
               className="form-control"
-              placeholder="사용자 이름"
+              placeholder="아이디"
               value={Username}
               onChange={onUsernameHandler}
             />
           </div>
 
           <div className="form-group">
-            {/* <label>Password</label> */}
             <input
               type="password"
               className="form-control"

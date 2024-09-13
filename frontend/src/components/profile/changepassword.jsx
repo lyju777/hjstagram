@@ -19,6 +19,11 @@ function ChangePassword(props) {
   const [PassWordMsg, setPassWordMsg] = useState("");
   const [CheckPassWordMsg, setCheckPassWordMsg] = useState("");
 
+  // 유효성 검사 체크
+  const [isFormValid, setIsFormValid] = useState(false);
+  const [passwordValid, setPasswordValid] = useState(false);
+  const [passwordCheckValid, setPasswordCheckValid] = useState(false);
+
   const onOldPasswordHandler = (event) => {
     setOldPassword(event.currentTarget.value);
   };
@@ -60,6 +65,13 @@ function ChangePassword(props) {
   };
 
   useEffect(() => {
+    // 모든 필드가 유효한지 확인
+    if (passwordValid && passwordCheckValid) {
+      setIsFormValid(true);
+    } else {
+      setIsFormValid(false);
+    }
+
     const fetchData = async () => {
       try {
         await requestAxios.get("/api/auth/check").then((response) => {
@@ -76,7 +88,7 @@ function ChangePassword(props) {
       }
     };
     fetchData();
-  }, []);
+  }, [passwordValid, passwordCheckValid]);
 
   //비밀번호 유효성 검사
   const checkPassword = (e) => {
@@ -84,32 +96,27 @@ function ChangePassword(props) {
       .get("/api/auth/check") // 입력한 비밀번호와 내 기존 비밀번호가 일치한지비교?
       .then((response) => {});
 
-    //  8 ~ 15자 영문, 숫자 조합
+    //  8~15자 영문, 숫자 조합
     var regExp = /^(?=.*\d)(?=.*[a-zA-Z])[0-9a-zA-Z]{8,15}$/;
     // 형식에 맞는 경우 true 리턴
     if (!regExp.test(e.target.value)) {
-      setPassWordMsg("8 ~ 15자 영문 또는 숫자로 입력해주세요.");
+      setPassWordMsg("8~15자 영문 또는 숫자로 입력해주세요.");
+      setPasswordValid(false);
     } else {
       setPassWordMsg(""); // 정규식이 맞다면 ''공백으로 처리
+      setPasswordValid(true);
     }
   };
 
   //비밀번호 확인 검사
   const Check_checkPassword = (e) => {
-    //  8 ~ 15자 영문, 숫자 조합
-    var regExp = /^(?=.*\d)(?=.*[a-zA-Z])[0-9a-zA-Z]{8,15}$/;
-    // 형식에 맞는 경우 true 리턴
-    if (!regExp.test(e.target.value)) {
-      setCheckPassWordMsg("8 ~ 15자 영문 또는 숫자로 입력해주세요.");
-    } else {
-      setCheckPassWordMsg(""); // 정규식이 맞다면 ''공백으로 처리
-    }
-
-    if (NewPassword !== confirmPassword) {
+    if (NewPassword !== confirmPassword || NewPassword === "") {
       // 입력된 두 state값을 서로 비교해준다.
       setCheckPassWordMsg("비밀번호가 다릅니다.");
+      setPasswordCheckValid(false);
     } else {
       setCheckPassWordMsg("");
+      setPasswordCheckValid(true);
     }
   };
 
@@ -218,6 +225,7 @@ function ChangePassword(props) {
             type="submit"
             className="btn btn-primary editprofile_btn"
             onClick={onClickHandler}
+            disabled={!isFormValid}
           >
             비밀번호 변경
           </button>

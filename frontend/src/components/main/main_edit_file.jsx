@@ -90,10 +90,11 @@ function Main_Edit_File(props) {
           <p className="new_edit">새 게시물 만들기</p>
           <img alt="" className="fileupload" src="./img/fileupload.png"></img>
           <div className="main_edit_fileimage_div2">
-            <input
+            <textarea
               type="text"
               className="form-control main_edit_file_textarea"
-              placeholder="게시글을 작성하세요."
+              placeholder="게시글을 작성하세요. (최대50자)"
+              maxLength="50"
               value={Text}
               onChange={onTextHandler}
             />

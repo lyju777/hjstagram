@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "./styledComponents";
 import styled from "styled-components";
@@ -59,6 +59,20 @@ function RecoverPassword() {
   // 유효성 메세지 state
   const [EmailMsg, setEmailMsg] = useState("");
 
+    // 유효성 검사 체크
+    const [isFormValid, setIsFormValid] = useState(false);
+    const [emailValid, setEmailValid] = useState(false);
+
+  useEffect(() => {
+    // 모든 필드가 유효한지 확인
+    if (emailValid) {
+      setIsFormValid(true);
+    } else {
+      setIsFormValid(false);
+    }
+  }, [emailValid]);
+
+
   const onEmailHandler = (event) => {
     setEmail(event.currentTarget.value);
   };
@@ -69,8 +83,10 @@ function RecoverPassword() {
     // 형식에 맞는 경우 true 리턴
     if (!regExp.test(e.target.value)) {
       setEmailMsg("이메일 형식을 확인해주세요.");
+      setEmailValid(false);
     } else {
       setEmailMsg(""); // 정규식이 맞다면 ''공백으로 처리
+      setEmailValid(true);
     }
   };
 
@@ -115,7 +131,7 @@ function RecoverPassword() {
                 <input
                   type="text"
                   className="form-control"
-                  placeholder="이메일 주소(Email)"
+                  placeholder="이메일 주소"
                   onChange={onEmailHandler}
                   value={Email}
                   onBlur={checkEmail}
@@ -123,7 +139,7 @@ function RecoverPassword() {
                 <p className="Msg">{EmailMsg}</p>
               </div>
 
-              <Button className="btn btn-primary btn-block">다음</Button>
+              <Button className="btn btn-primary btn-block" disabled={!isFormValid}>다음</Button>
 
               <p className="login text-right text-right_pw">
                 비밀번호가 기억났나요? <Link to="/login">로그인</Link>

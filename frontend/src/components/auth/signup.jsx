@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, withRouter } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { registerUser } from "../../_actions/user_action";
@@ -17,6 +17,21 @@ function SignUp(props) {
   const [EmailMsg, setEmailMsg] = useState("");
   const [UserNameMsg, setUserNameMsg] = useState("");
   const [PassWordMsg, setPassWordMsg] = useState("");
+
+  // 유효성 검사 체크
+  const [isFormValid, setIsFormValid] = useState(false);
+  const [usernameValid, setUsernameValid] = useState(false);
+  const [emailValid, setEmailValid] = useState(false);
+  const [passwordValid, setPasswordValid] = useState(false);
+
+  useEffect(() => {
+    // 모든 필드가 유효한지 확인
+    if (usernameValid && emailValid && passwordValid) {
+      setIsFormValid(true);
+    } else {
+      setIsFormValid(false);
+    }
+  }, [usernameValid, emailValid, passwordValid]);
 
   const onEmailHandler = (event) => {
     setEmail(event.currentTarget.value);
@@ -41,8 +56,10 @@ function SignUp(props) {
       .then((response) => {
         if (response.data.email) {
           setEmailMsg("이미 존재하는 이메일입니다.");
+          setEmailValid(false);
         } else {
           setEmailMsg("");
+          setEmailValid(true);
         }
       });
 
@@ -50,8 +67,10 @@ function SignUp(props) {
     // 형식에 맞는 경우 true 리턴
     if (!regExp.test(e.target.value)) {
       setEmailMsg("이메일 형식을 확인해주세요.");
+      setEmailValid(false);
     } else {
       setEmailMsg(""); // 정규식이 맞다면 ''공백으로 처리
+      setEmailValid(true);
     }
   };
 
@@ -61,30 +80,36 @@ function SignUp(props) {
       .post("/api/auth/idCheck", { username: Username })
       .then((response) => {
         if (response.data.username) {
-          setUserNameMsg("이미 존재하는 사용자이름입니다.");
+          setUserNameMsg("이미 존재하는 아이디 입니다.");
+          setUsernameValid(false);
         } else {
           setUserNameMsg(""); // 정규식이 맞다면 ''공백으로 처리
+          setUsernameValid(true);
         }
       });
     //  2 ~ 10자 영문, 숫자 조합
     var regExp = /^[a-zA-Z0-9]{2,10}$/;
     // 형식에 맞는 경우 true 리턴
     if (!regExp.test(e.target.value)) {
-      setUserNameMsg("사용자이름은 영문, 숫자만 가능하며 2-10자리 가능합니다");
+      setUserNameMsg("아이디는 영문,숫자 2~10자리까지 가능합니다.");
+      setUsernameValid(false);
     } else {
       setUserNameMsg(""); // 정규식이 맞다면 ''공백으로 처리
+      setUsernameValid(true);
     }
   };
 
   //비밀번호 유효성 검사
   const checkPassword = (e) => {
-    //  8 ~ 15자 영문, 숫자 조합
+    //  8~15자 영문, 숫자 조합
     var regExp = /^(?=.*\d)(?=.*[a-zA-Z])[0-9a-zA-Z]{8,15}$/;
     // 형식에 맞는 경우 true 리턴
     if (!regExp.test(e.target.value)) {
-      setPassWordMsg("8 ~ 15자 영문 또는 숫자로 입력해주세요.");
+      setPassWordMsg("8~15자 영문 또는 숫자로 입력해주세요.");
+      setPasswordValid(false);
     } else {
       setPassWordMsg(""); // 정규식이 맞다면 ''공백으로 처리
+      setPasswordValid(true);
     }
   };
 
@@ -152,7 +177,7 @@ function SignUp(props) {
               type="text"
               id="username"
               className="form-control"
-              placeholder="사용자 이름"
+              placeholder="아이디"
               value={Username}
               onChange={onUsernameHandler}
               onBlur={checkUserName}
@@ -174,7 +199,11 @@ function SignUp(props) {
 
           <div className="form-group"></div>
 
-          <button type="submit" className="btn btn-primary btn-block">
+          <button
+            type="submit"
+            className="btn btn-primary btn-block"
+            disabled={!isFormValid}
+          >
             가입
           </button>
 

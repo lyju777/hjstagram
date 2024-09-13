@@ -16,16 +16,9 @@ function EditProfile(props) {
   const [Name, setName] = useState("");
   const [Introment, setIntroment] = useState("");
 
-  // 유효성 메세지 state
-  const [UserNameMsg, setUserNameMsg] = useState("");
-
   // react는 input에 value값을 지정하면 입력이 불가능, handler만들어서 onChange로 설정해줘야함
   const onNameHandler = (event) => {
     setName(event.currentTarget.value);
-  };
-
-  const onUserNameHandler = (event) => {
-    setUsername(event.currentTarget.value);
   };
 
   const onIntroductionHandler = (event) => {
@@ -34,27 +27,6 @@ function EditProfile(props) {
 
   const onSubmitHandler = (event) => {
     event.preventDefault(); // 페이지 새로고침 방지
-  };
-
-  // 아이디 유효성 검사
-  const checkUserName = (e) => {
-    requestAxios
-      .post("/api/auth/idCheck", { username: Username })
-      .then((response) => {
-        if (response.data.username) {
-          setUserNameMsg("이미 존재하는 사용자이름입니다.");
-        } else {
-          setUserNameMsg(""); // 정규식이 맞다면 ''공백으로 처리
-        }
-      });
-    //  2 ~ 10자 영문, 숫자 조합
-    var regExp = /^[a-zA-Z0-9]{2,10}$/;
-    // 형식에 맞는 경우 true 리턴
-    if (!regExp.test(e.target.value)) {
-      setUserNameMsg("사용자이름은 영문, 숫자만 가능하며 2-10자리 가능합니다");
-    } else {
-      setUserNameMsg(""); // 정규식이 맞다면 ''공백으로 처리
-    }
   };
 
   let id = "";
@@ -159,6 +131,7 @@ function EditProfile(props) {
               <input
                 type="text"
                 className="form-control"
+                maxLength="10"
                 placeholder="이름"
                 value={Name}
                 onChange={onNameHandler}
@@ -166,21 +139,21 @@ function EditProfile(props) {
             </div>
 
             <div className="form-group editprofile_form">
-              <label className="editprofile_label">사용자이름</label>
+              <label className="editprofile_label">아이디</label>
               <input
                 type="text"
                 className="form-control"
-                placeholder="사용자이름"
+                placeholder="아이디"
                 value={Username}
-                onChange={onUserNameHandler}
-                onBlur={checkUserName}
+                disabled={true}
               />
             </div>
-            <p className="Msg2">{UserNameMsg}</p>
 
             <div className="form-group editprofile_form">
               <label className="editprofile_label">소개</label>
               <textarea
+                placeholder="최대 20자"
+                maxLength="20"
                 type="text"
                 className="form-control changepassword_textarea"
                 value={Introment}
@@ -194,6 +167,7 @@ function EditProfile(props) {
               type="submit"
               className="btn btn-primary editprofile_btn"
               onClick={onClickHandler}
+              disabled={Name ? false : true}
             >
               변경
             </button>
@@ -204,8 +178,19 @@ function EditProfile(props) {
                 modal_change(true);
               }}
             >
-              <p style={{ color: "#0d6eff", cursor: "pointer" }}>
-                회원탈퇴 하시겠습니까?
+              <p>
+                <button
+                  style={{
+                    color: "#4395ff",
+                    cursor: "pointer",
+                    fontWeight: "bolder",
+                    background: "none",
+                    border: "none",
+                    padding: 0,
+                  }}
+                >
+                  회원탈퇴 하시겠습니까?
+                </button>
               </p>
             </span>
           </form>
