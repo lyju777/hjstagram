@@ -27,16 +27,8 @@ function App() {
           <Route path="/signup" component={SignUpPage} />
           <Route path="/sendemail" component={SendEmailPage} />
           <Route path="/auth" component={AuthPage} />
-          <PrivateRoute path="/main" component={MainPage} />
-          <PrivateRoute path="/profiles" component={ProfilePage} />
-          <PrivateRoute path="/editprofile" component={EditProfilePage} />
-          <PrivateRoute path="/changepassword" component={ChangePasswordPage} />
-          <PrivateRoute path="/main_edit_file" component={MainEditFile} />
-          <PrivateRoute path="/profile_change" component={Profile_changePage} />
-
           <Route path="/recover_password" component={RecoverPassword} />
-
-          <PrivateRoute
+          <Route
             path="/update-password/:userId/:token"
             render={({ match }) => (
               <UpdatePassword
@@ -45,10 +37,18 @@ function App() {
               />
             )}
           />
-
-          <Route
+          
+          <PrivateRoute path="/main" component={MainPage} />
+          <PrivateRoute path="/profiles" component={ProfilePage} />
+          <PrivateRoute path="/editprofile" component={EditProfilePage} />
+          <PrivateRoute path="/changepassword" component={ChangePasswordPage} />
+          <PrivateRoute path="/main_edit_file" component={MainEditFile} />
+          <PrivateRoute path="/profile_change" component={Profile_changePage} />
+          <PrivateRoute
             path="/namprofiles/:id"
-            render={({ match }) => <OtherProfilePage id={match.params.id} />}
+            component={(props) => (
+              <OtherProfilePage {...props} id={props.match.params.id} />
+            )}
           />
         </Switch>
       </div>
