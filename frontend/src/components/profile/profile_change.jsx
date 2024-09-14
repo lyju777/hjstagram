@@ -2,11 +2,13 @@ import requestAxios from "../../api/requestAxios";
 import React, { useState } from "react";
 import Form from "react-bootstrap/Form";
 import { withRouter } from "react-router-dom";
+import { Spinner } from "react-bootstrap";
 
 function Profile_Change(props) {
   //파일 미리볼 url을 저장해줄 state
   const [fileImage, setFileImage] = useState([]); // 단일이어도 배열 처리 해줘야함
   const [FileUpload, setFileUpload] = useState([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // 파일 업로드 및 미리보기 이미지
   const saveFileImage = (e) => {
@@ -32,24 +34,31 @@ function Profile_Change(props) {
     setFileUpload([]);
   };
 
-  const UploadPost = (event) => {
+  const UploadPost = async (event) => {
     event.preventDefault(); // 페이지 새로고침 방지
 
-    const formData = new FormData();
+    if (isSubmitting) {
+      return;
+    }
 
-    formData.append("profile", FileUpload[0], FileUpload[0].name);
+    setIsSubmitting(true);
 
-    const config = {
-      headers: {
-        "content-type": "multipart/form-data",
-      },
-    };
-    let id = "";
+    try {
+      const formData = new FormData();
 
-    requestAxios.get("/api/auth/check").then((response) => {
+      formData.append("profile", FileUpload[0], FileUpload[0].name);
+
+      const config = {
+        headers: {
+          "content-type": "multipart/form-data",
+        },
+      };
+      let id = "";
+
+      const response = await requestAxios.get("/api/auth/check");
       id = response.data._id;
 
-      requestAxios
+      await requestAxios
         .post(`/api/profilePic/${id}`, formData, config)
         .then((response) => {
           const profilepicurl = response.data.path;
@@ -68,12 +77,16 @@ function Profile_Change(props) {
                 });
             });
         });
-    });
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
     <>
-      <form onSubmit={UploadPost} encType="multipart/form-data">
+      <form encType="multipart/form-data">
         <div className="profile_change_div_1 auth-inner">
           <p className="new_edit">프로필 사진 변경</p>
           <img
@@ -105,9 +118,20 @@ function Profile_Change(props) {
               <button
                 type="submit"
                 className="btn btn-primary edit_file_submit"
-                disabled={fileImage.length === 0}
+                onClick={UploadPost}
+                disabled={fileImage.length === 0 || isSubmitting}
               >
-                변경
+                {isSubmitting ? (
+                  <Spinner
+                    as="span"
+                    animation="border"
+                    size="sm"
+                    role="status"
+                    aria-hidden="true"
+                  />
+                ) : (
+                  "등록"
+                )}
               </button>
             </div>
           </div>

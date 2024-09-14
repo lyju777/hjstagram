@@ -2,13 +2,14 @@ import requestAxios from "../../api/requestAxios";
 import Form from "react-bootstrap/Form";
 import React, { useState } from "react";
 import { withRouter } from "react-router-dom";
-import { Carousel } from "react-bootstrap";
+import { Carousel, Spinner } from "react-bootstrap";
 
 function Main_Edit_File(props) {
   //파일 미리볼 url을 저장해줄 state
   const [fileImage, setFileImage] = useState([]);
   const [FileUpload, setFileUpload] = useState([]);
   const [Text, setText] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // 파일 업로드 및 미리보기 이미지
   const saveFileImage = (e) => {
@@ -42,25 +43,32 @@ function Main_Edit_File(props) {
     contents: Text,
   };
 
-  const UploadPost = (event) => {
+  const UploadPost = async (event) => {
     event.preventDefault(); // 페이지 새로고침 방지
 
-    const formData = new FormData();
-
-    for (let i = 0; i < FileUpload.length; i++) {
-      formData.append("attachment", FileUpload[i], FileUpload[i].name);
+    if (isSubmitting) {
+      return;
     }
-    const config = {
-      headers: {
-        "content-type": "multipart/form-data",
-      },
-    };
-    let id = "";
-    const fileurls = [];
-    requestAxios.post("/api/posts", body).then((response) => {
+
+    setIsSubmitting(true);
+    try {
+      const formData = new FormData();
+
+      for (let i = 0; i < FileUpload.length; i++) {
+        formData.append("attachment", FileUpload[i], FileUpload[i].name);
+      }
+      const config = {
+        headers: {
+          "content-type": "multipart/form-data",
+        },
+      };
+      let id = "";
+      const fileurls = [];
+
+      const response = await requestAxios.post("/api/posts", body);
       id = response.data._id;
 
-      requestAxios
+      await requestAxios
         .post(`/api/files/${id}`, formData, config)
         .then((response) => {
           requestAxios
@@ -69,7 +77,6 @@ function Main_Edit_File(props) {
               for (let i = 0; i < response.data.length; i++) {
                 fileurls[i] = response.data[i].path;
               }
-
               let body = {
                 fileurl: fileurls,
               };
@@ -80,12 +87,16 @@ function Main_Edit_File(props) {
             });
         });
       requestAxios.patch(`/api/auth/addPost`).then((response) => {});
-    });
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
     <>
-      <form onSubmit={UploadPost} encType="multipart/form-data">
+      <form encType="multipart/form-data">
         <div className="main_edit_file_div auth-inner">
           <p className="new_edit">새 게시물 만들기</p>
           <img alt="" className="fileupload" src="./img/fileupload.png"></img>
@@ -123,12 +134,23 @@ function Main_Edit_File(props) {
                 disabled={
                   Text.length === 0 ||
                   fileImage.length === 0 ||
-                  fileImage.length > 20
+                  fileImage.length > 20 ||
+                  isSubmitting
                 }
-                type="submit"
+                onClick={UploadPost}
                 className="btn btn-primary edit_file_submit"
               >
-                등록
+                {isSubmitting ? (
+                  <Spinner
+                    as="span"
+                    animation="border"
+                    size="sm"
+                    role="status"
+                    aria-hidden="true"
+                  />
+                ) : (
+                  "등록"
+                )}
               </button>
             </div>
           </div>
