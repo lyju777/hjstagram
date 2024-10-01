@@ -3,9 +3,8 @@
 🔗https://web-hjstagram-13d1yv2clqvx92fu.sel5.cloudtype.app/
 
 - React 컴포넌트 기반 UI 구축 및 Redux를 통한 상태관리
-- 데이터 통신을 위한 Axios 사용과 Styled-components를 통한 스타일 정의
 - AWS S3 bucket과 CloudFront를 통한 이미지 파일 업로드 및 제공
-- Node.js와 Express로 RESTful API 서버 구축
+- 데이터 통신을 위한 Axios 사용과 Node.js와 Express로 RESTful API 서버 구축
 - JWT를 사용한 사용자 인증 및 권한 부여를 처리 및 bcrypt를 통한 비밀번호 암호화 적용
 
 <br>
