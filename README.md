@@ -1,10 +1,14 @@
 # hjstagram
 
-🔗https://web-hjstagram-13d1yv2clqvx92fu.sel5.cloudtype.app/
+### 🔗사이트로 이동
+➡️ https://web-hjstagram-13d1yv2clqvx92fu.sel5.cloudtype.app/
 
-✅ React 컴포넌트 기반 UI 구축 및 데이터 상태관리
+<br>
 
-✅ AWS S3 bucket과 CloudFront를 통한 이미지 파일 업로드 및 제공
+### 🛠 구현 기술
+✅ React Router ver6 기반 컴포넌트 UI 구축 및 데이터 상태관리
+
+✅ AWS S3 bucket과 CloudFront를 통한 이미지 파일 업로드 기능구현
   
 ✅ 데이터 통신을 위한 Axios 사용과 Node.js와 Express로 RESTful API 서버 구축
   
