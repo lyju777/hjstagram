@@ -5,7 +5,7 @@
 
 <br>
 
-### 🛠 구현기술 정리
+### 🛠 구현기술 요약
 ✅ React17 Router ver6 기반 컴포넌트 UI 구축 및 데이터 상태관리
 
 ✅ AWS S3 bucket과 CloudFront를 통한 이미지 파일 업로드 기능구현
