@@ -1,18 +1,50 @@
 # hjstagram
 
-### 🔗사이트로 이동
+#### 🔗Site Link
 ➡️ https://web-hjstagram-13d1yv2clqvx92fu.sel5.cloudtype.app/
 
 <br>
+<br>
 
-### 🛠 구현기술 요약
-✅ React17 Router ver6 기반 컴포넌트 UI 구축 및 데이터 상태관리
+**💡프로젝트 개요**
 
-✅ AWS S3 bucket과 CloudFront를 통한 이미지 파일 업로드 기능구현
-  
-✅ 데이터 통신을 위한 Axios 연동과 Node.js Express기반 RESTful API 서버 구축
-  
-✅ JWT를 사용한 사용자 인증 및 권한 부여를 처리 및 bcrypt를 통한 비밀번호 암호화 적용
+hjstagram 프로젝트는 Instagram의 핵심 기능들을 재구현한 SNS 사이트입니다. Node.js Express 기반의 REST API 서버를 구축하여 데이터를 연동하고 React router 기반의 컴포넌트 UI 구현을 통해 사용자 프로필 관리, 게시물 업로드, 좋아요, 팔로잉 팔로우 등의 SNS 기능을 구현하였습니다.
+
+<br>
+
+**🤝참여인원**
+
+FrontEnd(1명) | BackEnd(1명)
+
+<br>
+
+**🛠️기술 스택**
+
+**Client :    `JavaScript`  `React`  `scss`  `axios`  `Bootstrap`  `s3-bucket`  `cloudfront`** 
+
+**Server :   `MongoDB`  `Node.js`  `bcrypt`  `multer-s3`**
+
+<br>
+
+**💻담당파트**
+
+- 로그인, 로그아웃, 회원가입 기능 구현
+- 비밀번호 변경, 이메일 발송을 통한 비밀번호 찾기 기능 구현
+- 게시글 등록/삭제, 좋아요, 팔로잉/팔로우, 댓글입력/삭제기능 구현
+- 다른 사용자의 프로필 방문을 통한 팔로잉/팔로우 끊기 기능구현
+- 개인 프로필 접속을 통한 팔로잉/팔로워 조회기능 구현
+- 프로필 사진 변경/수정 기능구현
+
+<br>
+
+**🚀업데이트**
+
+ **기간 :** ~ 2024.09.14
+
+- 사용자 Form 데이터 유효성 검증로직 개선과 관련 UI 수정
+- API 비동기 요청 시 응답 데이터 지연에 대비한 React Spinner 적용
+- react-route v6 기반 PrivateRoute 설정을 통한 비로그인 유저 접근권한 설정
+- AWS s3-bucket과 cloudfront연동을 통한 이미지 파일 스토리지 업로드 구현
 
 <br>
 
@@ -76,14 +108,3 @@ npm install react-scripts --save
 npm install -g node-gyp
 ```
 
-<br>
-
-![1.project](./frontend/public/img/1.project.png)
-![2.project](./frontend/public/img/2.project.png)
-![3.project](./frontend/public/img/3.project.png)
-![4.project](./frontend/public/img/4.project.png)
-![5.project](./frontend/public/img/5.project.png)
-![6.project](./frontend/public/img/6.project.png)
-![7.project](./frontend/public/img/7.project.png)
-![8.project](./frontend/public/img/8.project.png)
-![9.project](./frontend/public/img/9.project.png)
