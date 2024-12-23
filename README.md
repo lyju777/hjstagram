@@ -7,7 +7,7 @@
 
 **💡프로젝트 설명**
 
-hjstagram 프로젝트는 Instagram의 핵심 기능들을 재구현한 SNS 사이트입니다. Node.js Express 기반의 REST API 서버를 구축하여 데이터를 연동하고 React router 기반의 컴포넌트 UI 구현을 통해 사용자 프로필 관리, 게시물 업로드, 좋아요, 팔로잉 팔로우 등의 SNS 기능을 구현하였습니다.
+hjstagram 프로젝트는 Instagram의 핵심 기능들을 재구현한 소셜 네트워크 서비스 입니다. Node.js Express 기반의 REST API 서버를 구축하여 데이터를 연동하고 React router 기반의 컴포넌트 설계를 통해 SNS의 기능들을 구현하였습니다.
 
 <br>
 
