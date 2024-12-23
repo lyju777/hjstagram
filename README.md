@@ -17,7 +17,7 @@ FrontEnd(1명) | BackEnd(1명)
 
 <br>
 
-**🛠️기술 스택**
+**🛠️기술스택**
 
 **Client :    `JavaScript`  `React`  `scss`  `axios`  `Bootstrap`  `s3-bucket`  `cloudfront`** 
 
