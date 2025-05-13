@@ -57,32 +57,37 @@ export const register = async (ctx) => {
 export const login = async (ctx) => {
   const { username, password } = ctx.request.body;
 
+  console.log("Login attempt for username:", username);
+
   if (!username || !password) {
     ctx.status = 401;
+    console.log("Missing username or password");
     return;
   }
 
   try {
     const user = await User.findByUsername(username);
+    console.log("User found:", user ? "Yes" : "No");
+
     if (!user) {
-      // username의 아이디 사용자가 없을 때
       ctx.status = 401;
+      console.log("User not found");
       return;
     }
 
-    // 사용자 잇으면 비밀번호 체크하기
     const valid = await user.checkPassword(password);
+    console.log("Password valid:", valid);
+
     if (!valid) {
-      // 비밀번호 틀렷을 때
       ctx.status = 401;
+      console.log("Invalid password");
       return;
     }
 
-    // 비번 맞으면 직렬화 시켜줌
     ctx.body = user.serialize();
-    // 토큰 만들어줌
     const token = user.generateToken();
-    //쿠키 생성
+    console.log("Token generated:", token);
+
     ctx.cookies.set("hjsta_token", token, {
       maxAge: 1000 * 60 * 60 * 24 * 7,
       httpOnly: true,
@@ -90,7 +95,10 @@ export const login = async (ctx) => {
       sameSite: "None",
       path: "/",
     });
+
+    console.log("Cookie set successfully");
   } catch (e) {
+    console.error("Error in login:", e);
     ctx.throw(500, e);
   }
 };
