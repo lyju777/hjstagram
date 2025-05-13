@@ -44,8 +44,8 @@ export const register = async (ctx) => {
     ctx.cookies.set("hjsta_token", token, {
       maxAge: 1000 * 60 * 60 * 24 * 7,
       httpOnly: true,
-      //secure: true,
-      //sameSite: 'None',
+      sameSite: "none",
+      secure: true,
     });
   } catch (e) {
     throw (500, e);
@@ -85,8 +85,8 @@ export const login = async (ctx) => {
     ctx.cookies.set("hjsta_token", token, {
       maxAge: 1000 * 60 * 60 * 24 * 7,
       httpOnly: true, // 자바스크립트 해킹 방지!
-      //secure: true,
-      //sameSite: 'None',
+      sameSite: "none",
+      secure: true,
     });
   } catch (e) {
     ctx.throw(500, e);
@@ -109,7 +109,7 @@ export const edit = async (ctx) => {
   const schema = Joi.object().keys({
     name: Joi.string(),
     username: Joi.string(),
-    introment: Joi.string().allow(''),
+    introment: Joi.string().allow(""),
   });
 
   const result = schema.validate(ctx.request.body);
@@ -135,8 +135,8 @@ export const edit = async (ctx) => {
     ctx.cookies.set("hjsta_token", token, {
       maxAge: 1000 * 60 * 60 * 24 * 7,
       httpOnly: true,
-      //secure: true,
-      //sameSite: 'None',
+      sameSite: "none",
+      secure: true,
     });
     ctx.body = user;
   } catch (e) {
@@ -218,8 +218,8 @@ export const changePassword = async (ctx) => {
       ctx.cookies.set("hjsta_token", token, {
         maxAge: 1000 * 60 * 60 * 24 * 7,
         httpOnly: true,
-        //secure: true,
-        //sameSite: 'None',
+        sameSite: "none",
+        secure: true,
       });
     } else {
       ctx.status = 401;
@@ -312,8 +312,8 @@ export const following = async (ctx) => {
     ctx.cookies.set("hjsta_token", token, {
       maxAge: 1000 * 60 * 60 * 24 * 7,
       httpOnly: true,
-      //secure: true,
-      //sameSite: 'None',
+      sameSite: "none",
+      secure: true,
     });
     ctx.body = {
       "로그인한 나": user1.serialize(),
@@ -358,8 +358,8 @@ export const unfollowing = async (ctx) => {
     ctx.cookies.set("hjsta_token", token, {
       maxAge: 1000 * 60 * 60 * 24 * 7,
       httpOnly: true,
-      //secure: true,
-      //sameSite: 'None',
+      sameSite: "none",
+      secure: true,
     });
     ctx.body = {
       "로그인한 나": user1.serialize(),
@@ -381,8 +381,8 @@ export const addPost = async (ctx) => {
     ctx.cookies.set("hjsta_token", token, {
       maxAge: 1000 * 60 * 60 * 24 * 7,
       httpOnly: true,
-      //secure: true,
-      //sameSite: 'None',
+      sameSite: "none",
+      secure: true,
     });
     ctx.body = user.serialize();
   } catch (e) {
@@ -403,8 +403,8 @@ export const removePost = async (ctx) => {
     ctx.cookies.set("hjsta_token", token, {
       maxAge: 1000 * 60 * 60 * 24 * 7,
       httpOnly: true,
-      //secure: true,
-      //sameSite: 'None',
+      sameSite: "none",
+      secure: true,
     });
     ctx.body = user.serialize();
   } catch (e) {
@@ -426,8 +426,8 @@ export const profileurl = async (ctx) => {
     ctx.cookies.set("hjsta_token", token, {
       maxAge: 1000 * 60 * 60 * 24 * 7,
       httpOnly: true,
-      //secure: true,
-      //sameSite: 'None',
+      sameSite: "none",
+      secure: true,
     });
     ctx.body = user.serialize();
   } catch (e) {
