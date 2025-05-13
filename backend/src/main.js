@@ -14,7 +14,16 @@ const port = 4000;
 const app = new Koa();
 const router = new Router();
 
-app.use(cors({ origin: process.env.URL, credentials: true }));
+app.use(
+  cors({
+    origin:
+      process.env.NODE_ENV === "production"
+        ? "https://hjstagram.vercel.app"
+        : "*",
+    credentials: true,
+    methods: ["GET", "POST", "OPTIONS"],
+  })
+);
 
 dotenv.config();
 
