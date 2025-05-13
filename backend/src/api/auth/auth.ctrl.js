@@ -46,6 +46,8 @@ export const register = async (ctx) => {
       httpOnly: true,
       sameSite: "None",
       secure: true,
+      domain: "hjstagram-server.vercel.app",
+      path: "/",
     });
   } catch (e) {
     throw (500, e);
