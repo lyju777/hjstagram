@@ -1,0 +1,12 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "https://hjstagram-server.vercel.app/:path*"
+    },
+    {
+      "source": "/api/:path*/",
+      "destination": "https://hjstagram-server.vercel.app/:path*/"
+    }
+  ]
+}
