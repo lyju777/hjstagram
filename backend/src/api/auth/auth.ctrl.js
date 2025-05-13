@@ -45,7 +45,7 @@ export const register = async (ctx) => {
     ctx.cookies.set("hjsta_token", token, {
       maxAge: 1000 * 60 * 60 * 24 * 7,
       httpOnly: true,
-      secure: true,
+      secure: process.env.NODE_ENV === "production",
       sameSite: "None",
       path: "/",
     });
@@ -105,7 +105,7 @@ export const login = async (ctx) => {
     ctx.cookies.set("hjsta_token", token, {
       maxAge: 1000 * 60 * 60 * 24 * 7,
       httpOnly: true,
-      secure: true,
+      secure: process.env.NODE_ENV === "production",
       sameSite: "None",
       path: "/",
     });
@@ -160,7 +160,7 @@ export const edit = async (ctx) => {
     ctx.cookies.set("hjsta_token", token, {
       maxAge: 1000 * 60 * 60 * 24 * 7,
       httpOnly: true,
-      secure: true,
+      secure: process.env.NODE_ENV === "production",
       sameSite: "None",
       path: "/",
     });
@@ -244,7 +244,7 @@ export const changePassword = async (ctx) => {
       ctx.cookies.set("hjsta_token", token, {
         maxAge: 1000 * 60 * 60 * 24 * 7,
         httpOnly: true,
-        secure: true,
+        secure: process.env.NODE_ENV === "production",
         sameSite: "None",
         path: "/",
       });
@@ -339,7 +339,7 @@ export const following = async (ctx) => {
     ctx.cookies.set("hjsta_token", token, {
       maxAge: 1000 * 60 * 60 * 24 * 7,
       httpOnly: true,
-      secure: true,
+      secure: process.env.NODE_ENV === "production",
       sameSite: "None",
       path: "/",
     });
@@ -386,7 +386,7 @@ export const unfollowing = async (ctx) => {
     ctx.cookies.set("hjsta_token", token, {
       maxAge: 1000 * 60 * 60 * 24 * 7,
       httpOnly: true,
-      secure: true,
+      secure: process.env.NODE_ENV === "production",
       sameSite: "None",
       path: "/",
     });
@@ -410,7 +410,7 @@ export const addPost = async (ctx) => {
     ctx.cookies.set("hjsta_token", token, {
       maxAge: 1000 * 60 * 60 * 24 * 7,
       httpOnly: true,
-      secure: true,
+      secure: process.env.NODE_ENV === "production",
       sameSite: "None",
       path: "/",
     });
@@ -433,7 +433,7 @@ export const removePost = async (ctx) => {
     ctx.cookies.set("hjsta_token", token, {
       maxAge: 1000 * 60 * 60 * 24 * 7,
       httpOnly: true,
-      secure: true,
+      secure: process.env.NODE_ENV === "production",
       sameSite: "None",
       path: "/",
     });
@@ -457,7 +457,7 @@ export const profileurl = async (ctx) => {
     ctx.cookies.set("hjsta_token", token, {
       maxAge: 1000 * 60 * 60 * 24 * 7,
       httpOnly: true,
-      secure: true,
+      secure: process.env.NODE_ENV === "production",
       sameSite: "None",
       path: "/",
     });
