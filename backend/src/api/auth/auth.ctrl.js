@@ -80,6 +80,7 @@ export const login = async (ctx) => {
 
     if (!user) {
       ctx.status = 401;
+      ctx.body = { message: "User not found" };
       console.log("User not found");
       return;
     }
@@ -89,11 +90,15 @@ export const login = async (ctx) => {
 
     if (!valid) {
       ctx.status = 401;
+      ctx.body = { message: "Invalid password" };
       console.log("Invalid password");
       return;
     }
 
+    ctx.status = 200;
     ctx.body = user.serialize();
+    console.log("Response body set to:", ctx.body);
+
     const token = user.generateToken();
     console.log("Token generated:", token);
 
@@ -108,12 +113,8 @@ export const login = async (ctx) => {
     console.log("Cookie set successfully");
   } catch (e) {
     console.error("Error in login:", e);
-    if (e.name === "MongooseError") {
-      ctx.status = 503; // Service Unavailable로 변경하여 클라이언트에 알림
-      ctx.body = { message: "Database timeout, please try again later" };
-    } else {
-      ctx.throw(500, e);
-    }
+    ctx.status = 500;
+    ctx.body = { message: "Server error occurred" };
   }
 };
 
