@@ -1,6 +1,7 @@
 import User from "../../models/user";
 import Post from "../../models/post";
 import Joi from "joi";
+import mongoose from "mongoose";
 
 // 회원가입.
 export const register = async (ctx) => {
@@ -59,13 +60,21 @@ export const login = async (ctx) => {
 
   console.log("Login attempt for username:", username);
 
-  if (!username || !password) {
-    ctx.status = 401;
-    console.log("Missing username or password");
-    return;
-  }
-
   try {
+    // Mongoose 연결 확인 및 타임아웃 설정 (전역으로 적용 가능)
+    const db = mongoose.connection;
+    if (db.readyState !== 1) {
+      // 1: connected
+      console.error("Database not connected, attempting to connect");
+      await mongoose.connect(process.env.MONGODB_URI, {
+        // 환경 변수 확인
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+        bufferCommands: false, // 버퍼링 비활성화하여 타임아웃 방지
+        serverSelectionTimeoutMS: 5000, // 타임아웃 증가 (기본 30초로, 필요시 조정)
+      });
+    }
+
     const user = await User.findByUsername(username);
     console.log("User found:", user ? "Yes" : "No");
 
@@ -99,7 +108,12 @@ export const login = async (ctx) => {
     console.log("Cookie set successfully");
   } catch (e) {
     console.error("Error in login:", e);
-    ctx.throw(500, e);
+    if (e.name === "MongooseError") {
+      ctx.status = 503; // Service Unavailable로 변경하여 클라이언트에 알림
+      ctx.body = { message: "Database timeout, please try again later" };
+    } else {
+      ctx.throw(500, e);
+    }
   }
 };
 
