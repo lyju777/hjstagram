@@ -46,7 +46,7 @@ export const register = async (ctx) => {
       httpOnly: true,
       secure: true,
       sameSite: "None",
-      domain: ".vercel.app",
+      path: "/",
     });
   } catch (e) {
     throw (500, e);
@@ -88,7 +88,7 @@ export const login = async (ctx) => {
       httpOnly: true,
       secure: true,
       sameSite: "None",
-      domain: ".vercel.app",
+      path: "/",
     });
   } catch (e) {
     ctx.throw(500, e);
@@ -139,7 +139,7 @@ export const edit = async (ctx) => {
       httpOnly: true,
       secure: true,
       sameSite: "None",
-      domain: ".vercel.app",
+      path: "/",
     });
     ctx.body = user;
   } catch (e) {
@@ -223,7 +223,7 @@ export const changePassword = async (ctx) => {
         httpOnly: true,
         secure: true,
         sameSite: "None",
-        domain: ".vercel.app",
+        path: "/",
       });
     } else {
       ctx.status = 401;
@@ -318,7 +318,7 @@ export const following = async (ctx) => {
       httpOnly: true,
       secure: true,
       sameSite: "None",
-      domain: ".vercel.app",
+      path: "/",
     });
     ctx.body = {
       "로그인한 나": user1.serialize(),
@@ -365,7 +365,7 @@ export const unfollowing = async (ctx) => {
       httpOnly: true,
       secure: true,
       sameSite: "None",
-      domain: ".vercel.app",
+      path: "/",
     });
     ctx.body = {
       "로그인한 나": user1.serialize(),
@@ -389,7 +389,7 @@ export const addPost = async (ctx) => {
       httpOnly: true,
       secure: true,
       sameSite: "None",
-      domain: ".vercel.app",
+      path: "/",
     });
     ctx.body = user.serialize();
   } catch (e) {
@@ -412,7 +412,7 @@ export const removePost = async (ctx) => {
       httpOnly: true,
       secure: true,
       sameSite: "None",
-      domain: ".vercel.app",
+      path: "/",
     });
     ctx.body = user.serialize();
   } catch (e) {
@@ -436,7 +436,7 @@ export const profileurl = async (ctx) => {
       httpOnly: true,
       secure: true,
       sameSite: "None",
-      domain: ".vercel.app",
+      path: "/",
     });
     ctx.body = user.serialize();
   } catch (e) {
