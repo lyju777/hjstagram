@@ -27,7 +27,7 @@ app.use(router.routes()).use(router.allowedMethods());
 app.use(serve(path.join(__dirname, "../../frontend/public/files")));
 app.use(serve(path.join(__dirname, "../../frontend/public/profile")));
 
-//MongoDB 연결
+//MongoDB 연결 확인
 mongoose
   .connect(process.env.DB_URL, { useNewUrlParser: true })
   .then(() => {
