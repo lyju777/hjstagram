@@ -66,7 +66,7 @@ export const login = async (ctx) => {
     if (db.readyState !== 1) {
       // 1: connected
       console.error("Database not connected, attempting to connect");
-      await mongoose.connect(process.env.MONGODB_URI, {
+      await mongoose.connect(process.env.DB_URL, {
         // 환경 변수 확인
         useNewUrlParser: true,
         useUnifiedTopology: true,
