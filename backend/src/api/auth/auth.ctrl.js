@@ -44,7 +44,7 @@ export const register = async (ctx) => {
     ctx.cookies.set("hjsta_token", token, {
       maxAge: 1000 * 60 * 60 * 24 * 7,
       httpOnly: true,
-      sameSite: "none",
+      sameSite: "None",
       secure: true,
     });
   } catch (e) {
@@ -85,7 +85,7 @@ export const login = async (ctx) => {
     ctx.cookies.set("hjsta_token", token, {
       maxAge: 1000 * 60 * 60 * 24 * 7,
       httpOnly: true, // 자바스크립트 해킹 방지!
-      sameSite: "none",
+      sameSite: "None",
       secure: true,
     });
   } catch (e) {
@@ -135,7 +135,7 @@ export const edit = async (ctx) => {
     ctx.cookies.set("hjsta_token", token, {
       maxAge: 1000 * 60 * 60 * 24 * 7,
       httpOnly: true,
-      sameSite: "none",
+      sameSite: "None",
       secure: true,
     });
     ctx.body = user;
@@ -218,7 +218,7 @@ export const changePassword = async (ctx) => {
       ctx.cookies.set("hjsta_token", token, {
         maxAge: 1000 * 60 * 60 * 24 * 7,
         httpOnly: true,
-        sameSite: "none",
+        sameSite: "None",
         secure: true,
       });
     } else {
@@ -312,7 +312,7 @@ export const following = async (ctx) => {
     ctx.cookies.set("hjsta_token", token, {
       maxAge: 1000 * 60 * 60 * 24 * 7,
       httpOnly: true,
-      sameSite: "none",
+      sameSite: "None",
       secure: true,
     });
     ctx.body = {
@@ -358,7 +358,7 @@ export const unfollowing = async (ctx) => {
     ctx.cookies.set("hjsta_token", token, {
       maxAge: 1000 * 60 * 60 * 24 * 7,
       httpOnly: true,
-      sameSite: "none",
+      sameSite: "None",
       secure: true,
     });
     ctx.body = {
@@ -381,7 +381,7 @@ export const addPost = async (ctx) => {
     ctx.cookies.set("hjsta_token", token, {
       maxAge: 1000 * 60 * 60 * 24 * 7,
       httpOnly: true,
-      sameSite: "none",
+      sameSite: "None",
       secure: true,
     });
     ctx.body = user.serialize();
@@ -403,7 +403,7 @@ export const removePost = async (ctx) => {
     ctx.cookies.set("hjsta_token", token, {
       maxAge: 1000 * 60 * 60 * 24 * 7,
       httpOnly: true,
-      sameSite: "none",
+      sameSite: "None",
       secure: true,
     });
     ctx.body = user.serialize();
@@ -426,7 +426,7 @@ export const profileurl = async (ctx) => {
     ctx.cookies.set("hjsta_token", token, {
       maxAge: 1000 * 60 * 60 * 24 * 7,
       httpOnly: true,
-      sameSite: "none",
+      sameSite: "None",
       secure: true,
     });
     ctx.body = user.serialize();
