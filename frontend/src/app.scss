@@ -1,1 +1,3 @@
-@import "./scss/_login", "./scss/_main", "./scss/_profile";
+@use "./scss/_login";
+@use "./scss/_main";
+@use "./scss/_profile";

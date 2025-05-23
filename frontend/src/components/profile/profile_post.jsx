@@ -54,6 +54,12 @@ function Profile_Post(props) {
             .then((response) => {
               const updatedPosts = response.data;
               setPosts(updatedPosts);
+
+              // 모달 닫기
+              modal_change(false);
+
+              // 커스텀 이벤트로 프로필 업데이트 알림
+              window.dispatchEvent(new CustomEvent("profileUpdate"));
             });
         });
       });

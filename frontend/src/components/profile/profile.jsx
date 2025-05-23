@@ -45,18 +45,26 @@ function Profile() {
   const [followerNum, setfollowerNum] = useState(0); // 팔로워 숫자
   const [postNum, setPostNum] = useState(0); // 게시글 숫자
 
+  // 프로필 데이터 새로고침 함수
+  const refreshProfileData = async () => {
+    try {
+      const response = await requestAxios.get("/api/auth/check");
+      setDataUsername(response.data.username);
+      setDataName(response.data.name);
+      setIntroment(response.data.introment);
+      setfollowingNum(response.data.followingNum);
+      setfollowerNum(response.data.followerNum);
+      setPostNum(response.data.postsNum);
+      setProfile(response.data.profileurl);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useLayoutEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await requestAxios.get("/api/auth/check");
-
-        setDataUsername(response.data.username); // 아이디
-        setDataName(response.data.name); // 이름
-        setIntroment(response.data.introment); // 소개글
-        setfollowingNum(response.data.followingNum);
-        setfollowerNum(response.data.followerNum);
-        setPostNum(response.data.postsNum);
-        setProfile(response.data.profileurl);
+        await refreshProfileData();
       } catch (error) {
         console.log(error);
       } finally {
@@ -64,6 +72,24 @@ function Profile() {
       }
     };
     fetchData();
+
+    // 페이지 포커스 시 데이터 새로고침
+    const handleFocus = () => {
+      refreshProfileData();
+    };
+
+    // 프로필 업데이트 커스텀 이벤트 리스너
+    const handleProfileUpdate = () => {
+      refreshProfileData();
+    };
+
+    window.addEventListener("focus", handleFocus);
+    window.addEventListener("profileUpdate", handleProfileUpdate);
+
+    return () => {
+      window.removeEventListener("focus", handleFocus);
+      window.removeEventListener("profileUpdate", handleProfileUpdate);
+    };
   }, []);
 
   if (loading) {
