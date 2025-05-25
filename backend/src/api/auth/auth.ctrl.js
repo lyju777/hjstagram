@@ -2,6 +2,22 @@ import User from "../../models/user";
 import Post from "../../models/post";
 import Joi from "joi";
 
+// 개발/프로덕션 환경에 따른 쿠키 설정
+const getCookieOptions = () => {
+  // NODE_ENV가 설정되지 않은 경우 PORT로 프로덕션 환경 판단
+  const isProduction =
+    process.env.NODE_ENV === "production" || process.env.PORT === "8080";
+
+  return {
+    maxAge: 1000 * 60 * 60 * 24 * 7, // 7일
+    httpOnly: true,
+    // secure 속성은 main.js의 미들웨어에서 처리되므로 여기서는 true로 설정해도 됨
+    secure: true,
+    sameSite: isProduction ? "None" : "Lax", // 프로덕션에서만 cross-site 허용
+    domain: isProduction ? ".hjstagram.site" : undefined, // 프로덕션에서 도메인 설정
+  };
+};
+
 // 회원가입.
 export const register = async (ctx) => {
   const schema = Joi.object().keys({
@@ -41,12 +57,7 @@ export const register = async (ctx) => {
     ctx.body = user.serialize();
 
     const token = user.generateToken();
-    ctx.cookies.set("hjsta_token", token, {
-      maxAge: 1000 * 60 * 60 * 24 * 7,
-      httpOnly: true,
-      //secure: true,
-      //sameSite: 'None',
-    });
+    ctx.cookies.set("hjsta_token", token, getCookieOptions());
   } catch (e) {
     throw (500, e);
   }
@@ -82,12 +93,7 @@ export const login = async (ctx) => {
     // 토큰 만들어줌
     const token = user.generateToken();
     //쿠키 생성
-    ctx.cookies.set("hjsta_token", token, {
-      maxAge: 1000 * 60 * 60 * 24 * 7,
-      httpOnly: true, // 자바스크립트 해킹 방지!
-      //secure: true,
-      //sameSite: 'None',
-    });
+    ctx.cookies.set("hjsta_token", token, getCookieOptions());
   } catch (e) {
     ctx.throw(500, e);
   }
@@ -109,7 +115,7 @@ export const edit = async (ctx) => {
   const schema = Joi.object().keys({
     name: Joi.string(),
     username: Joi.string(),
-    introment: Joi.string().allow(''),
+    introment: Joi.string().allow(""),
   });
 
   const result = schema.validate(ctx.request.body);
@@ -132,12 +138,7 @@ export const edit = async (ctx) => {
     }
     const token = user.generateToken();
 
-    ctx.cookies.set("hjsta_token", token, {
-      maxAge: 1000 * 60 * 60 * 24 * 7,
-      httpOnly: true,
-      //secure: true,
-      //sameSite: 'None',
-    });
+    ctx.cookies.set("hjsta_token", token, getCookieOptions());
     ctx.body = user;
   } catch (e) {
     ctx.throw(500, e);
@@ -215,12 +216,7 @@ export const changePassword = async (ctx) => {
 
       const token = user.generateToken();
 
-      ctx.cookies.set("hjsta_token", token, {
-        maxAge: 1000 * 60 * 60 * 24 * 7,
-        httpOnly: true,
-        //secure: true,
-        //sameSite: 'None',
-      });
+      ctx.cookies.set("hjsta_token", token, getCookieOptions());
     } else {
       ctx.status = 401;
     }
@@ -309,12 +305,7 @@ export const following = async (ctx) => {
     console.log("팔로워 +1");
     const token = user1.generateToken();
 
-    ctx.cookies.set("hjsta_token", token, {
-      maxAge: 1000 * 60 * 60 * 24 * 7,
-      httpOnly: true,
-      //secure: true,
-      //sameSite: 'None',
-    });
+    ctx.cookies.set("hjsta_token", token, getCookieOptions());
     ctx.body = {
       "로그인한 나": user1.serialize(),
       "내가 팔로잉한 사용자": user2.serialize(),
@@ -355,12 +346,7 @@ export const unfollowing = async (ctx) => {
     await user2.save();
     const token = user1.generateToken();
 
-    ctx.cookies.set("hjsta_token", token, {
-      maxAge: 1000 * 60 * 60 * 24 * 7,
-      httpOnly: true,
-      //secure: true,
-      //sameSite: 'None',
-    });
+    ctx.cookies.set("hjsta_token", token, getCookieOptions());
     ctx.body = {
       "로그인한 나": user1.serialize(),
       "내가 팔로잉끊은 사용자": user2.serialize(),
@@ -378,12 +364,7 @@ export const addPost = async (ctx) => {
     await user.save();
     const token = user.generateToken();
 
-    ctx.cookies.set("hjsta_token", token, {
-      maxAge: 1000 * 60 * 60 * 24 * 7,
-      httpOnly: true,
-      //secure: true,
-      //sameSite: 'None',
-    });
+    ctx.cookies.set("hjsta_token", token, getCookieOptions());
     ctx.body = user.serialize();
   } catch (e) {
     ctx.throw(e, 500);
@@ -400,12 +381,7 @@ export const removePost = async (ctx) => {
     await user.save();
     const token = user.generateToken();
 
-    ctx.cookies.set("hjsta_token", token, {
-      maxAge: 1000 * 60 * 60 * 24 * 7,
-      httpOnly: true,
-      //secure: true,
-      //sameSite: 'None',
-    });
+    ctx.cookies.set("hjsta_token", token, getCookieOptions());
     ctx.body = user.serialize();
   } catch (e) {
     ctx.throw(e, 500);
@@ -423,12 +399,7 @@ export const profileurl = async (ctx) => {
     await user.save();
     const token = user.generateToken();
 
-    ctx.cookies.set("hjsta_token", token, {
-      maxAge: 1000 * 60 * 60 * 24 * 7,
-      httpOnly: true,
-      //secure: true,
-      //sameSite: 'None',
-    });
+    ctx.cookies.set("hjsta_token", token, getCookieOptions());
     ctx.body = user.serialize();
   } catch (e) {
     ctx.throw(e, 500);

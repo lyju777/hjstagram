@@ -1,6 +1,21 @@
 import jwt, { decode } from "jsonwebtoken";
 import User from "../models/user";
 
+// 개발/프로덕션 환경에 따른 쿠키 설정
+const getCookieOptions = () => {
+  // NODE_ENV가 설정되지 않은 경우 PORT로 프로덕션 환경 판단
+  const isProduction =
+    process.env.NODE_ENV === "production" || process.env.PORT === "8080";
+
+  return {
+    maxAge: 1000 * 60 * 60 * 24 * 7, // 7일
+    httpOnly: true,
+    secure: true, // 항상 secure 쿠키 사용 (main.js의 미들웨어에서 처리됨)
+    sameSite: isProduction ? "None" : "Lax", // 프로덕션에서만 cross-site 허용
+    domain: isProduction ? ".hjstagram.site" : undefined, // 프로덕션에서 도메인 설정
+  };
+};
+
 // ctx 객체와 , next 콜백 (다음 미들웨어로 넘어감)
 const jwtMiddleware = async (ctx, next) => {
   const token = ctx.cookies.get("hjsta_token");
@@ -25,11 +40,7 @@ const jwtMiddleware = async (ctx, next) => {
       // 남은 시간이 3.5일보다 적다면
       const user = await User.findById(decoded._id);
       const token = user.generateToken();
-      ctx.cookies.set("hjsta_token", token, {
-        maxAge: 1000 * 60 * 60 * 24 * 7,
-        httpOnly: true,
-        //sameSite: 'None',
-      });
+      ctx.cookies.set("hjsta_token", token, getCookieOptions());
     }
 
     return next();

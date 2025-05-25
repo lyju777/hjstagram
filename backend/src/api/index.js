@@ -17,4 +17,10 @@ api.use("/files", files.routes());
 
 // 127.0.0.1:4000/api/profilePic
 api.use("/profilePic", profilePic.routes());
+
+// 루트 경로에 hello world 추가
+api.get("/", (ctx) => {
+  ctx.body = "Hello World";
+});
+
 export default api;

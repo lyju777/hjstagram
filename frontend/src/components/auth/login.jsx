@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link, withRouter } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { LoginUser } from "../../_actions/user_action";
@@ -6,6 +6,7 @@ import requestAxios from "../../api/requestAxios";
 
 function Login(props) {
   const dispatch = useDispatch();
+  const isMountedRef = useRef(true);
 
   // 서버에 보내고자 하는 값들을 state에서 가지고 있는것
   const [Username, setUsername] = useState("");
@@ -13,6 +14,13 @@ function Login(props) {
 
   // 유효성 메세지 state
   const [UserNameMsg, setUserNameMsg] = useState("");
+
+  // 컴포넌트 언마운트 시 cleanup
+  useEffect(() => {
+    return () => {
+      isMountedRef.current = false;
+    };
+  }, []);
 
   const onUsernameHandler = (event) => {
     setUsername(event.currentTarget.value);
@@ -22,35 +30,49 @@ function Login(props) {
     setPassword(event.currentTarget.value);
   };
 
-  const onSubmitHandler = (event) => {
+  const onSubmitHandler = async (event) => {
     event.preventDefault(); // 페이지 새로고침 방지
 
-    // 아이디 유효성 검사
-    requestAxios
-      .post("/api/auth/idAndPassWordCheck", {
+    try {
+      // 아이디 유효성 검사
+      const response = await requestAxios.post("/api/auth/idAndPassWordCheck", {
         username: Username,
         password: Password,
-      })
-      .then((response) => {
-        if (response.data.person === "없다고") {
-          setUserNameMsg("아이디가 존재하지 않습니다.");
-        } else if (response.data.pw === "틀림") {
-          setUserNameMsg("비밀번호를 잘못 입력하셨습니다.");
-        } else {
-          setUserNameMsg(""); // 정규식이 맞다면 ''공백으로 처리
-        }
       });
 
-    let body = {
-      username: Username,
-      password: Password,
-    };
+      // 컴포넌트가 마운트된 상태에서만 상태 업데이트
+      if (!isMountedRef.current) return;
 
-    dispatch(LoginUser(body)).then((response) => {
-      if (response.payload) {
+      if (response.data.person === "없다고") {
+        setUserNameMsg("아이디가 존재하지 않습니다.");
+        return;
+      } else if (response.data.pw === "틀림") {
+        setUserNameMsg("비밀번호를 잘못 입력하셨습니다.");
+        return;
+      } else {
+        setUserNameMsg(""); // 정규식이 맞다면 ''공백으로 처리
+      }
+
+      // 로그인 처리
+      let body = {
+        username: Username,
+        password: Password,
+      };
+
+      const loginResponse = await dispatch(LoginUser(body));
+
+      // 컴포넌트가 마운트된 상태에서만 네비게이션
+      if (!isMountedRef.current) return;
+
+      if (loginResponse.payload) {
         props.history.push("/main");
       }
-    });
+    } catch (error) {
+      console.error("Login error:", error);
+      if (isMountedRef.current) {
+        setUserNameMsg("로그인 중 오류가 발생했습니다.");
+      }
+    }
   };
 
   return (
