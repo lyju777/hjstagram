@@ -1,13 +1,14 @@
 # hjstagram
 
 #### 🔗Site Link
-➡️ https://web-hjstagram-13d1yv2clqvx92fu.sel5.cloudtype.app/
+
+➡️ https://d1r8boewvd8lv9.cloudfront.net
 
 <br>
 
 **💡프로젝트 설명**
 
-hjstagram은 Instagram의 핵심 기능들을 토대로 개발한 소셜 네트워크 서비스 입니다. Node.js koa  기반의 REST API 서버를 구축하고 React router 기반의 컴포넌트 설계를 통해 데이터를 연동하여  SNS 기능을 구현하였습니다.
+hjstagram은 Instagram의 핵심 기능들을 토대로 개발한 소셜 네트워크 서비스 입니다. Node.js koa 기반의 REST API 서버를 구축하고 React router 기반의 컴포넌트 설계를 통해 데이터를 연동하여 SNS 기능을 구현하였습니다.
 
 <br>
 
@@ -19,9 +20,9 @@ FrontEnd(1명) | BackEnd(1명)
 
 **🛠️기술스택**
 
-**Client :    `JavaScript`  `React`  `scss`  `axios`  `Bootstrap`  `s3-bucket`  `cloudfront`** 
+**Client : `JavaScript` `React` `scss` `axios` `Bootstrap` `s3-bucket` `cloudfront`**
 
-**Server :   `MongoDB`  `Node.js`  `bcrypt`  `multer-s3`**
+**Server : `MongoDB` `Node.js` `bcrypt` `multer-s3`**
 
 <br>
 
@@ -38,7 +39,7 @@ FrontEnd(1명) | BackEnd(1명)
 
 **🚀업데이트**
 
- **기간 :** ~ 2024.09.14
+**기간 :** ~ 2024.09.14
 
 - 사용자 Form 데이터 유효성 검증로직 개선과 관련 UI 수정
 - API 비동기 요청 시 응답 데이터 지연에 대비한 React Spinner 적용
@@ -100,10 +101,10 @@ REACT_APP_API
 ```
 
 ### Requirements
+
 ```sh
 node v16.15.0
 
 npm install react-scripts --save
 npm install -g node-gyp
 ```
-
