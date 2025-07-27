@@ -14,7 +14,9 @@ const getCookieOptions = () => {
     // secure 속성은 main.js의 미들웨어에서 처리되므로 여기서는 true로 설정해도 됨
     secure: true,
     sameSite: isProduction ? "None" : "Lax", // 프로덕션에서만 cross-site 허용
-    domain: isProduction ? ".hjstagram.site" : undefined, // 프로덕션에서 도메인 설정
+    domain: isProduction
+      ? ".port-0-hj-backend-13d1yv2clqvx92fu.sel5.cloudtype.app"
+      : undefined, // 프로덕션에서 도메인 설정
   };
 };
 
